@@ -20,9 +20,9 @@ const trustBadges = [
 ];
 
 const testimonials = [
-  { name: 'david perera', avatar: 'https://i.pravatar.cc/60?img=1', rating: 5, text: 'Amazing products and super fast delivery! I ordered electronics worth ₹5,000 and received them the very next day. Will definitely order again!' },
+  { name: 'david perera', avatar: 'https://i.pravatar.cc/60?img=1', rating: 5, text: 'Amazing products and super fast delivery! I ordered electronics worth 500$ and received them the very next day. Will definitely order again!' },
   { name: 'tom curse', avatar: 'https://i.pravatar.cc/60?img=3', rating: 5, text: 'The product quality is outstanding. I got a yoga mat and it is exactly as described. Customer support was incredibly helpful too.' },
-  { name: 'dihan narmada', avatar: 'https://i.pravatar.cc/60?img=4', rating: 5, text: 'Best online shopping experience ever! Great deals, authentic products, and the packaging was excellent. Highly recommend Ubuy!' },
+  { name: 'dihan narmada', avatar: 'https://i.pravatar.cc/60?img=4', rating: 5, text: 'Best online shopping experience ever! Great deals, authentic products, and the packaging was excellent. Highly recommend OneRoutes!' },
 ];
 
 export default function Home() {
@@ -187,7 +187,7 @@ export default function Home() {
       </Box>
 
       {/* ===== Shop By Category ===== */}
-      <Box sx={{ bgcolor: '#F8F9FA', py: 6 }}>
+      <Box sx={{ bgcolor: '#F8FAFC', py: 6 }}>
         <Container maxWidth="xl">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Box>
@@ -271,7 +271,7 @@ export default function Home() {
       </Box>
 
       {/* ===== Promo Banner ===== */}
-      <Box sx={{ bgcolor: '#F8F9FA', py: 4 }}>
+      <Box sx={{ bgcolor: '#F8FAFC', py: 4 }}>
         <Container maxWidth="xl">
           <Grid container spacing={3}>
             <Grid item xs={12} md={7}>
@@ -306,7 +306,7 @@ export default function Home() {
             <Grid item xs={12} md={5}>
               <Paper
                 sx={{
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%)',
+                  background: 'linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)',
                   borderRadius: 4, p: 4, minHeight: 180, position: 'relative', overflow: 'hidden',
                   display: 'flex', alignItems: 'center',
                 }}
@@ -359,10 +359,10 @@ export default function Home() {
       </Box>
 
       {/* ===== Testimonials ===== */}
-      <Box sx={{ py: 6, bgcolor: '#F8F9FA' }}>
+      <Box sx={{ py: 6, bgcolor: '#F8FAFC' }}>
         <Container maxWidth="xl">
           <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography variant="overline" color="primary.main" fontWeight={700}>Reviews</Typography>
+            <Typography variant="overline" color="secondary.main" fontWeight={700}>Reviews</Typography>
             <Typography variant="h4" fontWeight={800}>What Our Customers Say</Typography>
           </Box>
           <Grid container spacing={3}>

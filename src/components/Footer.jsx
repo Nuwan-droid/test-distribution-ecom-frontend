@@ -109,14 +109,14 @@ export default function Footer() {
               <Box
                 sx={{
                   width: 40, height: 40, borderRadius: 2,
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%)',
+                  background: 'linear-gradient(135deg, #0B1F5B 0%, #2563EB 100%)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
-                <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: '1.2rem' }}>U</Typography>
+                <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: '1.2rem' }}>O</Typography>
               </Box>
               <Typography variant="h5" fontWeight={800}>
-                U<Box component="span" sx={{ color: 'primary.main' }}>Buy</Box>
+                One<Box component="span" sx={{ color: 'primary.main' }}>Routes</Box>
               </Typography>
             </Box>
             <Typography variant="body2" sx={{ color: 'grey.400', mb: 3, lineHeight: 1.8 }}>
@@ -130,7 +130,7 @@ export default function Footer() {
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'grey.400' }}>
                 <Email sx={{ fontSize: 18, color: 'primary.main' }} />
-                <Typography variant="body2">support@ubuy.com</Typography>
+                <Typography variant="body2">support@oneroutes.com</Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, color: 'grey.400' }}>
                 <LocationOn sx={{ fontSize: 18, color: 'primary.main', mt: 0.2 }} />
@@ -248,7 +248,7 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ color: 'grey.500', textAlign: 'center' }}>
-            © {new Date().getFullYear()} UBuy. All rights reserved.
+            © {new Date().getFullYear()} OneRoutes. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             {footerLinks.policies.map(link => (

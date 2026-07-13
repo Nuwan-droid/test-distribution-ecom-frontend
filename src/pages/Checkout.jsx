@@ -39,7 +39,7 @@ export default function Checkout() {
   const isAddressValid = address.name && address.phone && address.line1 && address.city && address.state && address.pincode;
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh', py: 4 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="lg">
         <Breadcrumbs sx={{ mb: 2 }}>
           <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
@@ -153,7 +153,7 @@ export default function Checkout() {
                 <Box>
                   <Typography variant="h6" fontWeight={700} sx={{ mb: 2.5 }}>Review Your Order</Typography>
 
-                  <Paper sx={{ p: 2, bgcolor: '#F8F9FA', borderRadius: 2, mb: 2.5 }}>
+                  <Paper sx={{ p: 2, bgcolor: '#F8FAFC', borderRadius: 2, mb: 2.5 }}>
                     <Typography variant="subtitle2" fontWeight={700} gutterBottom>Delivery Address</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {address.name} · {address.phone}<br />
@@ -161,7 +161,7 @@ export default function Checkout() {
                     </Typography>
                   </Paper>
 
-                  <Paper sx={{ p: 2, bgcolor: '#F8F9FA', borderRadius: 2, mb: 2.5 }}>
+                  <Paper sx={{ p: 2, bgcolor: '#F8FAFC', borderRadius: 2, mb: 2.5 }}>
                     <Typography variant="subtitle2" fontWeight={700} gutterBottom>Payment</Typography>
                     <Typography variant="body2" color="text.secondary">{paymentMethods.find(m => m.value === payment)?.label}</Typography>
                   </Paper>

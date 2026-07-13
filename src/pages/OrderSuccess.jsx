@@ -22,7 +22,7 @@ export default function OrderSuccess() {
     <Box
       sx={{
         minHeight: '80vh',
-        bgcolor: '#F8F9FA',
+        bgcolor: '#F8FAFC',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -62,7 +62,7 @@ export default function OrderSuccess() {
 
             <Paper
               sx={{
-                p: 2, bgcolor: '#F8F9FA', borderRadius: 2, mb: 3,
+                p: 2, bgcolor: '#F8FAFC', borderRadius: 2, mb: 3,
                 border: '1px dashed', borderColor: 'divider',
               }}
             >

@@ -52,7 +52,7 @@ export default function OrderTracking() {
   };
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh', py: 5 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 5 }}>
       <Container maxWidth="md">
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Typography variant="h4" fontWeight={800} gutterBottom>Track Your Order</Typography>

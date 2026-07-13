@@ -9,7 +9,7 @@ export default function Wishlist() {
   const { wishlist } = useWishlist();
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh', py: 4 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="xl">
         <Typography variant="h4" fontWeight={800} sx={{ mb: 1 }}>My Wishlist</Typography>
         <Typography color="text.secondary" sx={{ mb: 3 }}>{wishlist.length} saved item{wishlist.length !== 1 ? 's' : ''}</Typography>

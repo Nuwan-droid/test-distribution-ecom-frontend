@@ -80,7 +80,7 @@ export default function ProductCard({ product, compact = false }) {
         </Tooltip>
 
         {/* Image */}
-        <Box sx={{ overflow: 'hidden', bgcolor: '#F8F9FA', borderRadius: '16px 16px 0 0' }}>
+        <Box sx={{ overflow: 'hidden', bgcolor: '#F8FAFC', borderRadius: '16px 16px 0 0' }}>
           <CardMedia
             component="img"
             image={product.image}

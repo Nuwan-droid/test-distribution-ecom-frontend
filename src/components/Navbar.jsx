@@ -116,17 +116,17 @@ export default function Navbar() {
               <Box
                 sx={{
                   width: 36, height: 36, borderRadius: 2,
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%)',
+                  background: 'linear-gradient(135deg, #0B1F5B 0%, #2563EB 100%)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
-                <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: '1.1rem' }}>U</Typography>
+                <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: '1.1rem' }}>O</Typography>
               </Box>
               <Typography
                 variant="h6"
                 sx={{ fontWeight: 800, color: 'text.primary', display: { xs: 'none', sm: 'block' } }}
               >
-                U<Box component="span" sx={{ color: 'primary.main' }}>Buy</Box>
+                One<Box component="span" sx={{ color: 'primary.main' }}>Routes</Box>
               </Typography>
             </Box>
 
@@ -157,7 +157,7 @@ export default function Navbar() {
                 flex: 1,
                 maxWidth: { xs: '100%', md: 480 },
                 mx: { xs: 1, md: 2 },
-                bgcolor: '#F3F4F6',
+                bgcolor: '#F8FAFC',
                 borderRadius: 3,
                 display: 'flex',
                 alignItems: 'center',
@@ -248,7 +248,7 @@ export default function Navbar() {
 
         {/* Category Strip (Desktop) */}
         {!isMobile && (
-          <Box sx={{ bgcolor: '#F8F9FA', borderTop: '1px solid', borderColor: 'divider' }}>
+          <Box sx={{ bgcolor: '#F8FAFC', borderTop: '1px solid', borderColor: 'divider' }}>
             <Container maxWidth="xl">
               <Box sx={{ display: 'flex', gap: 0.5, py: 0.5, overflowX: 'auto', '&::-webkit-scrollbar': { display: 'none' } }}>
                 {categories.map(cat => (

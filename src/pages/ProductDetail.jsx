@@ -57,7 +57,7 @@ export default function ProductDetail() {
   ];
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh' }}>
       <Container maxWidth="xl" sx={{ py: 4 }}>
         {/* Breadcrumbs */}
         <Breadcrumbs sx={{ mb: 2 }}>
@@ -257,7 +257,7 @@ export default function ProductDetail() {
             )}
             {tab === 1 && (
               <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3, p: 2, bgcolor: '#F8F9FA', borderRadius: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3, p: 2, bgcolor: '#F8FAFC', borderRadius: 2 }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h2" fontWeight={900} color="primary.main">{product.rating}</Typography>
                     <Rating value={product.rating} precision={0.5} readOnly />

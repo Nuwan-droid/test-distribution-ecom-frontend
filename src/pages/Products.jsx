@@ -29,7 +29,7 @@ function FilterPanel({ filters, setFilters, onClose }) {
   const priceRange = [0, 10000];
 
   return (
-    <Box sx={{ width: { xs: 280, md: '100%' } }}>
+    <Box sx={{ width: { xs: 240, md: '100%' } }}>
       {onClose && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
           <Typography variant="h6" fontWeight={700}>Filters</Typography>
@@ -206,7 +206,7 @@ export default function Products() {
   const activeFilterCount = filters.categories.length + (filters.minRating > 0 ? 1 : 0) + (filters.onSale ? 1 : 0) + (filters.isNew ? 1 : 0) + (filters.isBestSeller ? 1 : 0);
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh' }}>
       <Container maxWidth="xl" sx={{ py: 4 }}>
         {/* Header */}
         <Box sx={{ mb: 3 }}>
@@ -245,21 +245,22 @@ export default function Products() {
           </Box>
         )}
 
-        <Grid container spacing={3}>
+        {/* Main layout: sidebar (left) + products (right) using Flexbox */}
+        <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start', flexDirection: { xs: 'column', md: 'row' } }}>
           {/* Desktop Filter Sidebar */}
           {!isMobile && (
-            <Grid item md={2.5}>
+            <Box sx={{ width: 240, flexShrink: 0 }}>
               <Paper sx={{ borderRadius: 3, overflow: 'hidden', position: 'sticky', top: 90 }}>
                 <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
                   <Typography variant="h6" fontWeight={700}>Filters</Typography>
                 </Box>
                 <FilterPanel filters={filters} setFilters={(f) => { setFilters(f); setPage(1); }} />
               </Paper>
-            </Grid>
+            </Box>
           )}
 
-          {/* Product Grid */}
-          <Grid item xs={12} md={9.5}>
+          {/* Product Section */}
+          <Box sx={{ flex: 1, minWidth: 0 }}>
             {/* Toolbar */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.5, flexWrap: 'wrap', gap: 1.5 }}>
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
@@ -346,8 +347,8 @@ export default function Products() {
                 )}
               </>
             )}
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
 
       {/* Mobile Filter Drawer */}

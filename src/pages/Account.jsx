@@ -38,7 +38,7 @@ export default function Account() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh', py: 4 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="xl">
         <Typography variant="h4" fontWeight={800} sx={{ mb: 3 }}>My Account</Typography>
         <Grid container spacing={3}>

@@ -17,7 +17,7 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <Box sx={{ bgcolor: '#F8F9FA', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ bgcolor: '#F8FAFC', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Box sx={{ textAlign: 'center', p: 4 }}>
           <Box sx={{ fontSize: '5rem', mb: 2 }}>🛒</Box>
           <Typography variant="h4" fontWeight={800} gutterBottom>Your cart is empty</Typography>
@@ -33,7 +33,7 @@ export default function Cart() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#F8F9FA', minHeight: '100vh', py: 4 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="xl">
         <Breadcrumbs sx={{ mb: 2 }}>
           <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
