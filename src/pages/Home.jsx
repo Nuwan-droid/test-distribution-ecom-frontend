@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <Box>
       {/* ===== Hero Banner Slider ===== */}
-      <Box sx={{ position: 'relative', overflow: 'hidden', height: { xs: 300, md: 480 } }}>
+      <Box sx={{ position: 'relative', overflow: 'hidden', height: { xs: 150, sm: 200, md: 300 } }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentBanner}
@@ -58,52 +58,69 @@ export default function Home() {
             <Box
               sx={{
                 height: '100%',
-                background: banners[currentBanner].bgColor,
-                display: 'flex',
-                alignItems: 'center',
+                width: '100%',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              {/* Background image overlay */}
+              {/* Full-width background image */}
               <Box
                 component="img"
                 src={banners[currentBanner].image}
-                alt=""
+                alt={banners[currentBanner].title}
                 sx={{
-                  position: 'absolute', right: 0, top: 0, height: '100%',
-                  width: { xs: '100%', md: '55%' },
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
-                  opacity: { xs: 0.2, md: 0.5 },
+                  objectPosition: 'center',
                 }}
               />
-              <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2 }}>
-                <Box sx={{ maxWidth: { xs: '100%', md: 560 } }}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.15, duration: 0.5 }}
-                  >
-                    <Chip
-                      label="🔥 Limited Time Offer"
-                      sx={{ bgcolor: 'primary.main', color: 'white', fontWeight: 700, mb: 2 }}
-                    />
+              {/* Dark gradient scrim for readability */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.1) 100%)',
+                }}
+              />
+              {/* Overlay content */}
+              <Box
+                sx={{
+                  position: 'relative',
+                  zIndex: 2,
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  px: { xs: 3, md: 8 },
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.5 }}
+                >
+                  <Box sx={{ maxWidth: { xs: '100%', md: 560 } }}>
                     <Typography
                       variant={isMobile ? 'h4' : 'h2'}
                       fontWeight={800}
-                      sx={{ color: 'white', lineHeight: 1.15, mb: 2 }}
+                      sx={{ color: 'white', lineHeight: 1.15, mb: 2, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
                     >
                       {banners[currentBanner].title}
                     </Typography>
-                    <Typography
-                      variant={isMobile ? 'body2' : 'h6'}
-                      sx={{ color: 'rgba(255,255,255,0.8)', mb: 3, fontWeight: 400 }}
-                    >
-                      {banners[currentBanner].subtitle}
-                    </Typography>
-                    <Box sx={{ display: 'flex', gap: 2 }}>
+                    {banners[currentBanner].subtitle && (
+                      <Typography
+                        variant={isMobile ? 'body2' : 'h6'}
+                        sx={{ color: 'rgba(255,255,255,0.85)', mb: 3, fontWeight: 400 }}
+                      >
+                        {banners[currentBanner].subtitle}
+                      </Typography>
+                    )}
+                    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                       <Button
                         variant="contained"
+                        color="secondary"
                         size={isMobile ? 'medium' : 'large'}
                         component={Link}
                         to="/products"
@@ -123,9 +140,9 @@ export default function Home() {
                         View Deals
                       </Button>
                     </Box>
-                  </motion.div>
-                </Box>
-              </Container>
+                  </Box>
+                </motion.div>
+              </Box>
             </Box>
           </motion.div>
         </AnimatePresence>
@@ -140,7 +157,7 @@ export default function Home() {
                 width: i === currentBanner ? 32 : 8,
                 height: 8,
                 borderRadius: 4,
-                bgcolor: i === currentBanner ? 'primary.main' : 'rgba(255,255,255,0.5)',
+                bgcolor: i === currentBanner ? 'secondary.main' : 'rgba(255,255,255,0.5)',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
               }}
@@ -163,15 +180,21 @@ export default function Home() {
       </Box>
 
       {/* ===== Trust Badges ===== */}
-      <Box sx={{ bgcolor: 'white', borderBottom: '1px solid', borderColor: 'divider' }}>
-        <Container maxWidth="xl">
-          <Grid container>
+      <Box sx={{ bgcolor: 'white', borderBottom: '1px solid', borderColor: 'divider', py: 2 }}>
+        <Container maxWidth="md">
+          <Grid container justifyContent="center" alignItems="center" spacing={0}>
             {trustBadges.map((badge, i) => (
-              <Grid item xs={6} md={3} key={i}>
+              <Grid item xs={6} sm={3} key={i}>
                 <Box
                   sx={{
-                    display: 'flex', alignItems: 'center', gap: 2, p: 2.5,
-                    borderRight: i < 3 ? '1px solid' : 'none', borderColor: 'divider',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 1.5,
+                    py: 1,
+                    px: 1,
+                    borderRight: i < 3 ? '1px solid' : 'none',
+                    borderColor: 'divider',
                   }}
                 >
                   {badge.icon}
@@ -270,70 +293,6 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* ===== Promo Banner ===== */}
-      <Box sx={{ bgcolor: '#F8FAFC', py: 4 }}>
-        <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
-              <Paper
-                sx={{
-                  background: 'linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)',
-                  borderRadius: 4, p: 4, display: 'flex', alignItems: 'center',
-                  gap: 3, minHeight: 180, position: 'relative', overflow: 'hidden',
-                }}
-              >
-                <Box sx={{ position: 'absolute', right: -30, top: -30, width: 200, height: 200, borderRadius: '50%', bgcolor: 'rgba(255,107,53,0.1)' }} />
-                <Box sx={{ flex: 1, position: 'relative', zIndex: 2 }}>
-                  <Chip label="⚡ Flash Sale" sx={{ bgcolor: 'primary.main', color: 'white', fontWeight: 700, mb: 1.5 }} />
-                  <Typography variant="h4" fontWeight={800} color="white" gutterBottom>
-                    Up to 50% Off Electronics
-                  </Typography>
-                  <Typography color="grey.400" sx={{ mb: 2 }}>
-                    Grab the best deals on headphones, smartwatches & more
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    component={Link}
-                    to="/products?category=Electronics"
-                    endIcon={<FlashOn />}
-                    id="electronics-sale-btn"
-                  >
-                    Shop Electronics
-                  </Button>
-                </Box>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Paper
-                sx={{
-                  background: 'linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)',
-                  borderRadius: 4, p: 4, minHeight: 180, position: 'relative', overflow: 'hidden',
-                  display: 'flex', alignItems: 'center',
-                }}
-              >
-                <Box sx={{ position: 'absolute', right: -20, bottom: -20, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.1)' }} />
-                <Box sx={{ position: 'relative', zIndex: 2 }}>
-                  <Typography variant="h4" fontWeight={800} color="white" gutterBottom>
-                    New Arrivals 🆕
-                  </Typography>
-                  <Typography color="rgba(255,255,255,0.85)" sx={{ mb: 2 }}>
-                    Be the first to get the latest products
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    component={Link}
-                    to="/products?filter=new"
-                    sx={{ bgcolor: 'white', color: 'primary.main', '&:hover': { bgcolor: 'grey.100' } }}
-                    id="new-arrivals-btn"
-                  >
-                    Explore New
-                  </Button>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
 
       {/* ===== Best Sellers ===== */}
       <Box sx={{ py: 6, bgcolor: 'white' }}>
@@ -350,6 +309,26 @@ export default function Home() {
           </Box>
           <Grid container spacing={3}>
             {bestSellers.slice(0, 4).map(product => (
+              <Grid item xs={6} sm={4} md={3} key={product.id}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* ===== New Arrivals ===== */}
+      <Box sx={{ py: 6, bgcolor: 'white' }}>
+        <Container maxWidth="xl">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Box>
+              <Typography variant="overline" color="primary.main" fontWeight={700}>Just In</Typography>
+              <Typography variant="h4" fontWeight={800}>New Arrivals </Typography>
+            </Box>
+            <Button component={Link} to="/products?filter=new" endIcon={<ArrowForward />} id="view-new-arrivals-btn">View All</Button>
+          </Box>
+          <Grid container spacing={3}>
+            {newArrivals.map(product => (
               <Grid item xs={6} sm={4} md={3} key={product.id}>
                 <ProductCard product={product} />
               </Grid>
@@ -387,26 +366,6 @@ export default function Home() {
                     </Box>
                   </Paper>
                 </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* ===== New Arrivals ===== */}
-      <Box sx={{ py: 6, bgcolor: 'white' }}>
-        <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Box>
-              <Typography variant="overline" color="primary.main" fontWeight={700}>Just In</Typography>
-              <Typography variant="h4" fontWeight={800}>New Arrivals </Typography>
-            </Box>
-            <Button component={Link} to="/products?filter=new" endIcon={<ArrowForward />} id="view-new-arrivals-btn">View All</Button>
-          </Box>
-          <Grid container spacing={3}>
-            {newArrivals.map(product => (
-              <Grid item xs={6} sm={4} md={3} key={product.id}>
-                <ProductCard product={product} />
               </Grid>
             ))}
           </Grid>

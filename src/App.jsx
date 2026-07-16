@@ -14,8 +14,6 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
@@ -46,8 +44,8 @@ const router = createBrowserRouter([
       { path: "wishlist", element: <Wishlist /> },
     ],
   },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
+  { path: "/login", element: <Navigate to="/" replace state={{ openAuth: 'login' }} /> },
+  { path: "/register", element: <Navigate to="/" replace state={{ openAuth: 'register' }} /> },
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: "/verify-otp", element: <VerifyOtp /> },
   { path: "/reset-password", element: <ResetPassword /> },
@@ -67,18 +65,18 @@ const theme = createTheme({
       light: "#18317A",
       contrastText: "#FFFFFF",
     },
-    error:   { main: "#EF4444" },
+    error: { main: "#EF4444" },
     success: { main: "#10B981" },
     warning: { main: "#F59E0B" },
-    info:    { main: "#0EA5E9" },
+    info: { main: "#0EA5E9" },
     text: {
-      primary:   "#1E293B",
+      primary: "#1E293B",
       secondary: "#64748B",
-      disabled:  "#94A3B8",
+      disabled: "#94A3B8",
     },
     background: {
       default: "#F8FAFC",
-      paper:   "#FFFFFF",
+      paper: "#FFFFFF",
     },
     divider: "#E5E7EB",
   },
@@ -91,6 +89,15 @@ const theme = createTheme({
         root: {
           textTransform: "none",
           borderRadius: 8,
+        },
+      },
+    },
+    /* Ensure Container always centres itself with auto horizontal margins */
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          marginLeft: "auto",
+          marginRight: "auto",
         },
       },
     },

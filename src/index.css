@@ -8,6 +8,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Reserves space for the scrollbar at all times so content width
+     never shifts when the scrollbar appears/disappears (centering fix) */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -16,6 +19,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F8FAFC;
+  /* Prevent MUI Grid v1 negative margins from creating a phantom
+     horizontal scrollbar that skews perceived center of the page */
+  overflow-x: hidden;
 }
 
 /* Custom scrollbar */
@@ -37,18 +43,19 @@ body {
   background: #2563EB;
 }
 
-/* Smooth animations globally */
+/* Smooth animations globally — apply to cosmetic properties only */
 * {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
 
-/* Remove transition on layout/geometry properties to avoid jank */
+/* Opt geometry/layout properties OUT of transitions to avoid jank */
 *,
 *::before,
 *::after {
-  transition-property: none;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter;
 }
 
 .MuiCard-root,

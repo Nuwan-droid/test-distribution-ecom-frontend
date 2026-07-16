@@ -542,26 +542,23 @@ export const banners = [
   {
     id: 1,
     title: 'Mega Sale — Up to 50% Off',
-    subtitle: 'Shop the biggest deals of the season on Electronics, Fashion & More',
     cta: 'Shop Now',
     image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=500&fit=crop',
-    bgColor: 'linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)',
+   
   },
   {
     id: 2,
-    title: 'New Arrivals 2024',
-    subtitle: 'Discover the latest gadgets, fashion & lifestyle products',
+    title: 'New Arrivals 2026',
     cta: 'Explore New',
     image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=500&fit=crop',
-    bgColor: 'linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)',
+    
   },
   {
     id: 3,
     title: 'Free Delivery on 150$+',
-    subtitle: 'Order more, save more. Free shipping across Worldwide',
     cta: 'Start Shopping',
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=500&fit=crop',
-    bgColor: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+   
   },
 ];
 
