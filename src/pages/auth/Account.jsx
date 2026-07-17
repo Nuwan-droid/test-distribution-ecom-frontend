@@ -8,9 +8,9 @@ import {
 import {
   Person, ListAlt, LocationOn, Favorite, Logout, Edit, ArrowForward,
 } from '@mui/icons-material';
-import { useAuth } from '../context/AuthContext';
-import { useWishlist } from '../context/WishlistContext';
-import ProductCard from '../components/ProductCard';
+import { useAuth } from '../../context/AuthContext';
+import { useWishlist } from '../../context/WishlistContext';
+import ProductCard from '../../components/ProductCard';
 
 const statusColor = {
   Delivered: 'success',

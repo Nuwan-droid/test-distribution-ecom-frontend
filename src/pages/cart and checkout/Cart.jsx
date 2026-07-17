@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { Add, Remove, Delete, ShoppingBag, ArrowForward, LocalShipping } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../context/CartContext';
 
 export default function Cart() {
   const { items, removeFromCart, updateQuantity, totalItems, totalPrice, clearCart } = useCart();
@@ -24,7 +24,7 @@ export default function Cart() {
           <Typography color="text.secondary" sx={{ mb: 3 }}>
             Looks like you haven't added anything to your cart yet.
           </Typography>
-          <Button variant="contained" size="large" component={Link} to="/products" startIcon={<ShoppingBag />} id="start-shopping-btn">
+          <Button variant="contained" size="large" component={Link} to="/products" startIcon={<ShoppingBag />} id="start-shopping-btn" sx={{bgcolor:'secondary.main'}}>
             Start Shopping
           </Button>
         </Box>
@@ -138,7 +138,7 @@ export default function Cart() {
                     fullWidth
                     inputProps={{ id: 'coupon-input' }}
                   />
-                  <Button variant="outlined" size="small" sx={{ whiteSpace: 'nowrap' }} id="apply-coupon-btn">Apply</Button>
+                  <Button variant="outlined" size="small" sx={{ whiteSpace: 'nowrap',color:'secondary.main' }} id="apply-coupon-btn">Apply</Button>
                 </Box>
                 <Divider sx={{ mb: 2 }} />
 
@@ -159,32 +159,36 @@ export default function Cart() {
                   <Typography variant="h6" fontWeight={800} color="primary.main">{finalTotal.toLocaleString()}$</Typography>
                 </Box>
 
-                <Button
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  endIcon={<ArrowForward />}
-                  onClick={() => navigate('/checkout')}
-                  id="checkout-btn"
-                  sx={{ borderRadius: 2, mb: 1.5 }}
-                >
-                  Proceed to Checkout
-                </Button>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  component={Link}
-                  to="/products"
-                  id="continue-shopping-btn"
-                  sx={{ borderRadius: 2 }}
-                >
-                  Continue Shopping
-                </Button>
+                <Box sx={{ textAlign: 'center', mb: 1.5 }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    endIcon={<ArrowForward />}
+                    onClick={() => navigate('/checkout')}
+                    id="checkout-btn"
+                    sx={{ width: '70%', borderRadius: 2, bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
+                  >
+                    Proceed to Checkout
+                  </Button>
+                </Box>
+
+                <Box sx={{ textAlign: 'center' }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    component={Link}
+                    to="/products"
+                    id="continue-shopping-btn"
+                    sx={{ width: '70%', borderRadius: 2, bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
+                  >
+                    Continue Shopping
+                  </Button>
+                </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, p: 1.5, bgcolor: '#F0FDF4', borderRadius: 2 }}>
                   <LocalShipping sx={{ color: 'success.main', fontSize: 18 }} />
                   <Typography variant="caption" color="success.main" fontWeight={600}>
-                    {shipping === 0 ? '🎉 You get FREE delivery!' : `Add ${(999 - totalPrice).toLocaleString()}$ more for FREE delivery`}
+                    {shipping === 0 ? 'You get FREE delivery!' : `Add ${(999 - totalPrice).toLocaleString()}$ more for FREE delivery`}
                   </Typography>
                 </Box>
               </Box>

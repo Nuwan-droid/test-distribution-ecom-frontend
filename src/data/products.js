@@ -143,8 +143,8 @@ const products = [
     rating: 4.7,
     reviews: 1089,
     stock: 25,
-    image: 'https://images.unsplash.com/photo-1614971271040-8a5e0c3a064e?w=400&h=400&fit=crop',
-    images: ['https://images.unsplash.com/photo-1614971271040-8a5e0c3a064e?w=600&h=600&fit=crop'],
+    image: 'https://images.unsplash.com/photo-1774074645537-f72f70d40d12?w=400&h=400&fit=crop',
+    images: ['https://images.unsplash.com/photo-1774074645537-f72f70d40d12?w=600&h=600&fit=crop'],
     description: 'Cook healthier meals with 80% less fat. Large 5.5L capacity air fryer with 8 preset cooking functions.',
     features: ['5.5L capacity', '8 preset modes', 'Digital display', 'Dishwasher safe basket', '360° air circulation'],
     brand: 'CrispMate',
@@ -527,15 +527,15 @@ const products = [
 ];
 
 export const categories = [
-  { id: 1, name: 'Electronics', icon: '💻', color: '#3B82F6', count: 4 },
-  { id: 2, name: 'Home & Kitchen', icon: '🏠', color: '#10B981', count: 3 },
-  { id: 3, name: 'Fashion', icon: '👗', color: '#F59E0B', count: 3 },
-  { id: 4, name: 'Sports & Fitness', icon: '🏋️', color: '#EF4444', count: 3 },
-  { id: 5, name: 'Books & Stationery', icon: '📚', color: '#8B5CF6', count: 2 },
-  { id: 6, name: 'Beauty & Care', icon: '🧖‍♀️', color: '#EC4899', count: 3 },
-  { id: 7, name: 'Food & Beverages', icon: '🛒', color: '#F97316', count: 2 },
-  { id: 8, name: 'Toys & Kids', icon: '🎮', color: '#06B6D4', count: 2 },
-  { id: 9, name: 'Automotive', icon: '🚗', color: '#64748B', count: 2 },
+  { id: 1, name: 'Electronics' },
+  { id: 2, name: 'Home & Kitchen' },
+  { id: 3, name: 'Fashion' },
+  { id: 4, name: 'Sports & Fitness' },
+  { id: 5, name: 'Books & Stationery' },
+  { id: 6, name: 'Beauty & Care' },
+  { id: 7, name: 'Food & Beverages' },
+  { id: 8, name: 'Toys & Kids' },
+  { id: 9, name: 'Automotive' },
 ];
 
 export const banners = [

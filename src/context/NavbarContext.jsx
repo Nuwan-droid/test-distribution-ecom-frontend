@@ -80,9 +80,25 @@ export const NAV_COLORS = {
 };
 
 /* -------------------------------------------------------------
-   CONTEXT
+   SAFE DEFAULT — prevents throws if a consumer renders outside
+   the provider (returns no-op functions instead of crashing).
 ------------------------------------------------------------- */
-const NavbarContext = createContext(null);
+const SAFE_DEFAULT = {
+  drawerOpen: false,     setDrawerOpen: () => {},
+  searchQuery: '',       setSearchQuery: () => {},
+  selectedDept: 'All',  setSelectedDept: () => {},
+  deptMenuAnchor: null,  setDeptMenuAnchor: () => {},
+  allDeptsAnchor: null,  setAllDeptsAnchor: () => {},
+  accountAnchor: null,   setAccountAnchor: () => {},
+  scrolled: false,
+  authModalOpen: false,  setAuthModalOpen: () => {},
+  authModalTab: 'login', setAuthModalTab: () => {},
+  handleSearch: () => {},
+  handleSearchClick: () => {},
+  handleDeptNavigate: () => {},
+};
+
+const NavbarContext = createContext(SAFE_DEFAULT);
 
 export function NavbarProvider({ children }) {
   const navigate = useNavigate();
@@ -147,10 +163,14 @@ export function NavbarProvider({ children }) {
 }
 
 /* -------------------------------------------------------------
-   HOOK
+   HOOK — never throws; warns in dev if used outside provider
+   so the app stays alive instead of crashing.
 ------------------------------------------------------------- */
 export function useNavbar() {
   const ctx = useContext(NavbarContext);
-  if (!ctx) throw new Error('useNavbar must be used inside <NavbarProvider>');
+  if (ctx === SAFE_DEFAULT && process.env.NODE_ENV !== 'production') {
+    // Only warn (don't throw) — keeps the app alive
+    console.warn('[NavbarContext] useNavbar() called outside <NavbarProvider>. Using safe defaults.');
+  }
   return ctx;
 }

@@ -11,10 +11,10 @@ import {
   ArrowBack, CheckCircle,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductCard from '../components/ProductCard';
-import products from '../data/products';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
+import ProductCard from '../../components/ProductCard';
+import products from '../../data/products';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -195,7 +195,7 @@ export default function ProductDetail() {
                   size="large"
                   startIcon={<ShoppingCart />}
                   onClick={handleAddToCart}
-                  sx={{ flex: 1, minWidth: 160 }}
+                  sx={{ flex: 1, minWidth: 160, bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
                   id="add-to-cart-btn"
                 >
                   Add to Cart
@@ -226,7 +226,7 @@ export default function ProductDetail() {
               <Paper sx={{ p: 2, bgcolor: '#F0FDF4', borderRadius: 2, border: '1px solid #BBF7D0' }}>
                 <Grid container spacing={2}>
                   {[
-                    { icon: <LocalShipping sx={{ color: 'success.main' }} />, text: 'Free delivery on orders above ₹999' },
+                    { icon: <LocalShipping sx={{ color: 'success.main' }} />, text: 'Free delivery on orders above 199$' },
                     { icon: <Replay sx={{ color: 'success.main' }} />, text: '30-day easy returns' },
                     { icon: <VerifiedUser sx={{ color: 'success.main' }} />, text: '100% Authentic product' },
                   ].map((item, i) => (

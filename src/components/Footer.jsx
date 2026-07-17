@@ -39,11 +39,11 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ bgcolor: '#0F172A',color:'white', mt: 'auto' }}>
+    <Box component="footer" sx={{ bgcolor: '#0F172A', color: 'white', mt: 'auto' }}>
 
       {/* Main Footer */}
       <Container maxWidth="xl" sx={{ py: 6 }}>
-        <Grid container spacing={4} justifyContent="space-between">
+        <Grid container spacing={4} alignItems="flex-start">
           {/* Brand + Contact */}
           <Grid item xs={12} md={4}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -90,53 +90,73 @@ export default function Footer() {
             </Box>
           </Grid>
 
-          {/* Company */}
-          <Grid item xs={6} sm={4} md={2}>
-            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}>
-              Company
-            </Typography>
-            <List dense disablePadding>
-              {footerLinks.company.map(link => (
-                <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
-                  <Box
-                    component={Link}
-                    to={link.path}
-                    sx={{
-                      color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
-                      display: 'flex', alignItems: 'center', gap: 0.5,
-                      '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
-                    }}
-                  >
-                    <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
-                  </Box>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
+          {/* Company + Support grouped together, pushed to the right */}
+          <Grid
+            item
+            xs={12}
+            md="auto"
+            sx={{
+              ml: { md: 'auto' },
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              gap: { xs: 4, sm: 6, md: 8 },
+            }}
+          >
+            <Box sx={{ minWidth: 120 }}>
+              <Typography
+                variant="subtitle2"
+                fontWeight={700}
+                sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}
+              >
+                Company
+              </Typography>
+              <List dense disablePadding>
+                {footerLinks.company.map(link => (
+                  <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
+                    <Box
+                      component={Link}
+                      to={link.path}
+                      sx={{
+                        color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
+                        display: 'flex', alignItems: 'center', gap: 0.5,
+                        '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
+                      }}
+                    >
+                      <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
+                    </Box>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
 
-          <Grid item xs={6} sm={4} md={2}>
-            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}>
-              Support
-            </Typography>
-            <List dense disablePadding>
-              {footerLinks.support.map(link => (
-                <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
-                  <Box
-                    component={Link}
-                    to={link.path}
-                    sx={{
-                      color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
-                      display: 'flex', alignItems: 'center', gap: 0.5,
-                      '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
-                    }}
-                  >
-                    <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
-                  </Box>
-                </ListItem>
-              ))}
-            </List>
+            <Box sx={{ minWidth: 120 }}>
+              <Typography
+                variant="subtitle2"
+                fontWeight={700}
+                sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}
+              >
+                Support
+              </Typography>
+              <List dense disablePadding>
+                {footerLinks.support.map(link => (
+                  <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
+                    <Box
+                      component={Link}
+                      to={link.path}
+                      sx={{
+                        color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
+                        display: 'flex', alignItems: 'center', gap: 0.5,
+                        '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
+                      }}
+                    >
+                      <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
+                    </Box>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
           </Grid>
-
         </Grid>
       </Container>
 

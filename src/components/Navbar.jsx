@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar, Toolbar, Box, Typography, IconButton, Badge, InputBase,
   Drawer, List, ListItem, ListItemText, ListItemButton, Divider,
@@ -51,6 +51,8 @@ export default function Navbar() {
     handleDeptNavigate,
   } = useNavbar();
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     logout();
     setAccountAnchor(null);
@@ -74,7 +76,15 @@ export default function Navbar() {
       >
         {/* ── TOP ROW ── */}
         <Container maxWidth="xl">
-          <Toolbar sx={{ py: 1, gap: 1.5, minHeight: { xs: 60, md: 68 }, justifyContent: 'space-between' }}>
+          <Toolbar
+            sx={{
+              py: 1,
+              gap: 1.5,
+              minHeight: { xs: 60, md: 68 },
+              justifyContent: 'space-between',
+              position: 'relative', 
+            }}
+          >
 
             {/* Mobile hamburger */}
             {isMobile && (
@@ -88,11 +98,18 @@ export default function Navbar() {
               <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 38, md: 44 }, width: 'auto', objectFit: 'contain' }} />
             </Box>
 
-            {/* ── SEARCH BAR (centred) ── */}
+            {/* ── SEARCH BAR — absolutely centered on desktop regardless of side widths ── */}
             <Box
               sx={{
-                flex: '0 1 560px',
-                mx: 'auto',
+                /* Mobile: normal flex item, shares row with logo + actions */
+                /* Desktop: pulled out of flex flow, centered against the Toolbar itself */
+                position: { xs: 'static', md: 'absolute' },
+                left: { md: '50%' },
+                transform: { md: 'translateX(-50%)' },
+                width: { xs: 'auto', md: 560 },
+                maxWidth: { xs: 'none', md: '42%' },
+                flex: { xs: '1 1 auto', md: 'none' },
+                mx: { xs: 1, md: 0 },
                 display: 'flex',
                 alignItems: 'center',
                 bgcolor: C.bg,
@@ -239,55 +256,48 @@ export default function Navbar() {
                 </Button>
               )}
 
-              {/* Notifications */}
+              {/* Notifications — requires login; opens modal if not authenticated */}
               <Tooltip title="Notifications">
-                <IconButton id="notifications-btn" sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}>
+                <IconButton
+                  id="notifications-btn"
+                  onClick={() => {
+                    if (isLoggedIn) navigate('/account?tab=notifications');
+                    else { setAuthModalTab('login'); setAuthModalOpen(true); }
+                  }}
+                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
+                >
                   <NotificationsNone sx={{ fontSize: 22 }} />
                 </IconButton>
               </Tooltip>
 
-              {/* Wishlist */}
+              {/* Wishlist — always navigable; Wishlist page handles empty state */}
               <Tooltip title="Wishlist">
-                <IconButton id="wishlist-btn" component={Link} to="/wishlist" sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}>
+                <IconButton
+                  id="wishlist-btn"
+                  component={Link}
+                  to="/wishlist"
+                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
+                >
                   <Badge badgeContent={wishlist.length} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 15, height: 15 } }}>
                     <FavoriteBorder sx={{ fontSize: 22 }} />
                   </Badge>
                 </IconButton>
               </Tooltip>
 
-              {/* Cart */}
+              {/* Cart — always navigable; cart is accessible without login */}
               <Tooltip title="Cart">
-                <IconButton id="cart-btn" component={Link} to="/cart" sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}>
-                  <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 15, height: 15 } }}>
+                <IconButton
+                  id="cart-btn"
+                  component={Link}
+                  to="/cart"
+                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
+                >
+                  <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 15, height: 15, bgcolor: 'secondary.main' } }}>
                     <ShoppingCartOutlined sx={{ fontSize: 22 }} />
                   </Badge>
                 </IconButton>
               </Tooltip>
 
-              {/* Get App */}
-              <Button
-                id="get-app-btn"
-                href="#"
-                startIcon={<PhoneIphone sx={{ fontSize: 17 }} />}
-                variant="contained"
-                sx={{
-                  display: { xs: 'none', md: 'flex' },
-                  ml: 0.5,
-                  bgcolor:'secondary.main',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: '0.82rem',
-                  textTransform: 'none',
-                  borderRadius: '20px',
-                  px: 2,
-                  py: 0.7,
-                  whiteSpace: 'nowrap',
-                  boxShadow: 'none',
-                  '&:hover': { bgcolor: '#1447C0', boxShadow: 'none' },
-                }}
-              >
-                Get app
-              </Button>
             </Box>
           </Toolbar>
         </Container>
@@ -295,12 +305,11 @@ export default function Navbar() {
         {/* ── CATEGORY STRIP (Desktop) ── */}
         {!isMobile && (
           <Box sx={{ bgcolor: C.white, borderTop: `1px solid ${C.border}`, overflow: 'hidden' }}>
-            <Container maxWidth="xl" disableGutters>
+            <Container maxWidth="xl">
               <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  px: { xs: 2, md: 3 },
                   py: 0.6,
                   overflowX: 'auto',
                   flexWrap: 'nowrap',

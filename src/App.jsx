@@ -12,17 +12,17 @@ import {
 
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
-import ForgotPassword from "./pages/ForgotPassword";
-import VerifyOtp from "./pages/VerifyOtp";
-import ResetPassword from "./pages/ResetPassword";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import OrderSuccess from "./pages/OrderSuccess";
-import Account from "./pages/Account";
-import OrderTracking from "./pages/OrderTracking";
-import Wishlist from "./pages/Wishlist";
+import Products from "./pages/product/Products";
+import ProductDetail from "./pages/product/ProductDetail";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import VerifyOtp from "./pages/auth/VerifyOtp";
+import ResetPassword from "./pages/auth/ResetPassword";
+import Cart from "./pages/cart and checkout/Cart";
+import Checkout from "./pages/cart and checkout/Checkout";
+import OrderSuccess from "./pages/orders/OrderSuccess";
+import Account from "./pages/auth/Account";
+import OrderTracking from "./pages/orders/OrderTracking";
+import Wishlist from "./pages/product/Wishlist";
 
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -33,23 +33,26 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "products", element: <Products /> },
-      { path: "products/:id", element: <ProductDetail /> },
-      { path: "cart", element: <Cart /> },
-      { path: "checkout", element: <Checkout /> },
-      { path: "order-success", element: <OrderSuccess /> },
-      { path: "account", element: <Account /> },
-      { path: "track", element: <OrderTracking /> },
-      { path: "wishlist", element: <Wishlist /> },
+      { index: true,                  element: <Home /> },
+      { path: "products",             element: <Products /> },
+      { path: "products/:id",         element: <ProductDetail /> },
+      { path: "cart",                 element: <Cart /> },
+      { path: "checkout",             element: <Checkout /> },
+      { path: "order-success",        element: <OrderSuccess /> },
+      { path: "account",              element: <Account /> },
+      { path: "track",                element: <OrderTracking /> },
+      { path: "wishlist",             element: <Wishlist /> },
+      /* Auth flow pages — inside MainLayout so they share Navbar,
+         Footer, NavbarProvider, and AuthModal */
+      { path: "forgot-password",      element: <ForgotPassword /> },
+      { path: "verify-otp",           element: <VerifyOtp /> },
+      { path: "reset-password",       element: <ResetPassword /> },
     ],
   },
-  { path: "/login", element: <Navigate to="/" replace state={{ openAuth: 'login' }} /> },
+  /* These immediately redirect back to "/" with state that auto-opens the modal */
+  { path: "/login",    element: <Navigate to="/" replace state={{ openAuth: 'login' }}    /> },
   { path: "/register", element: <Navigate to="/" replace state={{ openAuth: 'register' }} /> },
-  { path: "/forgot-password", element: <ForgotPassword /> },
-  { path: "/verify-otp", element: <VerifyOtp /> },
-  { path: "/reset-password", element: <ResetPassword /> },
-  { path: "*", element: <Navigate to="/" replace /> },
+  { path: "*",         element: <Navigate to="/" replace /> },
 ]);
 
 const theme = createTheme({

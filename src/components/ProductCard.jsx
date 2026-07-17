@@ -53,7 +53,7 @@ export default function ProductCard({ product, compact = false }) {
             <Chip label="NEW" size="small" color="success" sx={{ fontWeight: 700, height: 22 }} />
           )}
           {product.isBestSeller && (
-            <Chip label="🔥 Best Seller" size="small" sx={{ bgcolor: '#F59E0B', color: '#fff', fontWeight: 700, height: 22 }} />
+            <Chip label=" Best Seller" size="small" sx={{ bgcolor: '#F59E0B', color: '#fff', fontWeight: 700, height: 22 }} />
           )}
         </Box>
 
@@ -79,14 +79,24 @@ export default function ProductCard({ product, compact = false }) {
           </IconButton>
         </Tooltip>
 
-        {/* Image */}
-        <Box sx={{ overflow: 'hidden', bgcolor: '#F8FAFC', borderRadius: '16px 16px 0 0' }}>
+        {/* Image — fixed height + fixed width container, so image source size never affects layout */}
+        <Box
+          sx={{
+            width: '100%',
+            height: compact ? 160 : 220,
+            flexShrink: 0,
+            overflow: 'hidden',
+            bgcolor: '#F8FAFC',
+            borderRadius: '16px 16px 0 0',
+          }}
+        >
           <CardMedia
             component="img"
             image={product.image}
             alt={product.name}
             sx={{
-              height: compact ? 160 : 220,
+              width: '100%',
+              height: '100%',
               objectFit: 'cover',
               transition: 'transform 0.4s ease',
               '&:hover': { transform: 'scale(1.06)' },
@@ -94,11 +104,13 @@ export default function ProductCard({ product, compact = false }) {
           />
         </Box>
 
-        {/* Content */}
-        <CardContent sx={{ flex: 1, pb: 0.5 }}>
+        {/* Content — flex column so the bottom block always aligns across cards */}
+        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', pb: 0.5 }}>
           <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
             {product.brand}
           </Typography>
+
+          {/* Fixed-height name block — reserves 2 lines worth of space even for short names */}
           <Typography
             variant={compact ? 'body2' : 'body1'}
             fontWeight={600}
@@ -109,6 +121,7 @@ export default function ProductCard({ product, compact = false }) {
               WebkitBoxOrient: 'vertical',
               WebkitLineClamp: 2,
               lineHeight: 1.4,
+              minHeight: compact ? '2.5em' : '2.8em',
               color: 'text.primary',
             }}
           >
@@ -120,25 +133,32 @@ export default function ProductCard({ product, compact = false }) {
             <Typography variant="caption" color="text.secondary">({product.reviews.toLocaleString()})</Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mt: 1 }}>
-            <Typography variant={compact ? 'body1' : 'h6'} fontWeight={800} color="text.primary">
-              {product.price.toLocaleString()}$
-            </Typography>
-            {product.originalPrice > product.price && (
-              <Typography
-                variant="body2"
-                sx={{ textDecoration: 'line-through', color: 'text.secondary', fontSize: '0.8rem' }}
-              >
-                {product.originalPrice.toLocaleString()}$
+          {/* Bottom block pinned via mt: 'auto' — price/stock always lands in the same place */}
+          <Box sx={{ mt: 'auto', pt: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, minHeight: '1.6em' }}>
+              <Typography variant={compact ? 'body1' : 'h6'} fontWeight={800} color="text.primary">
+                {product.price.toLocaleString()}$
               </Typography>
-            )}
-          </Box>
+              {product.originalPrice > product.price && (
+                <Typography
+                  variant="body2"
+                  sx={{ textDecoration: 'line-through', color: 'text.secondary', fontSize: '0.8rem' }}
+                >
+                  {product.originalPrice.toLocaleString()}$
+                </Typography>
+              )}
+            </Box>
 
-          {product.stock <= 5 && product.stock > 0 && (
-            <Typography variant="caption" color="error.main" fontWeight={600} sx={{ mt: 0.5, display: 'block' }}>
-              Only {product.stock} left!
+            {/* Reserved-height stock line so its presence/absence doesn't shift card height */}
+            <Typography
+              variant="caption"
+              color="error.main"
+              fontWeight={600}
+              sx={{ mt: 0.5, display: 'block', minHeight: '1.2em', visibility: (product.stock <= 5 && product.stock > 0) ? 'visible' : 'hidden' }}
+            >
+              {(product.stock <= 5 && product.stock > 0) ? `Only ${product.stock} left!` : 'placeholder'}
             </Typography>
-          )}
+          </Box>
         </CardContent>
 
         {/* Actions */}
@@ -160,7 +180,7 @@ export default function ProductCard({ product, compact = false }) {
             onClick={handleAddToCart}
             id={`add-to-cart-${product.id}`}
             size="small"
-            sx={{ borderRadius: 2 }}
+            sx={{ borderRadius: 8, bgcolor: 'secondary.main' }}
           >
             Add to Cart
           </Button>

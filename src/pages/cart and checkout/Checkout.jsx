@@ -6,7 +6,7 @@ import {
   Breadcrumbs, Alert,
 } from '@mui/material';
 import { ArrowBack, ArrowForward, CreditCard, LocalShipping, Lock } from '@mui/icons-material';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../context/CartContext';
 
 const steps = ['Shipping Address', 'Payment Method', 'Review Order'];
 
@@ -50,7 +50,7 @@ export default function Checkout() {
         <Typography variant="h4" fontWeight={800} sx={{ mb: 3 }}>Checkout</Typography>
 
         {/* Stepper */}
-        <Stepper activeStep={activeStep} sx={{ mb: 4, bgcolor: 'transparent' }}>
+        <Stepper activeStep={activeStep} sx={{ mb: 4, bgcolor: 'trasperent' }}>
           {steps.map(label => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -100,17 +100,17 @@ export default function Checkout() {
                         sx={{
                           p: 2, mb: 1.5, borderRadius: 2,
                           border: '2px solid', cursor: 'pointer',
-                          borderColor: payment === method.value ? 'primary.main' : 'divider',
+                          borderColor: payment === method.value ? 'secondary.main' : 'divider',
                           bgcolor: payment === method.value ? '#FFF5F0' : 'background.paper',
                           transition: 'all 0.2s',
                         }}
                       >
                         <FormControlLabel
                           value={method.value}
-                          control={<Radio color="primary" />}
+                          control={<Radio color="secondary" />}
                           label={
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                              <Box sx={{ color: 'primary.main' }}>{method.icon}</Box>
+                              <Box sx={{ color: 'secondary.main' }}>{method.icon}</Box>
                               <Box>
                                 <Typography variant="body1" fontWeight={600}>{method.label}</Typography>
                                 <Typography variant="caption" color="text.secondary">{method.desc}</Typography>
@@ -190,6 +190,7 @@ export default function Checkout() {
                   startIcon={<ArrowBack />}
                   onClick={() => activeStep === 0 ? navigate('/cart') : setActiveStep(s => s - 1)}
                   id="checkout-back-btn"
+                  sx={{bgcolor:'secondary.main',color:'secondary.contrastText'}}
                 >
                   {activeStep === 0 ? 'Back to Cart' : 'Back'}
                 </Button>
@@ -200,7 +201,7 @@ export default function Checkout() {
                   onClick={handleNext}
                   disabled={activeStep === 0 && !isAddressValid}
                   id="checkout-next-btn"
-                  sx={{ minWidth: 160 }}
+                  sx={{ minWidth: 160, bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' }, '&.Mui-disabled': { bgcolor: 'action.disabledBackground' } }}
                 >
                   {activeStep === steps.length - 1 ? ' Place Order' : 'Continue'}
                 </Button>
@@ -244,7 +245,7 @@ export default function Checkout() {
                 <Divider sx={{ my: 2 }} />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="h6" fontWeight={700}>Total</Typography>
-                  <Typography variant="h6" fontWeight={800} color="primary.main">{finalTotal.toLocaleString()}$</Typography>
+                  <Typography variant="h6" fontWeight={800} color="secondary.main">{finalTotal.toLocaleString()}$</Typography>
                 </Box>
               </Box>
             </Paper>

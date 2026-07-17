@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Button } from '@mui/material';
 import { ShoppingBag } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import ProductCard from '../components/ProductCard';
-import { useWishlist } from '../context/WishlistContext';
+import ProductCard from '../../components/ProductCard';
+import { useWishlist } from '../../context/WishlistContext';
 
 export default function Wishlist() {
   const { wishlist } = useWishlist();
@@ -27,6 +27,7 @@ export default function Wishlist() {
                 to="/products"
                 startIcon={<ShoppingBag />}
                 id="browse-products-btn"
+                sx={{bgcolor:'secondary.main',borderRadius:'5px'}}
               >
                 Browse Products
               </Button>
