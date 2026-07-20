@@ -51,9 +51,9 @@ export default function ProductDetail() {
   };
 
   const mockReviews = [
-    { name: 'Rahul K.', rating: 5, date: 'Jan 15, 2024', text: 'Excellent product! Exactly as described, fast delivery and great packaging.', avatar: 'https://i.pravatar.cc/40?img=11' },
-    { name: 'Sneha M.', rating: 4, date: 'Jan 10, 2024', text: 'Good quality for the price. Happy with the purchase overall.', avatar: 'https://i.pravatar.cc/40?img=12' },
-    { name: 'Arjun P.', rating: 5, date: 'Dec 28, 2023', text: 'Superb! Premium build quality and works perfectly. Highly recommend.', avatar: 'https://i.pravatar.cc/40?img=13' },
+    { name: 'Rahul K.', rating: 5, date: 'Jan 15, 2026', text: 'Excellent product! Exactly as described, fast delivery and great packaging.', avatar: 'https://i.pravatar.cc/40?img=11' },
+    { name: 'Sneha M.', rating: 4, date: 'Jan 10, 2026', text: 'Good quality for the price. Happy with the purchase overall.', avatar: 'https://i.pravatar.cc/40?img=12' },
+    { name: 'Arjun P.', rating: 5, date: 'Feb 05, 2026', text: 'Superb! Premium build quality and works perfectly. Highly recommend.', avatar: 'https://i.pravatar.cc/40?img=13' },
   ];
 
   return (
@@ -83,7 +83,14 @@ export default function ProductDetail() {
                     component="img"
                     src={images[selectedImage]}
                     alt={product.name}
-                    sx={{ width: '100%', height: { xs: 280, md: 400 }, objectFit: 'cover', borderRadius: 2 }}
+                    sx={{
+                      width: '100%',
+                      height: { xs: 280, md: 400 },
+                      objectFit: 'contain',
+                      bgcolor: '#ffffff',
+                      borderRadius: 2,
+                      border: '1px solid #ebebeb',
+                    }}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -97,9 +104,13 @@ export default function ProductDetail() {
                       alt={`${i + 1}`}
                       onClick={() => setSelectedImage(i)}
                       sx={{
-                        width: 64, height: 64, objectFit: 'cover', borderRadius: 1.5,
-                        border: '2px solid', cursor: 'pointer',
-                        borderColor: i === selectedImage ? 'primary.main' : 'transparent',
+                        width: 64, height: 64,
+                        objectFit: 'contain',
+                        bgcolor: '#ffffff',
+                        borderRadius: 1.5,
+                        border: '2px solid',
+                        cursor: 'pointer',
+                        borderColor: i === selectedImage ? 'primary.main' : '#ebebeb',
                         transition: 'all 0.2s',
                         opacity: i === selectedImage ? 1 : 0.6,
                         '&:hover': { opacity: 1 },

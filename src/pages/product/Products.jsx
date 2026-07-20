@@ -485,16 +485,9 @@ export default function Products() {
             ) : (
               <>
                 <Grid container spacing={2}>
-                  {paginatedProducts.map((product, i) => (
-                    <Grid item xs={6} sm={4} md={3} key={product.id} sx={{ display: 'flex' }}>
-                      <motion.div
-                        style={{ width: '100%', height: '100%' }}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.03, duration: 0.28 }}
-                      >
-                        <ProductCard product={product} />
-                      </motion.div>
+                  {paginatedProducts.map((product) => (
+                    <Grid item xs={6} sm={4} md={3} key={product.id}>
+                      <ProductCard product={product} />
                     </Grid>
                   ))}
                 </Grid>

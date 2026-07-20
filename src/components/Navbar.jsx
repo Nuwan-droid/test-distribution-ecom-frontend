@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar, Toolbar, Box, Typography, IconButton, Badge, InputBase,
   Drawer, List, ListItem, ListItemText, ListItemButton, Divider,
   Avatar, Menu, MenuItem, Tooltip, Button, useMediaQuery, useTheme,
-  Container,
+  Container, Popover,
 } from '@mui/material';
 import {
   Search, FavoriteBorder, Person, Menu as MenuIcon, Close,
   KeyboardArrowDown, NotificationsNone, ShoppingCartOutlined,
   AccountCircle, ListAlt, LocationOn, Logout, PhoneIphone,
+  ChevronRight,
 } from '@mui/icons-material';
 
 import { useCart }     from '../context/CartContext';
@@ -19,6 +21,7 @@ import {
   ALL_DEPARTMENTS,
   DEPT_SELECT_OPTIONS,
   CATEGORY_STRIP,
+  NAVIGATION_CATEGORIES,
   NAV_COLORS as C,
 } from '../context/NavbarContext';
 import logoImg from '../assets/logo.png';
@@ -52,6 +55,7 @@ export default function Navbar() {
   } = useNavbar();
 
   const navigate = useNavigate();
+  const [activeCat, setActiveCat] = useState('Electronics');
 
   const handleLogout = () => {
     logout();
@@ -341,35 +345,90 @@ export default function Navbar() {
               </Button>
 
               {/* All Categories dropdown */}
-              <Menu
+              <Popover
                 anchorEl={allDeptsAnchor}
                 open={Boolean(allDeptsAnchor)}
                 onClose={() => setAllDeptsAnchor(null)}
                 PaperProps={{
                   sx: {
-                    mt: 0.5, width: 270, maxHeight: 480,
-                    borderRadius: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: `1px solid ${C.border}`,
-                    overflowY: 'auto',
+                    mt: 0.5,
+                    width: 480,
+                    height: 350,
+                    borderRadius: 2,
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    border: `1px solid ${C.border}`,
+                    overflow: 'hidden',
                   },
                 }}
                 transformOrigin={{ horizontal: 'left', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
               >
-                {ALL_DEPARTMENTS.map((dept, idx) => (
-                  <MenuItem
-                    key={dept}
-                    onClick={() => handleDeptNavigate(dept, idx)}
-                    sx={{
-                      fontSize: '0.875rem', py: 1,
-                      fontWeight: idx === 0 ? 600 : 400,
-                      borderBottom: idx === 0 ? `1px solid ${C.border}` : 'none',
-                      '&:hover': { bgcolor: C.accentHover, color: C.accent },
-                    }}
-                  >
-                    {dept}
-                  </MenuItem>
-                ))}
-              </Menu>
+                <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
+                  {/* Left Column: Categories List */}
+                  <Box sx={{ width: '200px', borderRight: `1px solid ${C.border}`, overflowY: 'auto', bgcolor: '#f8fafc', py: 1, flexShrink: 0 }}>
+                    {Object.keys(NAVIGATION_CATEGORIES).map((cat) => (
+                      <Box
+                        key={cat}
+                        onMouseEnter={() => setActiveCat(cat)}
+                        component={Link}
+                        to={`/products?category=${encodeURIComponent(cat)}`}
+                        onClick={() => setAllDeptsAnchor(null)}
+                        sx={{
+                          px: 2,
+                          py: 1.25,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          textDecoration: 'none',
+                          color: activeCat === cat ? C.accent : C.textPrimary,
+                          bgcolor: activeCat === cat ? C.accentHover : 'transparent',
+                          fontWeight: activeCat === cat ? 700 : 500,
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s',
+                          '&:hover': {
+                            bgcolor: C.accentHover,
+                            color: C.accent,
+                          }
+                        }}
+                      >
+                        <span>{cat}</span>
+                        <ChevronRight sx={{ fontSize: 16, opacity: 0.7 }} />
+                      </Box>
+                    ))}
+                  </Box>
+
+                  {/* Right Column: Subcategories List */}
+                  <Box sx={{ flex: 1, overflowY: 'auto', py: 1.5, px: 2, bgcolor: '#ffffff' }}>
+                    {NAVIGATION_CATEGORIES[activeCat]?.map((sub) => (
+                      <Box
+                        key={sub}
+                        component={Link}
+                        to={`/products?category=${encodeURIComponent(activeCat)}&subcategory=${encodeURIComponent(sub)}`}
+                        onClick={() => setAllDeptsAnchor(null)}
+                        sx={{
+                          px: 2,
+                          py: 1,
+                          borderRadius: 1.5,
+                          display: 'block',
+                          textDecoration: 'none',
+                          color: C.textSecond,
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          transition: 'background-color 0.15s, color 0.15s',
+                          '&:hover': {
+                            bgcolor: '#f1f5f9',
+                            color: C.textPrimary,
+                            fontWeight: 600
+                          }
+                        }}
+                      >
+                        {sub}
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              </Popover>
 
               {/* Divider */}
               <Box sx={{ width: '1px', height: 18, bgcolor: C.border, mr: 1.5, flexShrink: 0 }} />

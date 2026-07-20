@@ -1,205 +1,274 @@
 import { Link } from 'react-router-dom';
-import {
-  Card, CardMedia, CardContent, CardActions, Box, Typography,
-  IconButton, Button, Chip, Rating, Tooltip, Skeleton,
-} from '@mui/material';
-import { FavoriteBorder, Favorite, ShoppingCart, FlashOn } from '@mui/icons-material';
-import { motion } from 'framer-motion';
+import { Box, Typography, Button, Tooltip, Skeleton } from '@mui/material';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 
-export default function ProductCard({ product, compact = false }) {
+export default function ProductCard({ product, hideOriginalPrice = false }) {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     addToCart(product);
   };
 
   const handleToggleWishlist = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     toggleWishlist(product);
   };
 
+  // Check if product is on sale
+  const isOnSale = product.discount > 0 || (product.originalPrice && product.originalPrice > product.price);
+
+  // Format price into dollar and cents for superscript display
+  const priceParts = (product.price || 0).toFixed(2).split('.');
+  const dollars = priceParts[0];
+  const cents = priceParts[1];
+
+  // Helper to generate a realistic unit price tag just like the reference image
+  const getUnitPriceTag = () => {
+    if (product.category === 'Beauty' || product.category === 'Beauty & Care') {
+      const perOz = (product.price / 8.5).toFixed(2);
+      return `$${perOz}/fl oz`;
+    }
+    const perOz = (product.price / 16).toFixed(2);
+    return `$${perOz}/oz`;
+  };
+
   return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      style={{ height: '100%' }}
+    <Box
+      component={Link}
+      to={`/products/${product.id}`}
+      id={`product-card-${product.id}`}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        textDecoration: 'none',
+        color: 'inherit',
+        bgcolor: '#ffffff',
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: '8px',
+        position: 'relative',
+        width: '100%',
+        height: '410px', // Fixed height to keep tiles perfectly aligned
+        p: 1.5,
+        boxSizing: 'border-box',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+        '&:hover': {
+          boxShadow: '0 6px 20px rgba(0,0,0,0.06)',
+          transform: 'translateY(-2px)',
+        }
+      }}
     >
-      <Card
-        component={Link}
-        to={`/products/${product.id}`}
-        sx={{
-          textDecoration: 'none',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          overflow: 'visible',
-          '&:hover .card-actions': { opacity: 1, transform: 'translateY(0)' },
-          cursor: 'pointer',
-        }}
-        id={`product-card-${product.id}`}
-      >
-        {/* Badges */}
-        <Box sx={{ position: 'absolute', top: 10, left: 10, zIndex: 2, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          {product.discount > 0 && (
-            <Chip label={`-${product.discount}%`} size="small" color="error" sx={{ fontWeight: 700, height: 22 }} />
-          )}
-          {product.isNew && (
-            <Chip label="NEW" size="small" color="success" sx={{ fontWeight: 700, height: 22 }} />
-          )}
-          {product.isBestSeller && (
-            <Chip label=" Best Seller" size="small" sx={{ bgcolor: '#F59E0B', color: '#fff', fontWeight: 700, height: 22 }} />
-          )}
-        </Box>
-
-        {/* Wishlist Button */}
-        <Tooltip title={inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'} placement="left">
-          <IconButton
-            aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-            onClick={handleToggleWishlist}
-            id={`wishlist-toggle-${product.id}`}
-            sx={{
-              position: 'absolute', top: 8, right: 8, zIndex: 2,
-              bgcolor: 'background.paper',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-              width: 34, height: 34,
-              '&:hover': { bgcolor: 'error.light', color: 'white' },
-              transition: 'all 0.2s',
-            }}
-          >
-            {inWishlist
-              ? <Favorite sx={{ fontSize: 18, color: 'error.main' }} />
-              : <FavoriteBorder sx={{ fontSize: 18 }} />
-            }
-          </IconButton>
-        </Tooltip>
-
-        {/* Image — fixed height + fixed width container, so image source size never affects layout */}
+      {/* ===== Wishlist Icon (Top Right) ===== */}
+      <Tooltip title={inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'} placement="left">
         <Box
+          onClick={handleToggleWishlist}
           sx={{
-            width: '100%',
-            height: compact ? 160 : 220,
-            flexShrink: 0,
-            overflow: 'hidden',
-            bgcolor: '#F8FAFC',
-            borderRadius: '16px 16px 0 0',
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            zIndex: 3,
+            cursor: 'pointer',
+            color: inWishlist ? 'secondary.main' : '#000000',
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            bgcolor: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            transition: 'all 0.2s',
+            '&:hover': {
+              bgcolor: '#f5f5f5',
+              transform: 'scale(1.08)'
+            }
           }}
         >
-          <CardMedia
-            component="img"
-            image={product.image}
-            alt={product.name}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transition: 'transform 0.4s ease',
-              '&:hover': { transform: 'scale(1.06)' },
-            }}
-          />
+          {inWishlist ? (
+            <Favorite sx={{ fontSize: 18, color: 'secondary.main' }} />
+          ) : (
+            <FavoriteBorder sx={{ fontSize: 18, color: '#000000' }} />
+          )}
         </Box>
+      </Tooltip>
 
-        {/* Content — flex column so the bottom block always aligns across cards */}
-        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', pb: 0.5 }}>
-          <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-            {product.brand}
-          </Typography>
+      {/* ===== Image Section ===== */}
+      <Box
+        sx={{
+          width: '100%',
+          height: '220px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: '#ffffff',
+          borderRadius: '4px',
+          overflow: 'hidden',
+          mb: 1.5,
+          position: 'relative'
+        }}
+      >
+        <Box
+          component="img"
+          src={product.image}
+          alt={product.name}
+          sx={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            mixBlendMode: 'multiply' // support blending transparent pngs nicely
+          }}
+        />
+      </Box>
 
-          {/* Fixed-height name block — reserves 2 lines worth of space even for short names */}
-          <Typography
-            variant={compact ? 'body2' : 'body1'}
-            fontWeight={600}
-            sx={{
-              mt: 0.3,
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 2,
-              lineHeight: 1.4,
-              minHeight: compact ? '2.5em' : '2.8em',
-              color: 'text.primary',
-            }}
-          >
-            {product.name}
-          </Typography>
+      {/* ===== Button Section (Directly under image) ===== */}
+      <Box sx={{ mb: 1 }}>
+        <Button
+          onClick={handleAddToCart}
+          variant="outlined"
+          sx={{
+            textTransform: 'none',
+            borderRadius: '20px',
+            borderColor: '#222222',
+            color: '#222222',
+            fontWeight: 700,
+            fontSize: '0.85rem',
+            py: '3px',
+            px: '14px',
+            height: '30px',
+            width: 'fit-content',
+            '&:hover': {
+              borderColor: '#000000',
+              bgcolor: '#f5f5f5',
+            }
+          }}
+        >
+          + Add
+        </Button>
+      </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-            <Rating value={product.rating} precision={0.5} size="small" readOnly />
-            <Typography variant="caption" color="text.secondary">({product.reviews.toLocaleString()})</Typography>
-          </Box>
+      {/* ===== Content Section ===== */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+        
+        {/* Sponsored / Brand Label */}
+        <Typography
+          variant="caption"
+          sx={{
+            color: '#757575',
+            fontSize: '0.75rem',
+            mb: 0.25,
+            height: '16px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {product.brand ? product.brand : 'Sponsored'}
+        </Typography>
 
-          {/* Bottom block pinned via mt: 'auto' — price/stock always lands in the same place */}
-          <Box sx={{ mt: 'auto', pt: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, minHeight: '1.6em' }}>
-              <Typography variant={compact ? 'body1' : 'h6'} fontWeight={800} color="text.primary">
-                {product.price.toLocaleString()}$
+        {/* Pricing Layout */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', mb: 0.5, height: '40px', justifyContent: 'center' }}>
+          {isOnSale ? (
+            <Box sx={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', gap: 0.5 }}>
+              <Typography
+                component="span"
+                sx={{
+                  color: '#2e7d32',
+                  fontWeight: 800,
+                  fontSize: '1.25rem',
+                  lineHeight: 1
+                }}
+              >
+                ${dollars}
+                <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
+                  {cents}
+                </Box>
               </Typography>
-              {product.originalPrice > product.price && (
+              {!hideOriginalPrice && product.originalPrice && (
                 <Typography
-                  variant="body2"
-                  sx={{ textDecoration: 'line-through', color: 'text.secondary', fontSize: '0.8rem' }}
+                  component="span"
+                  sx={{
+                    color: '#757575',
+                    textDecoration: 'line-through',
+                    fontSize: '0.85rem',
+                    ml: 1
+                  }}
                 >
-                  {product.originalPrice.toLocaleString()}$
+                  ${product.originalPrice.toFixed(2)}
                 </Typography>
               )}
             </Box>
-
-            {/* Reserved-height stock line so its presence/absence doesn't shift card height */}
+          ) : (
             <Typography
-              variant="caption"
-              color="error.main"
-              fontWeight={600}
-              sx={{ mt: 0.5, display: 'block', minHeight: '1.2em', visibility: (product.stock <= 5 && product.stock > 0) ? 'visible' : 'hidden' }}
+              sx={{
+                color: '#000000',
+                fontWeight: 800,
+                fontSize: '1.25rem',
+                lineHeight: 1
+              }}
             >
-              {(product.stock <= 5 && product.stock > 0) ? `Only ${product.stock} left!` : 'placeholder'}
+              ${dollars}
+              <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
+                {cents}
+              </Box>
             </Typography>
-          </Box>
-        </CardContent>
+          )}
+        </Box>
 
-        {/* Actions */}
-        <CardActions
-          className="card-actions"
+
+        {/* Product Title (At the very bottom) */}
+        <Typography
           sx={{
-            p: 1.5,
-            pt: 0.5,
-            gap: 1,
-            opacity: { xs: 1, md: 0 },
-            transform: { xs: 'none', md: 'translateY(6px)' },
-            transition: 'all 0.2s ease',
+            fontSize: '0.875rem',
+            fontWeight: 400,
+            lineHeight: 1.35,
+            color: '#222222',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            wordBreak: 'break-word',
+            height: '38px',
+            mt: 0.5,
+            mb: 0.5
           }}
         >
-          <Button
-            variant="contained"
-            fullWidth
-            startIcon={<ShoppingCart />}
-            onClick={handleAddToCart}
-            id={`add-to-cart-${product.id}`}
-            size="small"
-            sx={{ borderRadius: 8, bgcolor: 'secondary.main' }}
-          >
-            Add to Cart
-          </Button>
-        </CardActions>
-      </Card>
-    </motion.div>
+          {product.name}
+        </Typography>
+
+      </Box>
+    </Box>
   );
 }
 
+// Matching Skeletons for Loading State
 export function ProductCardSkeleton() {
   return (
-    <Card sx={{ height: '100%' }}>
-      <Skeleton variant="rectangular" height={220} />
-      <CardContent>
-        <Skeleton variant="text" width="40%" />
-        <Skeleton variant="text" />
-        <Skeleton variant="text" width="60%" />
-        <Skeleton variant="text" width="30%" />
-      </CardContent>
-    </Card>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        p: 1.5,
+        width: '100%',
+        height: '410px',
+        boxSizing: 'border-box',
+        bgcolor: '#ffffff',
+        borderRadius: '8px',
+        border: '1px solid #ebebeb'
+      }}
+    >
+      <Skeleton variant="rectangular" width="100%" height="220px" sx={{ borderRadius: '4px', mb: 1.5 }} />
+      <Skeleton variant="rounded" width="80px" height="30px" sx={{ borderRadius: '20px', mb: 1.5 }} />
+      <Skeleton variant="text" width="40%" height="16px" sx={{ mb: 0.5 }} />
+      <Skeleton variant="text" width="60%" height="24px" sx={{ mb: 0.75 }} />
+      <Skeleton variant="text" width="100%" height="38px" sx={{ mt: 0.5, mb: 0.5 }} />
+    </Box>
   );
 }

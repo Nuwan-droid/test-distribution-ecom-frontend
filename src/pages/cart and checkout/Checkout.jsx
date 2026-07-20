@@ -40,7 +40,7 @@ export default function Checkout() {
 
   return (
     <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Breadcrumbs sx={{ mb: 2 }}>
           <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
           <Typography component={Link} to="/cart" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Cart</Typography>
@@ -50,7 +50,7 @@ export default function Checkout() {
         <Typography variant="h4" fontWeight={800} sx={{ mb: 3 }}>Checkout</Typography>
 
         {/* Stepper */}
-        <Stepper activeStep={activeStep} sx={{ mb: 4, bgcolor: 'trasperent' }}>
+        <Stepper activeStep={activeStep} sx={{ mb: 4, bgcolor: 'transparent' }}>
           {steps.map(label => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>

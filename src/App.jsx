@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       { path: "order-success",        element: <OrderSuccess /> },
       { path: "account",              element: <Account /> },
       { path: "track",                element: <OrderTracking /> },
+      {path: "birthday-gifts",        element: <Products /> },
       { path: "wishlist",             element: <Wishlist /> },
       /* Auth flow pages — inside MainLayout so they share Navbar,
          Footer, NavbarProvider, and AuthModal */
