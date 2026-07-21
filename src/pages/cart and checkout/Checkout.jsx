@@ -5,7 +5,7 @@ import {
   FormControlLabel, Radio, RadioGroup, Stepper, Step, StepLabel,
   Breadcrumbs, Alert,
 } from '@mui/material';
-import { ArrowBack, ArrowForward, CreditCard, LocalShipping, Lock } from '@mui/icons-material';
+import { ArrowBack, ArrowForward, CreditCard, LocalShipping, Lock, NavigateNext } from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 
 const steps = ['Shipping Address', 'Payment Method', 'Review Order'];
@@ -41,10 +41,10 @@ export default function Checkout() {
   return (
     <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="xl">
-        <Breadcrumbs sx={{ mb: 2 }}>
-          <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
-          <Typography component={Link} to="/cart" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Cart</Typography>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 600 }}>Checkout</Typography>
+        <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 2 }}>
+          <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'primary.main', fontSize: '0.875rem' }}>Home</Typography>
+          <Typography component={Link} to="/cart" sx={{ textDecoration: 'none', color: 'primary.main', fontSize: '0.875rem' }}>Cart</Typography>
+          <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Checkout</Typography>
         </Breadcrumbs>
 
         <Typography variant="h4" fontWeight={800} sx={{ mb: 3 }}>Checkout</Typography>

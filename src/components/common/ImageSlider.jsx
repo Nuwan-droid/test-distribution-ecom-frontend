@@ -1,0 +1,262 @@
+import { useState, useEffect } from 'react';
+import { Box, Container, Typography, Button, IconButton } from '@mui/material';
+import { ArrowForwardIos, ArrowBackIos, ArrowForward } from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+export default function HomeImageSlider({ customBanners }) {
+  const [currentBanner, setCurrentBanner] = useState(0);
+  const banners = customBanners || [];
+
+  const goNext = () => {
+    if (banners.length <= 1) return;
+    setCurrentBanner(p => (p + 1) % banners.length);
+  };
+
+  const goPrev = () => {
+    if (banners.length <= 1) return;
+    setCurrentBanner(p => (p - 1 + banners.length) % banners.length);
+  };
+
+  /* Autoplay — restarts cleanly on every manual change */
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    const timer = setInterval(goNext, 4500);
+    return () => clearInterval(timer);
+  }, [currentBanner, banners.length]);
+
+  if (!banners || banners.length === 0) return null;
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        overflow: 'hidden',
+        height: { xs: '45vh', sm: '50vh', md: '60vh', lg: '70vh', xl: '75vh' },
+        minHeight: { xs: 350, md: 400 }, // Ensure it never gets too small on tiny screens
+      }}
+    >
+      {/* ── Sliding Track ── */}
+      <Box
+        sx={{
+          display: 'flex',
+          height: '100%',
+
+          width: `${banners.length * 100}%`,
+
+          transform: `translateX(-${(currentBanner / banners.length) * 100}%)`,
+          transition: 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          willChange: 'transform',
+        }}
+      >
+        {banners.map((banner, i) => (
+          <Box
+            key={i}
+            sx={{
+
+              width: `${100 / banners.length}%`,
+              flexShrink: 0,
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Background image */}
+            <Box
+              component="img"
+              src={banner.image}
+              alt={banner.title}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+
+                transform: i === currentBanner ? 'scale(1.04)' : 'scale(1)',
+                transition: 'transform 4.5s ease-out',
+              }}
+            />
+
+            {/* Gradient scrim */}
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to right, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.30) 55%, rgba(0,0,0,0.05) 100%)',
+              }}
+            />
+
+            {/* Slide content — centered inside Container to match page layout */}
+            <Container
+              maxWidth="xl"
+              sx={{
+                position: 'relative',
+                zIndex: 2,
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                pt: { xs: 10, md: 14 }, // Offset text vertically so it doesn't collide with the glass navbar
+              }}
+            >
+              {i === currentBanner && (
+                <motion.div
+                  key={currentBanner}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: 0.25,
+                    duration: 0.5,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
+                >
+                  <Box sx={{ maxWidth: { xs: '100%', md: 560 }, pl: { xs: 5, sm: 7, md: 8 } }}>
+                    <Typography
+                      variant="h2"
+                      fontWeight={800}
+                      sx={{
+                        fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3.5rem', lg: '4rem', xl: '4.5rem' },
+                        color: 'white',
+                        lineHeight: 1.15,
+                        mb: 1.5,
+                        textShadow: '0 2px 12px rgba(0,0,0,0.45)',
+                      }}
+                    >
+                      {banner.title}
+                    </Typography>
+
+                    {banner.subtitle && (
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem', lg: '1.35rem' },
+                          color: 'rgba(255,255,255,0.85)',
+                          mb: 2.5,
+                          fontWeight: 400,
+                        }}
+                      >
+                        {banner.subtitle}
+                      </Typography>
+                    )}
+
+                    {banner.cta && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component={Link}
+                        to={banner.link || "/products"}
+                        id={`hero-cta-${i}`}
+                        sx={{
+                          borderRadius: 2,
+                          fontSize: { xs: '0.875rem', md: '1rem', lg: '1.125rem' },
+                          px: { xs: 2, md: 3, lg: 4 },
+                          py: { xs: 1, md: 1.25 }
+                        }}
+                      >
+                        {banner.cta}
+                      </Button>
+                    )}
+                  </Box>
+                </motion.div>
+              )}
+            </Container>
+          </Box>
+        ))}
+      </Box>
+
+      {/* ── Dot Indicators ── */}
+      {banners.length > 1 && (
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 14,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: 0.75,
+            zIndex: 10,
+            bgcolor: 'rgba(0,0,0,0.28)',
+            backdropFilter: 'blur(6px)',
+            borderRadius: 10,
+            px: 1.5,
+            py: 0.75,
+          }}
+        >
+          {banners.map((_, i) => (
+            <Box
+              key={i}
+              onClick={() => setCurrentBanner(i)}
+              sx={{
+                width: i === currentBanner ? 26 : 7,
+                height: 7,
+                borderRadius: 4,
+                bgcolor: i === currentBanner ? 'secondary.main' : 'secondary.contrastText',
+                cursor: 'pointer',
+                transition: 'width 0.4s cubic-bezier(0.25,0.46,0.45,0.94), background-color 0.3s ease',
+                '&:hover': {
+                  bgcolor: i === currentBanner ? 'secondary.contrastText' : 'secondary.contrastText',
+                },
+              }}
+            />
+          ))}
+        </Box>
+      )}
+
+      {/* ── Prev Arrow ── */}
+      {banners.length > 1 && (
+        <IconButton
+          onClick={goPrev}
+          sx={{
+            position: 'absolute',
+            left: { xs: 6, md: 16 },
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10,
+            width: { xs: 34, md: 42 },
+            height: { xs: 34, md: 42 },
+            bgcolor: 'rgba(255,255,255,0.14)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255,255,255,0.22)',
+            color: 'white',
+            '&:hover': {
+              bgcolor: 'rgba(255,255,255,0.28)',
+              transform: 'translateY(-50%) scale(1.1)',
+            },
+            transition: 'background-color 0.2s ease, transform 0.2s ease',
+          }}
+        >
+          <ArrowBackIos sx={{ fontSize: { xs: 14, md: 16 }, ml: '3px' }} />
+        </IconButton>
+      )}
+
+      {/* ── Next Arrow ── */}
+      {banners.length > 1 && (
+        <IconButton
+          onClick={goNext}
+          sx={{
+            position: 'absolute',
+            right: { xs: 6, md: 16 },
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10,
+            width: { xs: 34, md: 42 },
+            height: { xs: 34, md: 42 },
+            bgcolor: 'rgba(255,255,255,0.14)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255,255,255,0.22)',
+            color: 'white',
+            '&:hover': {
+              bgcolor: 'rgba(255,255,255,0.28)',
+              transform: 'translateY(-50%) scale(1.1)',
+            },
+            transition: 'background-color 0.2s ease, transform 0.2s ease',
+          }}
+        >
+          <ArrowForwardIos sx={{ fontSize: { xs: 14, md: 16 } }} />
+        </IconButton>
+      )}
+    </Box>
+  );
+}

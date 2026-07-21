@@ -100,7 +100,7 @@ export default function Footer() {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'flex-start',
-              gap: { xs: 4, sm: 6, md: 8 },
+              gap: { xs: 4, sm: 6, md: 8, lg: 12 },
             }}
           >
             <Box sx={{ minWidth: 120 }}>
@@ -177,7 +177,7 @@ export default function Footer() {
           <Typography variant="body2" sx={{ color: 'grey.500', textAlign: 'center' }}>
             © {new Date().getFullYear()} OneRoutes. All rights reserved.
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
             {footerLinks.policies.map(link => (
               <Box
                 key={link.label}

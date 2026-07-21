@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+@font-face {
+  font-family: 'ClearAmpersand';
+  src: local('Inter'), local('Arial'), local('Helvetica');
+  unicode-range: U+0026; /* Only apply to the ampersand character */
+}
+
 *,
 *::before,
 *::after {

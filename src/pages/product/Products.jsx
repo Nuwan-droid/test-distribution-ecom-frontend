@@ -10,9 +10,10 @@ import {
   ExpandMore, FilterList, Close, Tune,
   CheckBox, CheckBoxOutlineBlank,
   RadioButtonChecked, RadioButtonUnchecked,
+  NavigateNext,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import ProductCard, { ProductCardSkeleton } from '../../components/ProductCard';
+import ProductGrid from '../../components/Products/ProductGrid';
 import products, { categories } from '../../data/products';
 
 /* ─── Constants ──────────────────────────────────────────────────────────── */
@@ -363,14 +364,14 @@ export default function Products() {
 
         {/* Page Header */}
         <Box sx={{ mb: 2.5 }}>
-          <Breadcrumbs sx={{ mb: 0.5 }}>
+          <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 0.5 }}>
             <Typography
               component={Link} to="/"
-              sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.8rem' }}
+              sx={{ textDecoration: 'none', color: 'primary.main', fontSize: '0.8rem' }}
             >
               Home
             </Typography>
-            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600 }}>Products</Typography>
+            <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>Products</Typography>
           </Breadcrumbs>
           <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5, flexWrap: 'wrap' }}>
             <Typography variant="h5" fontWeight={800}>
@@ -459,13 +460,7 @@ export default function Products() {
 
             {/* Products Grid */}
             {loading ? (
-              <Grid container spacing={2}>
-                {[...Array(8)].map((_, i) => (
-                  <Grid item xs={6} sm={4} md={3} key={i} sx={{ display: 'flex' }}>
-                    <ProductCardSkeleton />
-                  </Grid>
-                ))}
-              </Grid>
+              <ProductGrid loading={true} skeletonCount={8} />
             ) : paginatedProducts.length === 0 ? (
               <Box sx={{ textAlign: 'center', py: 10 }}>
                 <Typography variant="h6" fontWeight={700} gutterBottom>No products found</Typography>
@@ -484,13 +479,7 @@ export default function Products() {
               </Box>
             ) : (
               <>
-                <Grid container spacing={2}>
-                  {paginatedProducts.map((product) => (
-                    <Grid item xs={6} sm={4} md={3} key={product.id}>
-                      <ProductCard product={product} />
-                    </Grid>
-                  ))}
-                </Grid>
+                <ProductGrid products={paginatedProducts} loading={false} />
 
                 {totalPages > 1 && (
                   <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>

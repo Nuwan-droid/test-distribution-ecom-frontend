@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../context/AuthContext';
-import { useNavbar } from '../context/NavbarContext';
+import { useAuth } from '../../context/AuthContext';
+import { useNavbar } from '../../context/NavbarContext';
 
 /* ─── Inline SVG icons ───────────────────────────────────────── */
 const EmailIcon = () => (

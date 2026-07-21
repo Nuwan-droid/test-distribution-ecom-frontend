@@ -3,15 +3,15 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Box, Container, Grid, Typography, Button, Chip, Rating, Divider,
   IconButton, Breadcrumbs, Paper, Tabs, Tab, Avatar, Alert, Snackbar,
-  TextField, Tooltip, Stack,
+  Stack,
 } from '@mui/material';
 import {
-  FavoriteBorder, Favorite, ShoppingCart, FlashOn, Share,
-  LocalShipping, VerifiedUser, Replay, Star, Add, Remove,
-  ArrowBack, CheckCircle,
+  FavoriteBorder, Favorite, ShoppingCart, Share,
+  LocalShipping, VerifiedUser, Replay, Add, Remove,
+  NavigateNext, CompareArrows, Straighten
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductCard from '../../components/ProductCard';
+import ProductGrid from '../../components/Products/ProductGrid';
 import products from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -24,6 +24,7 @@ export default function ProductDetail() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [tab, setTab] = useState(0);
   const [snackbar, setSnackbar] = useState({ open: false, msg: '' });
 
@@ -39,13 +40,22 @@ export default function ProductDetail() {
   const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
   const images = product.images?.length > 0 ? product.images : [product.image];
   const inWishlist = isInWishlist(product.id);
+  const sizes = product.sizes || ['UK 08', 'UK 10', 'UK 12', 'UK 14']; // Mock sizes if not present
 
   const handleAddToCart = () => {
+    if (!selectedSize && product.category === 'Fashion') {
+      setSnackbar({ open: true, msg: 'Please select a size first.', error: true });
+      return;
+    }
     for (let i = 0; i < quantity; i++) addToCart(product);
     setSnackbar({ open: true, msg: `${quantity}x ${product.name} added to cart!` });
   };
 
   const handleBuyNow = () => {
+    if (!selectedSize && product.category === 'Fashion') {
+       setSnackbar({ open: true, msg: 'Please select a size first.', error: true });
+       return;
+    }
     handleAddToCart();
     navigate('/cart');
   };
@@ -57,60 +67,30 @@ export default function ProductDetail() {
   ];
 
   return (
-    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh' }}>
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        {/* Breadcrumbs */}
-        <Breadcrumbs sx={{ mb: 2 }}>
-          <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
-          <Typography component={Link} to="/products" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Products</Typography>
-          <Typography component={Link} to={`/products?category=${encodeURIComponent(product.category)}`} sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>{product.category}</Typography>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 600 }}>{product.name}</Typography>
-        </Breadcrumbs>
+    <Box sx={{ bgcolor: '#FFFFFF', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
 
-        <Grid container spacing={4}>
-          {/* Image Gallery */}
-          <Grid item xs={12} md={5}>
-            <Paper sx={{ p: 2, borderRadius: 3, position: 'sticky', top: 90 }}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedImage}
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <Box
-                    component="img"
-                    src={images[selectedImage]}
-                    alt={product.name}
-                    sx={{
-                      width: '100%',
-                      height: { xs: 280, md: 400 },
-                      objectFit: 'contain',
-                      bgcolor: '#ffffff',
-                      borderRadius: 2,
-                      border: '1px solid #ebebeb',
-                    }}
-                  />
-                </motion.div>
-              </AnimatePresence>
+        <Grid container spacing={6}>
+          {/* Left Column: Image Gallery */}
+          <Grid item xs={12} md={6}>
+            <Box sx={{ display: 'flex', gap: 2, position: 'sticky', top: 90 }}>
+              {/* Vertical Thumbnails */}
               {images.length > 1 && (
-                <Box sx={{ display: 'flex', gap: 1, mt: 2, justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 80 }}>
                   {images.map((img, i) => (
                     <Box
                       key={i}
                       component="img"
                       src={img}
-                      alt={`${i + 1}`}
+                      alt={`Thumb ${i + 1}`}
                       onClick={() => setSelectedImage(i)}
                       sx={{
-                        width: 64, height: 64,
-                        objectFit: 'contain',
-                        bgcolor: '#ffffff',
-                        borderRadius: 1.5,
-                        border: '2px solid',
+                        width: '100%',
+                        height: 100,
+                        objectFit: 'cover',
+                        bgcolor: '#f5f5f5',
                         cursor: 'pointer',
-                        borderColor: i === selectedImage ? 'primary.main' : '#ebebeb',
+                        border: i === selectedImage ? '2px solid #333' : '2px solid transparent',
                         transition: 'all 0.2s',
                         opacity: i === selectedImage ? 1 : 0.6,
                         '&:hover': { opacity: 1 },
@@ -119,217 +99,236 @@ export default function ProductDetail() {
                   ))}
                 </Box>
               )}
-            </Paper>
+              {/* Main Image */}
+              <Box sx={{ flex: 1, position: 'relative' }}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedImage}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Box
+                      component="img"
+                      src={images[selectedImage]}
+                      alt={product.name}
+                      sx={{
+                        width: '100%',
+                        height: { xs: 400, md: 600 },
+                        objectFit: 'cover',
+                        bgcolor: '#f5f5f5',
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </Box>
+            </Box>
           </Grid>
 
-          {/* Product Info */}
-          <Grid item xs={12} md={7}>
+          {/* Right Column: Product Info */}
+          <Grid item xs={12} md={6}>
             <Box>
-              <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexWrap: 'wrap' }}>
-                <Chip label={product.category} size="small" variant="outlined" />
-                {product.isNew && <Chip label="New" size="small" color="success" />}
-                {product.isBestSeller && <Chip label="🔥 Best Seller" size="small" sx={{ bgcolor: '#F59E0B', color: '#fff' }} />}
-                {product.discount > 0 && <Chip label={`${product.discount}% OFF`} size="small" color="error" />}
-              </Box>
+               {/* Breadcrumbs */}
+              <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: '#666', fontSize: '0.8rem' }}>Home</Typography>
+                <Typography component={Link} to="/products" sx={{ textDecoration: 'none', color: '#666', fontSize: '0.8rem' }}>{product.category}</Typography>
+                <Typography sx={{ color: '#111', fontSize: '0.8rem', fontWeight: 600 }}>{product.name}</Typography>
+              </Breadcrumbs>
 
-              <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>
-                {product.brand}
-              </Typography>
-              <Typography variant="h4" fontWeight={800} sx={{ mt: 0.5, mb: 1.5, lineHeight: 1.3 }}>
+              <Typography variant="h4" fontWeight={400} sx={{ mt: 1, mb: 1.5, letterSpacing: 0 }}>
                 {product.name}
               </Typography>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                <Rating value={product.rating} precision={0.5} readOnly />
-                <Typography variant="body2" color="primary.main" fontWeight={700}>{product.rating}</Typography>
-                <Typography variant="body2" color="text.secondary">({product.reviews.toLocaleString()} reviews)</Typography>
-              </Box>
-
               <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5, mb: 2 }}>
-                <Typography variant="h4" fontWeight={900} color="text.primary">
-                  {product.price.toLocaleString()}$
+                <Typography variant="h5" fontWeight={600} color="text.primary">
+                  Rs {product.price.toLocaleString()}.00
                 </Typography>
                 {product.originalPrice > product.price && (
-                  <>
-                    <Typography variant="h6" sx={{ textDecoration: 'line-through', color: 'text.secondary', fontWeight: 400 }}>
-                      {product.originalPrice.toLocaleString()}$
-                    </Typography>
-                    <Chip label={`Save ${(product.originalPrice - product.price).toLocaleString()}$`} size="small" color="success" />
-                  </>
+                  <Typography variant="body1" sx={{ textDecoration: 'line-through', color: '#888' }}>
+                    Rs {product.originalPrice.toLocaleString()}.00
+                  </Typography>
                 )}
               </Box>
 
-              <Divider sx={{ my: 2 }} />
+              {/* Installment Options */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 4 }}>
+                <Typography variant="body2" color="text.secondary">
+                  3 X Rs. {(product.price / 3).toFixed(2)} with <Box component="span" sx={{ bgcolor: '#00D1FF', color: '#fff', px: 1, py: 0.2, borderRadius: 10, fontSize: '0.7rem', fontWeight: 700, ml: 0.5 }}>mintpay</Box>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  or 3 X Rs. {(product.price / 3).toFixed(2)} with <Box component="span" sx={{ bgcolor: '#FF3366', color: '#fff', px: 1, py: 0.2, borderRadius: 10, fontSize: '0.7rem', fontWeight: 700, ml: 0.5 }}>koko</Box>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  or up to 4 X Rs. {(product.price / 4).toFixed(2)} with <Box component="span" sx={{ bgcolor: '#00E5FF', color: '#000', px: 1, py: 0.2, borderRadius: 10, fontSize: '0.7rem', fontWeight: 700, ml: 0.5 }}>PayZy</Box>
+                </Typography>
+              </Box>
 
-              {/* Features */}
-              <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>Key Features</Typography>
-              <Stack spacing={0.7} sx={{ mb: 2.5 }}>
-                {product.features?.map((feature, i) => (
-                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CheckCircle sx={{ fontSize: 16, color: 'success.main' }} />
-                    <Typography variant="body2">{feature}</Typography>
-                  </Box>
-                ))}
-              </Stack>
-
-              <Divider sx={{ my: 2 }} />
-
-              {/* Quantity + Actions */}
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1.5 }}>Quantity</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Paper
-                    sx={{
-                      display: 'flex', alignItems: 'center', gap: 1,
-                      border: '1px solid', borderColor: 'divider', borderRadius: 2, px: 1, py: 0.5,
-                    }}
-                  >
-                    <IconButton size="small" onClick={() => setQuantity(Math.max(1, quantity - 1))} id="decrease-qty-btn">
-                      <Remove fontSize="small" />
-                    </IconButton>
-                    <Typography variant="body1" fontWeight={700} sx={{ minWidth: 32, textAlign: 'center' }}>
-                      {quantity}
-                    </Typography>
-                    <IconButton size="small" onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} id="increase-qty-btn">
-                      <Add fontSize="small" />
-                    </IconButton>
-                  </Paper>
-                  <Typography variant="caption" color={product.stock <= 5 ? 'error.main' : 'success.main'} fontWeight={600}>
-                    {product.stock <= 5 ? `Only ${product.stock} left!` : `${product.stock} in stock`}
+              {/* Size Selector */}
+              {product.category === 'Fashion' && (
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="body2" sx={{ mb: 1, fontWeight: 600 }}>
+                    Size: <Box component="span" sx={{ fontWeight: 400, ml: 1 }}>{selectedSize}</Box>
                   </Typography>
+                  <Box sx={{ display: 'flex', gap: 1.5 }}>
+                    {sizes.map(s => (
+                      <Button
+                        key={s}
+                        variant="outlined"
+                        onClick={() => setSelectedSize(s)}
+                        sx={{
+                          borderColor: selectedSize === s ? '#333' : '#e0e0e0',
+                          color: selectedSize === s ? '#333' : '#666',
+                          bgcolor: selectedSize === s ? '#f5f5f5' : 'transparent',
+                          minWidth: 60,
+                          py: 0.5,
+                          borderRadius: 0,
+                          '&:hover': { borderColor: '#333', bgcolor: '#f9f9f9' }
+                        }}
+                      >
+                        {s}
+                      </Button>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+
+              {/* Add to Cart & Quantity */}
+              <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    display: 'flex', alignItems: 'center',
+                    border: '1px solid', borderColor: '#e0e0e0', px: 1, py: 0.5,
+                    height: 48
+                  }}
+                >
+                  <IconButton size="small" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                    <Remove fontSize="small" />
+                  </IconButton>
+                  <Typography variant="body1" sx={{ minWidth: 40, textAlign: 'center' }}>
+                    {quantity}
+                  </Typography>
+                  <IconButton size="small" onClick={() => setQuantity(Math.min(product.stock || 10, quantity + 1))}>
+                    <Add fontSize="small" />
+                  </IconButton>
+                </Box>
+
+                <Button
+                  variant="contained"
+                  onClick={handleAddToCart}
+                  sx={{
+                    flex: 1,
+                    bgcolor: '#B89073', // Brownish color from design
+                    color: '#fff',
+                    height: 48,
+                    borderRadius: 0,
+                    fontWeight: 600,
+                    letterSpacing: 1,
+                    '&:hover': { bgcolor: '#9B785D' }
+                  }}
+                >
+                  ADD TO CART
+                </Button>
+              </Box>
+
+              {/* Action Links */}
+              <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+                <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer', '&:hover': { color: 'primary.main' } }}>
+                  <CompareArrows fontSize="small" /> Compare
+                </Typography>
+                <Typography
+                  variant="body2"
+                  onClick={() => toggleWishlist(product)}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer', color: inWishlist ? 'error.main' : 'inherit', '&:hover': { color: 'error.main' } }}
+                >
+                  {inWishlist ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />} Add to wishlist
+                </Typography>
+                <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer', '&:hover': { color: 'primary.main' } }}>
+                  <Straighten fontSize="small" /> Size Guide
+                </Typography>
+              </Box>
+
+              <Divider sx={{ mb: 3 }} />
+
+              {/* Product Meta */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Typography variant="body2" color="text.secondary">
+                  <Box component="span" sx={{ color: '#111', fontWeight: 600, mr: 1 }}>SKU:</Box> N/A
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <Box component="span" sx={{ color: '#111', fontWeight: 600, mr: 1 }}>Categories:</Box> {product.category}, {product.subcategory}
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#111', fontWeight: 600, mr: 1 }}>Share:</Typography>
+                  <Share fontSize="small" sx={{ color: '#666', cursor: 'pointer' }} />
                 </Box>
               </Box>
 
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  startIcon={<ShoppingCart />}
-                  onClick={handleAddToCart}
-                  sx={{ flex: 1, minWidth: 160, bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
-                  id="add-to-cart-btn"
-                >
-                  Add to Cart
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  startIcon={<FlashOn />}
-                  onClick={handleBuyNow}
-                  sx={{ flex: 1, minWidth: 160 }}
-                  id="buy-now-btn"
-                >
-                  Buy Now
-                </Button>
-                <Tooltip title={inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}>
-                  <IconButton
-                    onClick={() => toggleWishlist(product)}
-                    size="large"
-                    id="wishlist-btn"
-                    sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}
-                  >
-                    {inWishlist ? <Favorite color="error" /> : <FavoriteBorder />}
-                  </IconButton>
-                </Tooltip>
-              </Box>
-
-              {/* Delivery Info */}
-              <Paper sx={{ p: 2, bgcolor: '#F0FDF4', borderRadius: 2, border: '1px solid #BBF7D0' }}>
-                <Grid container spacing={2}>
-                  {[
-                    { icon: <LocalShipping sx={{ color: 'success.main' }} />, text: 'Free delivery on orders above 199$' },
-                    { icon: <Replay sx={{ color: 'success.main' }} />, text: '30-day easy returns' },
-                    { icon: <VerifiedUser sx={{ color: 'success.main' }} />, text: '100% Authentic product' },
-                  ].map((item, i) => (
-                    <Grid item xs={12} sm={4} key={i}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {item.icon}
-                        <Typography variant="caption" fontWeight={500}>{item.text}</Typography>
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Paper>
             </Box>
           </Grid>
         </Grid>
 
-        {/* Description / Reviews Tabs */}
-        <Paper sx={{ mt: 4, borderRadius: 3, overflow: 'hidden' }}>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ borderBottom: '1px solid', borderColor: 'divider', px: 2 }}>
-            <Tab label="Description" id="tab-description" />
-            <Tab label={`Reviews (${product.reviews.toLocaleString()})`} id="tab-reviews" />
+        {/* Tabs Section */}
+        <Box sx={{ mt: 10, borderTop: '1px solid #e0e0e0', pt: 4 }}>
+          <Tabs
+            value={tab}
+            onChange={(_, v) => setTab(v)}
+            centered
+            sx={{
+              '& .MuiTabs-indicator': { backgroundColor: '#111' },
+              '& .MuiTab-root': { color: '#666', fontWeight: 600, '&.Mui-selected': { color: '#111' } }
+            }}
+          >
+            <Tab label="ADDITIONAL INFORMATION" />
+            <Tab label={`REVIEWS (${product.reviews.toLocaleString()})`} />
+            <Tab label="SHIPPING & DELIVERY" />
           </Tabs>
-          <Box sx={{ p: 3 }}>
+
+          <Box sx={{ p: 4, maxWidth: 800, mx: 'auto', minHeight: 200 }}>
             {tab === 0 && (
-              <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.9 }}>
-                {product.description}
-              </Typography>
+              <Box sx={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
+                <Typography variant="body2" fontWeight={600}>Size</Typography>
+                <Typography variant="body2" color="text.secondary">UK 08, UK 10, UK 12, UK 14</Typography>
+              </Box>
             )}
             {tab === 1 && (
               <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3, p: 2, bgcolor: '#F8FAFC', borderRadius: 2 }}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h2" fontWeight={900} color="primary.main">{product.rating}</Typography>
-                    <Rating value={product.rating} precision={0.5} readOnly />
-                    <Typography variant="caption" color="text.secondary">{product.reviews.toLocaleString()} reviews</Typography>
-                  </Box>
-                  <Divider orientation="vertical" flexItem />
-                  <Box sx={{ flex: 1 }}>
-                    {[5, 4, 3, 2, 1].map(star => (
-                      <Box key={star} sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                        <Typography variant="caption">{star}★</Typography>
-                        <Box sx={{ flex: 1, bgcolor: '#E5E7EB', height: 8, borderRadius: 4, overflow: 'hidden' }}>
-                          <Box sx={{ bgcolor: '#F59E0B', height: '100%', width: `${star === 5 ? 65 : star === 4 ? 20 : star === 3 ? 10 : star === 2 ? 3 : 2}%`, borderRadius: 4 }} />
-                        </Box>
-                        <Typography variant="caption" color="text.secondary">{star === 5 ? '65%' : star === 4 ? '20%' : star === 3 ? '10%' : '5%'}</Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
                 {mockReviews.map((review, i) => (
-                  <Box key={i} sx={{ mb: 2.5, pb: 2.5, borderBottom: i < mockReviews.length - 1 ? '1px solid' : 'none', borderColor: 'divider' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Avatar src={review.avatar} sx={{ width: 36, height: 36 }} />
-                        <Box>
-                          <Typography variant="body2" fontWeight={700}>{review.name}</Typography>
-                          <Rating value={review.rating} size="small" readOnly />
-                        </Box>
-                      </Box>
-                      <Typography variant="caption" color="text.secondary">{review.date}</Typography>
-                    </Box>
+                  <Box key={i} sx={{ mb: 3, pb: 3, borderBottom: '1px solid #f0f0f0' }}>
+                    <Typography variant="subtitle2" fontWeight={700}>{review.name}</Typography>
+                    <Rating value={review.rating} size="small" readOnly sx={{ my: 0.5 }} />
                     <Typography variant="body2" color="text.secondary">{review.text}</Typography>
                   </Box>
                 ))}
               </Box>
             )}
+            {tab === 2 && (
+              <Typography variant="body2" color="text.secondary" textAlign="center">
+                Standard delivery takes 3-5 business days. Express shipping is available at checkout.
+              </Typography>
+            )}
           </Box>
-        </Paper>
+        </Box>
+
+        <Divider sx={{ my: 4 }} />
 
         {/* Related Products */}
         {related.length > 0 && (
-          <Box sx={{ mt: 5 }}>
-            <Typography variant="h5" fontWeight={800} sx={{ mb: 3 }}>Related Products</Typography>
-            <Grid container spacing={3}>
-              {related.map(p => (
-                <Grid item xs={6} sm={4} md={3} key={p.id}>
-                  <ProductCard product={p} />
-                </Grid>
-              ))}
-            </Grid>
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" fontWeight={700} sx={{ mb: 3, letterSpacing: 1 }}>RELATED PRODUCTS</Typography>
+            <ProductGrid products={related} loading={false} />
           </Box>
         )}
       </Container>
 
-      {/* Success Snackbar */}
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert severity="success" onClose={() => setSnackbar({ ...snackbar, open: false })} sx={{ borderRadius: 2 }}>
+        <Alert severity={snackbar.error ? "error" : "success"} onClose={() => setSnackbar({ ...snackbar, open: false })} sx={{ borderRadius: 0 }}>
           {snackbar.msg}
         </Alert>
       </Snackbar>

@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 
 import MainLayout from "./layouts/MainLayout";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Products from "./pages/product/Products";
 import ProductDetail from "./pages/product/ProductDetail";
+import WomensStore from "./pages/womensShop/WomensStore";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
       { path: "account",              element: <Account /> },
       { path: "track",                element: <OrderTracking /> },
       {path: "birthday-gifts",        element: <Products /> },
+      { path: "womens-workwear",      element: <WomensStore /> },
       { path: "wishlist",             element: <Wishlist /> },
       /* Auth flow pages — inside MainLayout so they share Navbar,
          Footer, NavbarProvider, and AuthModal */
@@ -85,7 +87,8 @@ const theme = createTheme({
     divider: "#E5E7EB",
   },
   typography: {
-    fontFamily: "Inter, sans-serif",
+    fontFamily: '"ClearAmpersand", "Playfair Display", serif',
+    subtitle1: { letterSpacing: '0.05em' },
   },
   components: {
     MuiButton: {

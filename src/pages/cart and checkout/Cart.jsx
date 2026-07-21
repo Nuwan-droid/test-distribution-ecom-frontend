@@ -3,7 +3,7 @@ import {
   Box, Container, Grid, Typography, Button, Paper, Divider, IconButton,
   Breadcrumbs, TextField, Chip, Alert,
 } from '@mui/material';
-import { Add, Remove, Delete, ShoppingBag, ArrowForward, LocalShipping } from '@mui/icons-material';
+import { Add, Remove, Delete, ShoppingBag, ArrowForward, LocalShipping, NavigateNext } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 
@@ -35,9 +35,9 @@ export default function Cart() {
   return (
     <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="xl">
-        <Breadcrumbs sx={{ mb: 2 }}>
-          <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'text.secondary', fontSize: '0.875rem' }}>Home</Typography>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 600 }}>Cart</Typography>
+        <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 2 }}>
+          <Typography component={Link} to="/" sx={{ textDecoration: 'none', color: 'primary.main', fontSize: '0.875rem' }}>Home</Typography>
+          <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Cart</Typography>
         </Breadcrumbs>
         <Typography variant="h4" fontWeight={800} sx={{ mb: 3 }}>
           Shopping Cart <Chip label={`${totalItems} items`} color="primary" size="small" sx={{ ml: 1, fontWeight: 700 }} />

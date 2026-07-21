@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Button } from '@mui/material';
 import { ShoppingBag } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../components/Products/ProductCard';
 import { useWishlist } from '../../context/WishlistContext';
 
 export default function Wishlist() {

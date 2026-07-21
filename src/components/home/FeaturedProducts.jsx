@@ -1,52 +1,97 @@
-import { Box, Container, Typography, Button, Grid } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import { useRef } from 'react';
+import { Box, Typography, Button, Grid, IconButton } from '@mui/material';
+import { ArrowForward, ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import ProductCard from '../ProductCard';
+import ProductCard from '../Products/ProductCard';
+import ViewAllButton from '../Products/ViewAllButton';
 
 export default function FeaturedProducts({ products }) {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = scrollRef.current.clientWidth + 16;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <Box sx={{ py: { xs: 2, sm: 2.5, md: 3, lg: 3 }, my: { xs: 1, sm: 1.5, md: 2, lg: 2 }, bgcolor: 'white' }}>
-      <Container maxWidth="xl">
+      <Box sx={{ position: 'relative', px: { xs: 2, sm: 3, md: 4, lg: 5 } }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Box>
             <Typography variant="h5" fontWeight={800} sx={{ color: '#111111', fontSize: { xs: '1.2rem', md: '1.5rem' }, letterSpacing: -0.2 }}>Featured Products</Typography>
           </Box>
-          <Button
-            component={Link}
-            to="/products"
-            variant="outlined"
-            color="secondary"
-            endIcon={<ArrowForward sx={{ fontSize: 14 }} />}
-            id="view-all-featured-btn"
+          <ViewAllButton to="/products" label="See All" />
+        </Box>
+        <Box sx={{ position: 'relative', display: 'flex' }}>
+          
+          {/* Scroll Left Button */}
+          <IconButton
+            onClick={() => scroll('left')}
             sx={{
-              textTransform: 'none',
-              borderRadius: '20px',
-              border: '1.5px solid',
+              position: 'absolute',
+              left: -20,
+              top: 88,
+              zIndex: 10,
+              bgcolor: 'white',
+              border: '1px solid',
               borderColor: 'secondary.main',
-              color: 'secondary.main',
-              fontWeight: 700,
-              fontSize: { xs: '0.75rem', sm: '0.8rem' },
-              px: { xs: 1.5, sm: 2.5 },
-              py: 0.5,
-              height: '32px',
-              '&:hover': {
-                border: '1.5px solid',
-                borderColor: 'secondary.dark',
-                bgcolor: 'rgba(26, 86, 219, 0.04)',
-              },
+              color: 'text.secondary',
+              width: 40,
+              height: 40,
+              display: { xs: 'none', md: 'flex' }, // Hide on mobile
+              '&:hover': { bgcolor: 'white', transform: 'scale(1.05)' },
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
-            See All
-          </Button>
+            <ArrowBackIos sx={{ fontSize: 16, ml: '4px' }} />
+          </IconButton>
+
+          <Box
+            ref={scrollRef}
+            sx={{
+              display: 'flex',
+              gap: 2,
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              '&::-webkit-scrollbar': { display: 'none' },
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+              px: 0.5,
+              py: 1,
+            }}
+          >
+            {products.map(product => (
+              <Box key={product.id} sx={{ flex: '0 0 auto', width: { xs: 'calc(50% - 8px)', sm: 'calc(33.333% - 10.66px)', md: 'calc(25% - 12px)', lg: 'calc(20% - 12.8px)', xl: 'calc(16.666% - 13.33px)' } }}>
+                <ProductCard product={product} />
+              </Box>
+            ))}
+          </Box>
+
+          {/* Scroll Right Button */}
+          <IconButton
+            onClick={() => scroll('right')}
+            sx={{
+              position: 'absolute',
+              right: -20,
+              top: 88,
+              zIndex: 10,
+              bgcolor: 'white',
+              border: '1px solid',
+              borderColor: 'secondary.main',
+              color: 'text.secondary',
+              width: 40,
+              height: 40,
+              display: { xs: 'none', md: 'flex' }, // Hide on mobile
+              '&:hover': { bgcolor: 'white', transform: 'scale(1.05)' },
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            }}
+          >
+            <ArrowForwardIos sx={{ fontSize: 16 }} />
+          </IconButton>
         </Box>
-        <Grid container spacing={3}>
-          {products.map(product => (
-            <Grid item xs={6} sm={4} md={3} key={product.id}>
-              <ProductCard product={product} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      </Box>
     </Box>
   );
 }

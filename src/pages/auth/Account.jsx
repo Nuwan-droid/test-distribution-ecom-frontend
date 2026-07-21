@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useWishlist } from '../../context/WishlistContext';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../components/Products/ProductCard';
 
 const statusColor = {
   Delivered: 'success',

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   AppBar, Toolbar, Box, Typography, IconButton, Badge, InputBase,
   Drawer, List, ListItem, ListItemText, ListItemButton, Divider,
@@ -10,21 +10,21 @@ import {
   Search, FavoriteBorder, Person, Menu as MenuIcon, Close,
   KeyboardArrowDown, NotificationsNone, ShoppingCartOutlined,
   AccountCircle, ListAlt, LocationOn, Logout, PhoneIphone,
-  ChevronRight,
+  ChevronRight, ChevronLeft,
 } from '@mui/icons-material';
 
-import { useCart }     from '../context/CartContext';
-import { useAuth }     from '../context/AuthContext';
-import { useWishlist } from '../context/WishlistContext';
+import { useCart }     from '../../context/CartContext';
+import { useAuth }     from '../../context/AuthContext';
+import { useWishlist } from '../../context/WishlistContext';
 import {
   useNavbar,
   ALL_DEPARTMENTS,
   DEPT_SELECT_OPTIONS,
-  CATEGORY_STRIP,
   NAVIGATION_CATEGORIES,
   NAV_COLORS as C,
-} from '../context/NavbarContext';
-import logoImg from '../assets/logo.png';
+} from '../../context/NavbarContext';
+import logoImg from '../../assets/logo.png';
+import CategoryStrip from './CategoryStrip';
 
 /* ═══════════════════════════════════════════════════════════════
    Navbar
@@ -55,7 +55,26 @@ export default function Navbar() {
   } = useNavbar();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeCat, setActiveCat] = useState('Electronics');
+
+  // Auto-sync category state with URL when navigating to a specific shop
+  useEffect(() => {
+    let cat = null;
+    if (location.pathname === '/womens-workwear') {
+      cat = 'Women fashion';
+    } else if (location.pathname === '/products') {
+      const params = new URLSearchParams(location.search);
+      cat = params.get('category');
+    }
+    
+    if (cat && NAVIGATION_CATEGORIES[cat]) {
+      setActiveCat(cat);
+      setSelectedDept(cat);
+    } else if (location.pathname === '/' || location.pathname === '') {
+      setSelectedDept('All');
+    }
+  }, [location.pathname, location.search, setSelectedDept]);
 
   const handleLogout = () => {
     logout();
@@ -67,15 +86,17 @@ export default function Navbar() {
     <>
       {/* ══════════════ APPBAR ══════════════ */}
       <AppBar
-        position="sticky"
+        position="fixed"
         elevation={0}
         sx={{
-          bgcolor: C.white,
+          bgcolor: scrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
           color: C.textPrimary,
           zIndex: 1100,
-          borderBottom: `1px solid ${C.border}`,
-          boxShadow: scrolled ? '0 2px 12px rgba(0,0,0,0.07)' : 'none',
-          transition: 'box-shadow 0.25s ease',
+          borderBottom: `1px solid ${scrolled ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)'}`,
+          boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.05)' : 'none',
+          transition: 'all 0.3s ease',
         }}
       >
         {/* ── TOP ROW ── */}
@@ -99,7 +120,7 @@ export default function Navbar() {
 
             {/* Logo */}
             <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-              <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 38, md: 44 }, width: 'auto', objectFit: 'contain' }} />
+              <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 28, md: 32 }, width: 'auto', objectFit: 'contain' }} />
             </Box>
 
             {/* ── SEARCH BAR — absolutely centered on desktop regardless of side widths ── */}
@@ -116,7 +137,7 @@ export default function Navbar() {
                 mx: { xs: 1, md: 0 },
                 display: 'flex',
                 alignItems: 'center',
-                bgcolor: C.bg,
+                bgcolor: scrolled ? C.bg : 'rgba(255, 255, 255, 0.55)',
                 borderRadius: '24px',
                 border: '1.5px solid transparent',
                 overflow: 'hidden',
@@ -308,37 +329,45 @@ export default function Navbar() {
 
         {/* ── CATEGORY STRIP (Desktop) ── */}
         {!isMobile && (
-          <Box sx={{ bgcolor: C.white, borderTop: `1px solid ${C.border}`, overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: 'transparent', borderTop: 'none', overflow: 'hidden' }}>
             <Container maxWidth="xl">
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  py: 0.6,
-                  overflowX: 'auto',
-                  flexWrap: 'nowrap',
-                  '&::-webkit-scrollbar': { display: 'none' },
-                  scrollbarWidth: 'none',
-                }}
-              >
-              {/* All Categories pill */}
+              <Box sx={{ display: 'flex', alignItems: 'center', py: 0.6, position: 'relative' }}>
+              {/* All Categories button (minimalistic design) */}
               <Button
                 id="all-departments-btn"
                 onClick={(e) => setAllDeptsAnchor(e.currentTarget)}
+                disableRipple
+                startIcon={<MenuIcon sx={{ fontSize: 18 }} />}
                 endIcon={
                   <KeyboardArrowDown
                     sx={{
-                      fontSize: 15,
+                      fontSize: 18,
                       transition: 'transform 0.2s',
                       transform: Boolean(allDeptsAnchor) ? 'rotate(180deg)' : 'none',
                     }}
                   />
                 }
                 sx={{
-                  color: C.textPrimary, fontWeight: 700, fontSize: '0.82rem', textTransform: 'none',
-                  border: `1.5px solid ${C.textPrimary}`, borderRadius: '20px',
-                  px: 2, py: 0.5, mr: 1.5, flexShrink: 0, whiteSpace: 'nowrap',
-                  '&:hover': { bgcolor: C.bg },
+                  color: C.textPrimary,
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  textTransform: 'none',
+                  px: 1,
+                  py: 0.5,
+                  mr: 2,
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                  minWidth: 'auto',
+                  '&:hover': {
+                    bgcolor: 'transparent',
+                    color: C.accent,
+                  },
+                  '& .MuiButton-startIcon': {
+                    marginRight: '6px',
+                  },
+                  '& .MuiButton-endIcon': {
+                    marginLeft: '4px',
+                  }
                 }}
               >
                 All Categories
@@ -355,8 +384,11 @@ export default function Navbar() {
                     width: 480,
                     height: 350,
                     borderRadius: 2,
+                    bgcolor: 'rgba(255, 255, 255, 0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
                     boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    border: `1px solid ${C.border}`,
+                    border: `1px solid rgba(255, 255, 255, 0.3)`,
                     overflow: 'hidden',
                   },
                 }}
@@ -365,7 +397,7 @@ export default function Navbar() {
               >
                 <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
                   {/* Left Column: Categories List */}
-                  <Box sx={{ width: '200px', borderRight: `1px solid ${C.border}`, overflowY: 'auto', bgcolor: '#f8fafc', py: 1, flexShrink: 0 }}>
+                  <Box sx={{ width: '200px', borderRight: `1px solid rgba(0,0,0,0.06)`, overflowY: 'auto', bgcolor: 'rgba(0,0,0,0.02)', py: 1, flexShrink: 0 }}>
                     {Object.keys(NAVIGATION_CATEGORIES).map((cat) => (
                       <Box
                         key={cat}
@@ -388,7 +420,7 @@ export default function Navbar() {
                           transition: 'all 0.15s',
                           '&:hover': {
                             bgcolor: C.accentHover,
-                            color: C.accent,
+                            color: 'secondary.main',
                           }
                         }}
                       >
@@ -399,7 +431,7 @@ export default function Navbar() {
                   </Box>
 
                   {/* Right Column: Subcategories List */}
-                  <Box sx={{ flex: 1, overflowY: 'auto', py: 1.5, px: 2, bgcolor: '#ffffff' }}>
+                  <Box sx={{ flex: 1, overflowY: 'auto', py: 1.5, px: 2, bgcolor: 'transparent' }}>
                     {NAVIGATION_CATEGORIES[activeCat]?.map((sub) => (
                       <Box
                         key={sub}
@@ -412,14 +444,14 @@ export default function Navbar() {
                           borderRadius: 1.5,
                           display: 'block',
                           textDecoration: 'none',
-                          color: C.textSecond,
+                          color: C.textPrimary,
                           fontSize: '0.85rem',
+                          fontWeight: 700,
                           cursor: 'pointer',
                           transition: 'background-color 0.15s, color 0.15s',
                           '&:hover': {
-                            bgcolor: '#f1f5f9',
-                            color: C.textPrimary,
-                            fontWeight: 600
+                            bgcolor: 'rgba(0,0,0,0.04)',
+                            color: 'secondary.main',
                           }
                         }}
                       >
@@ -433,23 +465,9 @@ export default function Navbar() {
               {/* Divider */}
               <Box sx={{ width: '1px', height: 18, bgcolor: C.border, mr: 1.5, flexShrink: 0 }} />
 
-              {/* Category links */}
-              {CATEGORY_STRIP.map((cat) => (
-                <Button
-                  key={cat.label}
-                  component={Link}
-                  to={cat.path}
-                  sx={{
-                    color: C.textSecond, fontWeight: 500, fontSize: '0.82rem', textTransform: 'none',
-                    whiteSpace: 'nowrap', py: 0.5, px: 1.5, minWidth: 'unset', flexShrink: 0,
-                    borderRadius: '20px', display: 'flex', alignItems: 'center', gap: 0.5,
-                    '&:hover': { color: C.accent, bgcolor: C.accentHover },
-                  }}
-                >
-                  {cat.icon && <cat.icon sx={{ fontSize: 15, opacity: 0.8 }} />}
-                  {cat.label}
-                </Button>
-              ))}
+              {/* Scrollable Category Links */}
+              <CategoryStrip />
+
             </Box>
             </Container>
           </Box>

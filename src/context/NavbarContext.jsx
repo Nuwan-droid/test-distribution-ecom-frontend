@@ -10,6 +10,7 @@ export const ALL_DEPARTMENTS = [
   'Electronics',
   'Home & Kitchen',
   'Fashion',
+  'Women fashion',
   'Sports & Fitness',
   'Books & Stationery',
   'Beauty & Care',
@@ -23,6 +24,7 @@ export const DEPT_SELECT_OPTIONS = [
   'Electronics',
   'Home & Kitchen',
   'Fashion',
+  'Women fashion',
   'Sports & Fitness',
   'Books & Stationery',
   'Beauty & Care',
@@ -32,21 +34,23 @@ export const DEPT_SELECT_OPTIONS = [
 ];
 
 export const NAVIGATION_CATEGORIES = {
-  'Electronics': ['Audio', 'Wearables', 'Accessories', 'Gaming'],
-  'Home & Kitchen': ['Kitchen Appliances', 'Drinkware', 'Kitchenware'],
-  'Fashion': ['Accessories', 'Eyewear', 'Bags', 'Shoes', 'Clothing'],
-  'Sports & Fitness': ['Yoga', 'Workout Equipment', 'Cardio', 'Hydration'],
-  'Books & Stationery': ['Notebooks', 'Pens', 'Accessories'],
-  'Beauty & Care': ['Skincare', 'Oral Care', 'Hair Care'],
-  'Food & Beverages': ['Tea & Coffee', 'Pantry', 'Snacks'],
-  'Toys & Kids': ['Building Blocks', 'RC Vehicles', 'Games', 'Arts & Crafts', 'Plush'],
-  'Automotive': ['Accessories', 'Cameras', 'Car Care']
+  'Electronics': ['Audio', 'Wearables', 'Accessories', 'Gaming', 'Cameras', 'Smart Home'],
+  'Home & Kitchen': ['Kitchen Appliances', 'Home Decor', 'Bedding', 'Furniture', 'Storage'],
+  'Fashion': ['Men', 'Accessories', 'Footwear', 'Bags', 'Watches'],
+  'Women fashion': ['Dresses', 'Tops', 'Pants', 'Skirts', 'Froks', 'Jeans', 'Shorts', 'Jackets & Outerwear', 'Activewear', 'Loungewear & Sleepwear', 'Lingerie & Innerwear'],
+  'Sports & Fitness': ['Gym Equipment', 'Sportswear', 'Outdoor Gear', 'Yoga', 'Supplements'],
+  'Books & Stationery': ['Fiction', 'Non-Fiction', 'Notebooks', 'Pens', 'Art Supplies'],
+  'Beauty & Care': ['Skincare', 'Haircare', 'Makeup', 'Fragrances', 'Personal Care'],
+  'Food & Beverages': ['Snacks', 'Beverages', 'Pantry Staples', 'Organic', 'Sweets'],
+  'Toys & Kids': ['Educational Toys', 'Action Figures', 'Board Games', 'Baby Care', 'Kids Clothing'],
+  'Automotive': ['Car Accessories', 'Motorcycle Gear', 'Tools', 'Car Care', 'Tires']
 };
 
 export const CATEGORY_STRIP = [
   { label: 'Electronics',    path: '/products?category=Electronics' },
   { label: 'Home & Kitchen', path: '/products?category=Home+%26+Kitchen' },
   { label: 'Fashion',        path: '/products?category=Fashion' },
+  { label: 'Women fashion',  path: '/products?category=Women+fashion' },
   { label: 'Sports & Fitness', path: '/products?category=Sports+%26+Fitness' },
   { label: 'Stationery',     path: '/products?category=Books+%26+Stationery' },
   { label: 'Beauty & Care',  path: '/products?category=Beauty+%26+Care' },
