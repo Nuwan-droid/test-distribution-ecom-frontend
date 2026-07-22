@@ -32,8 +32,11 @@ export default function HomeImageSlider({ customBanners }) {
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        height: { xs: '45vh', sm: '50vh', md: '60vh', lg: '70vh', xl: '75vh' },
-        minHeight: { xs: 350, md: 400 }, // Ensure it never gets too small on tiny screens
+        height: { xs: '35vh', sm: '40vh', md: '50vh', lg: '60vh', xl: '65vh' },
+        minHeight: { xs: 280, md: 320 }, // Ensure it never gets too small on tiny screens
+        pt: { xs: 9, md: 12 }, // Padding to cover the smaller nav bar area
+        bgcolor: '#f5f5f5', // Grey background to emphasize the navbar's glass effect
+        boxSizing: 'content-box',
       }}
     >
       {/* ── Sliding Track ── */}
@@ -98,7 +101,6 @@ export default function HomeImageSlider({ customBanners }) {
                 height: '100%',
                 display: 'flex',
                 alignItems: 'center',
-                pt: { xs: 10, md: 14 }, // Offset text vertically so it doesn't collide with the glass navbar
               }}
             >
               {i === currentBanner && (

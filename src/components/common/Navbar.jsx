@@ -103,9 +103,9 @@ export default function Navbar() {
         <Container maxWidth="xl">
           <Toolbar
             sx={{
-              py: 1,
+              py: 0.5,
               gap: 1.5,
-              minHeight: { xs: 60, md: 68 },
+              minHeight: { xs: 52, md: 58 },
               justifyContent: 'space-between',
               position: 'relative', 
             }}

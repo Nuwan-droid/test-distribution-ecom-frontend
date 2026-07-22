@@ -1,6 +1,7 @@
 import { Box, Typography, Container, Grid, Button } from '@mui/material';
-import ProductCard from '../../components/Products/ProductCard';
 import HomeImageSlider from '../../components/common/ImageSlider';
+import NewArrivals from '../../components/home/NewArrivals';
+import FeaturedProducts from '../../components/home/FeaturedProducts';
 import products from '../../data/products'; 
 
 const HERO_IMG = "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&h=600&fit=crop";
@@ -10,8 +11,8 @@ const CATEGORIES = [
   { title: "WORK DRESSES", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&h=400&fit=crop" },
   { title: "TROUSERS", image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=300&h=400&fit=crop" },
   { title: "TOPS", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=300&h=400&fit=crop" },
-  { title: "PANTS", image: "https://images.unsplash.com/photo-1509631179647-0c714d2417a8?w=300&h=400&fit=crop" },
-  { title: "SKIRTS", image: "https://images.unsplash.com/photo-1583391733958-65e277dd6114?w=300&h=400&fit=crop" }
+  { title: "PANTS", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&h=400&fit=crop" },
+  { title: "SKIRTS", image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?w=300&h=400&fit=crop" }
 ];
 
 export default function WomensStore() {
@@ -44,76 +45,25 @@ export default function WomensStore() {
 
       <Container maxWidth="xl" sx={{ mt: 6 }}>
         {/* New Arrivals */}
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="subtitle2" sx={{ letterSpacing: 2, color: '#888', mb: 1 }}>
-            CLARA EXCLUSIVE
-          </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 1 }}>
-            NEW ARRIVALS
-          </Typography>
-        </Box>
+        <NewArrivals products={fashionProducts} />
 
-        <Grid container spacing={2}>
-          {fashionProducts.map(product => (
-            <Grid item xs={6} sm={4} md={2.4} key={product.id}>
-              {/* Product cards in the mockup are very tall. We can override image height slightly here if needed */}
-              <Box sx={{ '.MuiCardMedia-root': { height: 350 } }}>
-                <ProductCard product={product} />
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Middle Banner */}
-        <Box
-          sx={{
-            width: '100%',
-            height: { xs: 200, md: 400 },
-            mt: 8,
-            mb: 8,
-            backgroundImage: `url(${MIDDLE_BANNER_IMG})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative'
-          }}
-        >
-          <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(255,255,255,0.4)' }} />
-          <Box sx={{ zIndex: 1, textAlign: 'center', display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, letterSpacing: 2, color: '#6d3c3c' }}>
-                CLARA
-              </Typography>
-              <Typography variant="h2" sx={{ fontWeight: 900, letterSpacing: -1, color: '#111' }}>
-                WORKWEAR
-              </Typography>
-            </Box>
-            <Button variant="contained" sx={{ bgcolor: '#6d3c3c', color: 'white', px: 4, py: 1.5, '&:hover': { bgcolor: '#4a2626' } }}>
-              Shop Now
-            </Button>
-          </Box>
-        </Box>
+        
 
         {/* Top Visited Categories */}
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="subtitle2" sx={{ letterSpacing: 2, color: '#888', mb: 1 }}>
-            CLARA EXCLUSIVE
-          </Typography>
           <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 1 }}>
             TOP VISITED CATEGORIES
           </Typography>
         </Box>
 
-        <Grid container spacing={1} sx={{ mb: 8 }}>
+        <Grid container spacing={{ xs: 1, sm: 2 }} columns={{ xs: 2, sm: 3, md: 5 }} sx={{ mb: { xs: 4, md: 8 } }}>
           {CATEGORIES.map((cat, index) => (
-            <Grid item xs={6} md={2.4} key={index}>
+            <Grid item xs={1} key={index}>
               <Box
                 sx={{
                   position: 'relative',
                   width: '100%',
-                  height: 400,
+                  height: { xs: 240, sm: 300, md: 400 },
                   overflow: 'hidden',
                   cursor: 'pointer',
                   '&:hover img': { transform: 'scale(1.05)' }
@@ -144,24 +94,7 @@ export default function WomensStore() {
         </Grid>
 
         {/* Featured Products */}
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="subtitle2" sx={{ letterSpacing: 2, color: '#888', mb: 1 }}>
-            CLARA EXCLUSIVE
-          </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 1 }}>
-            FEATURED PRODUCTS
-          </Typography>
-        </Box>
-
-        <Grid container spacing={2}>
-          {featuredProducts.map(product => (
-            <Grid item xs={6} sm={4} md={2.4} key={product.id}>
-              <Box sx={{ '.MuiCardMedia-root': { height: 350 } }}>
-                <ProductCard product={product} />
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+        <FeaturedProducts products={featuredProducts} />
 
       </Container>
     </Box>

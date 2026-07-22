@@ -28,7 +28,7 @@ function LayoutContent() {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
       {/* If it's a hero page, start at the very top (0). Otherwise, push content down so it's not hidden behind the fixed Navbar. */}
-      <Box component="main" sx={{ flex: 1, pt: isHeroPage ? 0 : { xs: 12, md: 16 } }}>
+      <Box component="main" sx={{ flex: 1, pt: isHeroPage ? 0 : { xs: 9, md: 12 } }}>
         <Outlet />
       </Box>
       <Footer />
