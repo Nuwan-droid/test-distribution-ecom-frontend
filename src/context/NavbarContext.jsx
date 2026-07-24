@@ -107,8 +107,9 @@ export function NavbarProvider({ children }) {
   const [authModalTab,   setAuthModalTab]   = useState('login'); // 'login' | 'register'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    // 450px roughly matches the slider's minHeight
+    const onScroll = () => setScrolled(window.scrollY > 450);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 

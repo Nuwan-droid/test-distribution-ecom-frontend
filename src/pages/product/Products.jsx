@@ -14,6 +14,8 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import ProductGrid from '../../components/Products/ProductGrid';
+import CategoryStrip from '../../components/common/CategoryStrip';
+import { CATEGORY_STRIP, NAVIGATION_CATEGORIES } from '../../context/NavbarContext';
 import products, { categories } from '../../data/products';
 
 /* ─── Constants ──────────────────────────────────────────────────────────── */
@@ -31,30 +33,17 @@ const OFFERS = [
   { label: 'On Sale', key: 'onSale' },
   { label: 'New Arrivals', key: 'isNew' },
   { label: 'Best Sellers', key: 'isBestSeller' },
+  { label: 'Featured', key: 'isFeatured' },
 ];
 
 const ITEMS_PER_PAGE = 12;
-
-const SEC_SX = {
-  '&::before': { display: 'none' },
-  bgcolor: 'transparent',
-  borderBottom: '1px solid',
-  borderColor: 'divider',
-};
-
-const SUM_SX = {
-  px: 1.5,
-  minHeight: '44px !important',
-  '& .MuiAccordionSummary-content': { my: '11px !important' },
-  '& .MuiAccordionSummary-expandIconWrapper': { color: 'text.secondary' },
-};
 
 /* ─── FilterPanel ────────────────────────────────────────────────────────── */
 
 function FilterPanel({ filters, setFilters, sort, setSort, onClose }) {
   const clearAll = () => setFilters({
-    categories: [], priceRange: [0, 10000],
-    minRating: 0, onSale: false, isNew: false, isBestSeller: false,
+    categories: [], subcategories: [], priceRange: [0, 10000],
+    minRating: 0, onSale: false, isNew: false, isBestSeller: false, isFeatured: false
   });
 
   const activeCount =
@@ -62,73 +51,56 @@ function FilterPanel({ filters, setFilters, sort, setSort, onClose }) {
     (filters.minRating > 0 ? 1 : 0) +
     (filters.onSale ? 1 : 0) +
     (filters.isNew ? 1 : 0) +
-    (filters.isBestSeller ? 1 : 0);
+    (filters.isBestSeller ? 1 : 0) +
+    (filters.isFeatured ? 1 : 0);
 
   return (
-    <Box sx={{ width: { xs: 250, md: '100%' }, bgcolor: 'white' }}>
-
+    <Box sx={{ width: { xs: 250, md: '100%' }, bgcolor: 'transparent' }}>
+      
       {/* Header */}
-      <Box
-        sx={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          px: 1.5, py: 1.25,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: 2 }}>
+        <Typography variant="subtitle1" fontWeight={800} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          Filters
           {activeCount > 0 && (
-            <Box
-              component="span"
-              sx={{
-                bgcolor: 'secondary.main', color: 'white',
-                borderRadius: 10, px: 0.75,
-                fontSize: '0.68rem', fontWeight: 800, lineHeight: '17px',
-              }}
-            >
+            <Box component="span" sx={{ bgcolor: 'secondary.main', color: 'white', borderRadius: 10, px: 1, py: 0.25, fontSize: '0.7rem', fontWeight: 700, lineHeight: 1 }}>
               {activeCount}
             </Box>
           )}
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {activeCount > 0 && (
-            <Button
-              size="small" onClick={clearAll}
-              sx={{
-                fontSize: '0.7rem', fontWeight: 700, color: 'secondary.main',
-                textTransform: 'none', minWidth: 0, p: 0,
-                textDecoration: 'underline',
-              }}
-            >
-              Clear all
+            <Button size="small" onClick={clearAll} sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'text.secondary', textTransform: 'none', minWidth: 0, p: 0, '&:hover': { color: 'error.main' } }}>
+              Clear
             </Button>
           )}
           {onClose && (
-            <IconButton size="small" onClick={onClose} sx={{ p: 0.25 }}>
-              <Close sx={{ fontSize: 17 }} />
+            <IconButton size="small" onClick={onClose} sx={{ ml: 1, p: 0.5 }}>
+              <Close sx={{ fontSize: 18 }} />
             </IconButton>
           )}
         </Box>
       </Box>
+      <Divider sx={{ mx: 2, mb: 3 }} />
 
-      {/* ── Sort By (inside filter panel) ── */}
-      <Box sx={{ px: 1.5, py: 1.25, borderBottom: '1px solid', borderColor: 'divider' }}>
-        <Typography  fontSize="0.8rem" color="text.primary"sx={{ mb: 0.75, fontWeight: 700 }} >
+      {/* Sort By */}
+      <Box sx={{ px: 2, mb: 4 }}>
+        <Typography fontSize="0.75rem" textTransform="uppercase" letterSpacing="0.05em" color="text.secondary" sx={{ mb: 1.5, fontWeight: 700 }}>
           Sort By
         </Typography>
-        <FormControl size="small" fullWidth>
+        <FormControl fullWidth variant="standard">
           <Select
             value={sort}
             onChange={e => setSort(e.target.value)}
-            id="sort-select"
-            displayEmpty
+            disableUnderline
             sx={{
-              fontSize: '0.8rem',
+              fontSize: '0.9rem',
               fontWeight: 600,
-              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+              color: 'text.primary',
+              '& .MuiSelect-select': { py: 0.5, px: 0 },
             }}
           >
             {SORT_OPTIONS.map(opt => (
-              <MenuItem key={opt.value} value={opt.value} sx={{ fontSize: '0.8rem', fontWeight: 600 }}>
+              <MenuItem key={opt.value} value={opt.value} sx={{ fontSize: '0.85rem', fontWeight: 500 }}>
                 {opt.label}
               </MenuItem>
             ))}
@@ -136,163 +108,162 @@ function FilterPanel({ filters, setFilters, sort, setSort, onClose }) {
         </FormControl>
       </Box>
 
-      {/* ── Category ── */}
-      <Accordion defaultExpanded disableGutters elevation={0} sx={SEC_SX}>
-        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={SUM_SX}>
-          <Typography  fontSize="0.82rem" color="text.primary" sx={{ mb: 0.75, fontWeight: 700 }}>
-            Category
+      {/* Categories */}
+      <Accordion defaultExpanded disableGutters elevation={0} sx={{ bgcolor: 'transparent', '&:before': { display: 'none' }, mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={{ px: 2, minHeight: '40px !important', '& .MuiAccordionSummary-content': { my: '0 !important' } }}>
+          <Typography fontSize="0.75rem" textTransform="uppercase" letterSpacing="0.05em" color="text.secondary" fontWeight={700}>
+            Categories
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ px: 1.5, pt: 0, pb: 1.25 }}>
-          {categories.map(cat => {
-            const active = filters.categories.includes(cat.name);
-            return (
-              <Box
-                key={cat.id}
-                onClick={() => {
-                  const updated = active
-                    ? filters.categories.filter(c => c !== cat.name)
-                    : [...filters.categories, cat.name];
-                  setFilters(f => ({ ...f, categories: updated }));
-                }}
-                sx={{
-                  display: 'flex', alignItems: 'center', gap: 0.75,
-                  py: 0.55, cursor: 'pointer',
-                  '&:hover .label-text': { color: 'secondary.main' },
-                }}
-              >
-                {/* Checkbox-style icon — filled when active */}
-                {active
-                  ? <CheckBox sx={{ fontSize: 16, color: 'secondary.main', flexShrink: 0 }} />
-                  : <CheckBoxOutlineBlank sx={{ fontSize: 16, color: 'text.disabled', flexShrink: 0 }} />
-                }
+        <AccordionDetails sx={{ px: 2, pt: 0, pb: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            {categories.map(cat => {
+              const active = filters.categories.includes(cat.name);
+              return (
                 <Typography
-                  className="label-text"
-                  fontSize="0.82rem"
-                  fontWeight={active ? 700 : 600}
-                  color={active ? 'secondary.main' : 'text.primary'}
-                  sx={{ transition: 'color 0.15s' }}
+                  key={cat.id}
+                  onClick={() => {
+                    const updated = active
+                      ? filters.categories.filter(c => c !== cat.name)
+                      : [...filters.categories, cat.name];
+                    setFilters(f => ({ ...f, categories: updated }));
+                  }}
+                  sx={{
+                    fontSize: '0.85rem',
+                    fontWeight: active ? 700 : 500,
+                    color: active ? 'secondary.main' : 'text.primary',
+                    cursor: 'pointer',
+                    py: 0.75,
+                    px: 1,
+                    mx: -1,
+                    borderRadius: 1.5,
+                    bgcolor: active ? 'rgba(11, 31, 91, 0.04)' : 'transparent',
+                    borderLeft: active ? '3px solid' : '3px solid transparent',
+                    borderColor: active ? 'secondary.main' : 'transparent',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      bgcolor: active ? 'rgba(11, 31, 91, 0.06)' : 'rgba(0,0,0,0.02)',
+                    }
+                  }}
                 >
                   {cat.name}
                 </Typography>
-              </Box>
-            );
-          })}
+              );
+            })}
+          </Box>
         </AccordionDetails>
       </Accordion>
 
-      {/* ── Price Range ── */}
-      <Accordion defaultExpanded disableGutters elevation={0} sx={SEC_SX}>
-        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={SUM_SX}>
-          <Typography fontSize="0.82rem" color="text.primary" sx={{ mb: 0.75, fontWeight: 700 }}>
+      {/* Price Range */}
+      <Accordion defaultExpanded disableGutters elevation={0} sx={{ bgcolor: 'transparent', '&:before': { display: 'none' }, mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={{ px: 2, minHeight: '40px !important', '& .MuiAccordionSummary-content': { my: '0 !important' } }}>
+          <Typography fontSize="0.75rem" textTransform="uppercase" letterSpacing="0.05em" color="text.secondary" fontWeight={700}>
             Price
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ px: 1.75, pt: 0.5, pb: 1.5 }}>
-          <Slider
-            value={filters.priceRange}
-            onChange={(_, v) => setFilters(f => ({ ...f, priceRange: v }))}
-            min={0} max={10000} step={100}
-            valueLabelDisplay="auto"
-            valueLabelFormat={v => `$${v.toLocaleString()}`}
-            color="secondary.main"
-            sx={{
-              '& .MuiSlider-thumb': { width: 12, height: 12 },
-              '& .MuiSlider-track': { height: 2 },
-              '& .MuiSlider-rail': { height: 2 },
-            }}
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.25 }}>
-            <Typography fontSize="0.75rem" fontWeight={700} color="text.secondary">
+        <AccordionDetails sx={{ px: 2, pt: 0, pb: 2 }}>
+          <Box sx={{ px: 1 }}>
+            <Slider
+              value={filters.priceRange}
+              onChange={(_, v) => setFilters(f => ({ ...f, priceRange: v }))}
+              min={0} max={10000} step={100}
+              color="secondary"
+              sx={{
+                '& .MuiSlider-thumb': { 
+                  width: 14, height: 14, 
+                  bgcolor: 'white', 
+                  border: '2px solid', 
+                  borderColor: 'secondary.main',
+                  boxShadow: 'none',
+                  '&:hover, &.Mui-focusVisible': { boxShadow: '0 0 0 4px rgba(11, 31, 91, 0.1)' }
+                },
+                '& .MuiSlider-track': { height: 3 },
+                '& .MuiSlider-rail': { height: 3, opacity: 0.2 },
+              }}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, px: 0.5 }}>
+            <Typography fontSize="0.75rem" fontWeight={600} color="text.secondary">
               ${filters.priceRange[0].toLocaleString()}
             </Typography>
-            <Typography fontSize="0.75rem" fontWeight={700} color="text.secondary">
+            <Typography fontSize="0.75rem" fontWeight={600} color="text.secondary">
               ${filters.priceRange[1].toLocaleString()}
             </Typography>
           </Box>
         </AccordionDetails>
       </Accordion>
 
-      {/* ── Customer Rating ── */}
-      <Accordion defaultExpanded disableGutters elevation={0} sx={SEC_SX}>
-        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={SUM_SX}>
-          <Typography fontSize="0.82rem" color="text.primary" sx={{ mb: 0.75, fontWeight: 700 }}>
-            Customer Rating
+      {/* Deals (Chips) */}
+      <Accordion defaultExpanded disableGutters elevation={0} sx={{ bgcolor: 'transparent', '&:before': { display: 'none' }, mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={{ px: 2, minHeight: '40px !important', '& .MuiAccordionSummary-content': { my: '0 !important' } }}>
+          <Typography fontSize="0.75rem" textTransform="uppercase" letterSpacing="0.05em" color="text.secondary" fontWeight={700}>
+            Deals & Offers
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ px: 1.5, pt: 0, pb: 1.25 }}>
-          {[4, 3, 2].map(rating => {
-            const active = filters.minRating === rating;
-            return (
-              <Box
-                key={rating}
-                onClick={() => setFilters(f => ({ ...f, minRating: active ? 0 : rating }))}
-                sx={{
-                  display: 'flex', alignItems: 'center', gap: 0.75,
-                  py: 0.55, cursor: 'pointer',
-                  '&:hover .label-text': { color: 'secondary.main' },
-                }}
-              >
-                {/* Radio-style icon — distinct from category checkboxes */}
-                {active
-                  ? <RadioButtonChecked sx={{ fontSize: 16, color: 'secondary.main', flexShrink: 0 }} />
-                  : <RadioButtonUnchecked sx={{ fontSize: 16, color: 'text.disabled', flexShrink: 0 }} />
-                }
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                  <Rating value={rating} size="small" readOnly precision={1} />
+        <AccordionDetails sx={{ px: 2, pt: 0, pb: 2 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {OFFERS.map(opt => {
+              const active = !!filters[opt.key];
+              return (
+                <Chip
+                  key={opt.key}
+                  label={opt.label}
+                  onClick={() => setFilters(f => ({ ...f, [opt.key]: !f[opt.key] }))}
+                  sx={{
+                    borderRadius: '6px',
+                    fontWeight: active ? 700 : 500,
+                    fontSize: '0.75rem',
+                    bgcolor: active ? 'secondary.main' : 'rgba(0,0,0,0.04)',
+                    color: active ? 'white' : 'text.primary',
+                    transition: 'all 0.2s',
+                    border: 'none',
+                    '&:hover': {
+                      bgcolor: active ? 'secondary.dark' : 'rgba(0,0,0,0.08)',
+                    }
+                  }}
+                />
+              );
+            })}
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+
+      {/* Customer Rating */}
+      <Accordion defaultExpanded disableGutters elevation={0} sx={{ bgcolor: 'transparent', '&:before': { display: 'none' }, mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={{ px: 2, minHeight: '40px !important', '& .MuiAccordionSummary-content': { my: '0 !important' } }}>
+          <Typography fontSize="0.75rem" textTransform="uppercase" letterSpacing="0.05em" color="text.secondary" fontWeight={700}>
+            Minimum Rating
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{ px: 2, pt: 0, pb: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            {[4, 3, 2].map(rating => {
+              const active = filters.minRating === rating;
+              const anyActive = filters.minRating > 0;
+              return (
+                <Box
+                  key={rating}
+                  onClick={() => setFilters(f => ({ ...f, minRating: active ? 0 : rating }))}
+                  sx={{
+                    display: 'flex', alignItems: 'center', gap: 1.5,
+                    cursor: 'pointer',
+                    opacity: anyActive && !active ? 0.4 : 1,
+                    transition: 'opacity 0.2s',
+                    '&:hover': { opacity: 1 }
+                  }}
+                >
+                  <Rating value={rating} size="small" readOnly precision={1} sx={{ color: active ? 'secondary.main' : '#faaf00' }} />
                   <Typography
-                    className="label-text"
-                    fontSize="0.78rem"
-                    fontWeight={active ? 700 : 600}
+                    fontSize="0.8rem"
+                    fontWeight={active ? 700 : 500}
                     color={active ? 'secondary.main' : 'text.secondary'}
-                    sx={{ transition: 'color 0.15s' }}
                   >
                     & up
                   </Typography>
                 </Box>
-              </Box>
-            );
-          })}
-        </AccordionDetails>
-      </Accordion>
-
-      {/* ── Offers ── */}
-      <Accordion defaultExpanded disableGutters elevation={0} sx={{ ...SEC_SX, borderBottom: 'none' }}>
-        <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: 18 }} />} sx={SUM_SX}>
-          <Typography fontSize="0.82rem" color="text.primary" sx={{ mb: 0.75, fontWeight: 700 }}>
-            Deals
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails sx={{ px: 1.5, pt: 0, pb: 1.5 }}>
-          {OFFERS.map(opt => {
-            const active = !!filters[opt.key];
-            return (
-              <Box
-                key={opt.key}
-                onClick={() => setFilters(f => ({ ...f, [opt.key]: !f[opt.key] }))}
-                sx={{
-                  display: 'flex', alignItems: 'center', gap: 0.75,
-                  py: 0.55, cursor: 'pointer',
-                  '&:hover .label-text': { color: 'secondary.main' },
-                }}
-              >
-                {/* Toggle-checkbox style — same icon family as Category but different key */}
-                {active
-                  ? <CheckBox sx={{ fontSize: 16, color: 'secondary.main', flexShrink: 0 }} />
-                  : <CheckBoxOutlineBlank sx={{ fontSize: 16, color: 'text.disabled', flexShrink: 0 }} />
-                }
-                <Typography
-                  className="label-text"
-                  fontSize="0.82rem"
-                  fontWeight={active ? 700 : 600}
-                  color={active ? 'secondary.main' : 'text.primary'}
-                  sx={{ transition: 'color 0.15s' }}
-                >
-                  {opt.label}
-                </Typography>
-              </Box>
-            );
-          })}
+              );
+            })}
+          </Box>
         </AccordionDetails>
       </Accordion>
 
@@ -312,12 +283,36 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     categories: searchParams.get('category') ? [searchParams.get('category')] : [],
+    subcategories: searchParams.get('subcategory') ? [searchParams.get('subcategory')] : [],
     priceRange: [0, 10000],
     minRating: 0,
-    onSale: searchParams.get('sort') === 'discount' || false,
+    onSale: searchParams.get('sort') === 'discount' || searchParams.get('filter') === 'sale' || false,
     isNew: searchParams.get('filter') === 'new' || false,
-    isBestSeller: false,
+    isBestSeller: searchParams.get('filter') === 'bestseller' || false,
+    isFeatured: searchParams.get('filter') === 'featured' || false,
   });
+
+  useEffect(() => {
+    const urlCat = searchParams.get('category');
+    const urlSub = searchParams.get('subcategory');
+    if (urlCat || urlSub) {
+      setFilters(prev => {
+        const newCats = urlCat ? [urlCat] : prev.categories;
+        const newSubs = urlSub ? [urlSub] : (urlCat ? [] : prev.subcategories);
+        
+        if (JSON.stringify(prev.categories) === JSON.stringify(newCats) && 
+            JSON.stringify(prev.subcategories) === JSON.stringify(newSubs)) {
+          return prev;
+        }
+        
+        return {
+          ...prev,
+          categories: newCats,
+          subcategories: newSubs
+        };
+      });
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);
@@ -328,11 +323,13 @@ export default function Products() {
   const filteredProducts = useMemo(() => {
     let list = [...products];
     if (filters.categories.length > 0) list = list.filter(p => filters.categories.includes(p.category));
+    if (filters.subcategories && filters.subcategories.length > 0) list = list.filter(p => filters.subcategories.some(sub => p.subcategory?.toLowerCase() === sub.toLowerCase()));
     list = list.filter(p => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]);
     if (filters.minRating > 0) list = list.filter(p => p.rating >= filters.minRating);
     if (filters.onSale) list = list.filter(p => p.discount > 0);
     if (filters.isNew) list = list.filter(p => p.isNew);
-    if (filters.isBestSeller) list = list.filter(p => p.isBestSeller);
+    if (filters.isBestSeller) list = list.slice(0, 8);
+    if (filters.isFeatured) list = list.filter(p => p.isFeatured);
 
     switch (sort) {
       case 'price-asc': list.sort((a, b) => a.price - b.price); break;
@@ -350,20 +347,31 @@ export default function Products() {
 
   const activeFilterCount =
     filters.categories.length +
+    (filters.subcategories ? filters.subcategories.length : 0) +
     (filters.minRating > 0 ? 1 : 0) +
     (filters.onSale ? 1 : 0) +
     (filters.isNew ? 1 : 0) +
-    (filters.isBestSeller ? 1 : 0);
+    (filters.isBestSeller ? 1 : 0) +
+    (filters.isFeatured ? 1 : 0);
 
   const handleSetFilters = f => { setFilters(f); setPage(1); };
   const handleSetSort = v => { setSort(v); setPage(1); };
 
   return (
-    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh' }}>
-      <Container maxWidth="xl" sx={{ py: 3 }}>
+    <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', pt: 0 }}>
+      <Container maxWidth="xl" sx={{ pt: 0, pb: { xs: 1.5, md: 2 } }}>
 
         {/* Page Header */}
-        <Box sx={{ mb: 2.5 }}>
+        <Box sx={{
+          mb: 1.5,
+          position: 'sticky',
+          top: { xs: '70px', sm: '90px' }, // Match actual Navbar height exactly
+          zIndex: 10,
+          bgcolor: '#F8FAFC',
+          pt: 1,
+          pb: 1,
+          mt: -1, // Negate the pt so it doesn't push down the initial layout
+        }}>
           <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 0.5 }}>
             <Typography
               component={Link} to="/"
@@ -373,17 +381,31 @@ export default function Products() {
             </Typography>
             <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>Products</Typography>
           </Breadcrumbs>
-          <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5, flexWrap: 'wrap' }}>
-            <Typography variant="h5" fontWeight={800}>
-              {filters.categories.length === 1 ? filters.categories[0] : 'All Products'}
-            </Typography>
-            <Typography fontSize="0.85rem" color="text.secondary">
-              {filteredProducts.length} results
-            </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', width: '100%' }}>
+            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5 }}>
+              <Typography variant="h5" fontWeight={800}>
+                {(filters.subcategories && filters.subcategories.length === 1) ? filters.subcategories[0] : (filters.categories.length === 1 ? filters.categories[0] : 'All Products')}
+              </Typography>
+              <Typography fontSize="0.85rem" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+                {filteredProducts.length} results
+              </Typography>
+            </Box>
+
+            {/* Category Strip */}
+            <Box sx={{ flex: 1, minWidth: { xs: '100%', sm: 300 }, bgcolor: 'background.paper', borderRadius: 2, overflow: 'hidden' }}>
+              <CategoryStrip 
+                items={
+                  (filters.categories.length === 1 && NAVIGATION_CATEGORIES[filters.categories[0]]) 
+                    ? NAVIGATION_CATEGORIES[filters.categories[0]] 
+                    : CATEGORY_STRIP
+                }
+                parentCategory={filters.categories.length === 1 ? filters.categories[0] : null}
+              />
+            </Box>
           </Box>
 
           {/* Active category chips */}
-          {filters.categories.length > 0 && (
+          {(filters.categories.length > 0 || (filters.subcategories && filters.subcategories.length > 0)) && (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mt: 1 }}>
               {filters.categories.map(c => (
                 <Chip
@@ -393,12 +415,20 @@ export default function Products() {
                   sx={{ fontWeight: 700, fontSize: '0.75rem' }}
                 />
               ))}
+              {filters.subcategories && filters.subcategories.map(c => (
+                <Chip
+                  key={c} label={c} size="small"
+                  onDelete={() => setFilters(f => ({ ...f, subcategories: f.subcategories.filter(x => x !== c) }))}
+                  color="secondary" variant="outlined"
+                  sx={{ fontWeight: 700, fontSize: '0.75rem' }}
+                />
+              ))}
             </Box>
           )}
         </Box>
 
         {/* ── Main Layout ── */}
-        <Box sx={{ display: 'flex', gap: 2.5, alignItems: 'flex-start', flexDirection: { xs: 'column', md: 'row' } }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', flexDirection: { xs: 'column', md: 'row' } }}>
 
           {/* Desktop Sidebar — sticky freeze */}
           {!isMobile && (
@@ -470,8 +500,8 @@ export default function Products() {
                 <Button
                   variant="contained" sx={{ mt: 1 }}
                   onClick={() => setFilters({
-                    categories: [], priceRange: [0, 10000],
-                    minRating: 0, onSale: false, isNew: false, isBestSeller: false,
+                    categories: [], subcategories: [], priceRange: [0, 10000],
+                    minRating: 0, onSale: false, isNew: false, isBestSeller: false, isFeatured: false
                   })}
                 >
                   Clear Filters

@@ -22,7 +22,7 @@ export default function FeaturedProducts({ products }) {
           <Box>
             <Typography variant="h5" fontWeight={800} sx={{ color: '#111111', fontSize: { xs: '1.2rem', md: '1.5rem' }, letterSpacing: -0.2 }}>Featured Products</Typography>
           </Box>
-          <ViewAllButton to="/products" label="See All" />
+          <ViewAllButton to="/products?filter=featured" label="See All" />
         </Box>
         <Box sx={{ position: 'relative', display: 'flex' }}>
           

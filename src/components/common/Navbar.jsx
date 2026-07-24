@@ -24,14 +24,13 @@ import {
   NAV_COLORS as C,
 } from '../../context/NavbarContext';
 import logoImg from '../../assets/logo.png';
-import CategoryStrip from './CategoryStrip';
 
 /* ═══════════════════════════════════════════════════════════════
    Navbar
 ═══════════════════════════════════════════════════════════════ */
 export default function Navbar() {
   const theme    = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   /* External contexts */
   const { totalItems }              = useCart();
@@ -81,6 +80,12 @@ export default function Navbar() {
     setAccountAnchor(null);
   };
 
+  const hasImageSlider = location.pathname === '/' || location.pathname === '/womens-workwear';
+  const isSolidNavbar = !hasImageSlider || scrolled;
+
+  const navTextColor = '#ffffff';
+  const navTextSecond = 'rgba(255,255,255,0.85)';
+
   /* ── render ── */
   return (
     <>
@@ -89,137 +94,225 @@ export default function Navbar() {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: scrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          color: C.textPrimary,
+          bgcolor: isSolidNavbar ? 'secondary.main' : 'transparent',
+          backdropFilter: isSolidNavbar ? 'blur(16px)' : 'none',
+          WebkitBackdropFilter: isSolidNavbar ? 'blur(16px)' : 'none',
+          color: navTextColor,
           zIndex: 1100,
-          borderBottom: `1px solid ${scrolled ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)'}`,
-          boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.05)' : 'none',
-          transition: 'all 0.3s ease',
+          borderBottom: isSolidNavbar ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+          boxShadow: scrolled ? '0 8px 32px rgba(0, 0, 0, 0.2)' : 'none',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         {/* ── TOP ROW ── */}
         <Container maxWidth="xl">
           <Toolbar
             sx={{
-              py: 0.5,
+              py: { xs: 1.5, sm: 0.5 },
               gap: 1.5,
-              minHeight: { xs: 52, md: 58 },
+              minHeight: { xs: 70, sm: 90 },
               justifyContent: 'space-between',
-              position: 'relative', 
+              position: 'relative',
+              flexWrap: { xs: 'wrap', sm: 'nowrap' }, // Allow wrapping only on mobile (xs)
             }}
           >
 
             {/* Mobile hamburger */}
             {isMobile && (
-              <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: C.textPrimary, mr: -0.5 }}>
-                <MenuIcon />
+              <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: navTextColor, mr: -0.5, order: 1 }}>
+                <MenuIcon sx={{ fontSize: 28 }} />
               </IconButton>
             )}
 
             {/* Logo */}
-            <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-              <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 28, md: 32 }, width: 'auto', objectFit: 'contain' }} />
+            <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, mr: { sm: 2 }, order: 2 }}>
+              <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 40, sm: 50 }, width: 'auto', objectFit: 'contain' }} />
             </Box>
 
-            {/* ── SEARCH BAR — absolutely centered on desktop regardless of side widths ── */}
+            {/* All Categories (Desktop Top Row) */}
+            {!isMobile && (
+              <Box sx={{ zIndex: 10, order: 3, mr: { sm: 2 } }}>
+                <Button
+                  id="all-departments-btn"
+                  onClick={(e) => setAllDeptsAnchor(e.currentTarget)}
+                  disableRipple
+                  startIcon={<MenuIcon sx={{ fontSize: 22 }} />}
+                  endIcon={
+                    <KeyboardArrowDown
+                      sx={{
+                        fontSize: 22,
+                        transition: 'transform 0.2s',
+                        transform: Boolean(allDeptsAnchor) ? 'rotate(180deg)' : 'none',
+                      }}
+                    />
+                  }
+                  sx={{
+                    position: 'relative',
+                    color: navTextColor,
+                    fontWeight: 800,
+                    fontSize: '1rem',
+                    textTransform: 'none',
+                    px: 1,
+                    py: 0.5,
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                    minWidth: 'auto',
+                    '&:hover': { bgcolor: 'transparent' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: '2px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: 0,
+                      height: '2px',
+                      bgcolor: 'currentColor',
+                      transition: 'width 0.3s ease',
+                      borderRadius: '2px',
+                    },
+                    '&:hover::after': { width: '80%' },
+                    '& .MuiButton-startIcon': { marginRight: '6px' },
+                    '& .MuiButton-endIcon': { marginLeft: '4px' }
+                  }}
+                >
+                  All Categories
+                </Button>
+
+                <Popover
+                  anchorEl={allDeptsAnchor}
+                  open={Boolean(allDeptsAnchor)}
+                  onClose={() => setAllDeptsAnchor(null)}
+                  PaperProps={{
+                    sx: {
+                      mt: 1.5,
+                      width: 480,
+                      height: 350,
+                      borderRadius: 2,
+                      bgcolor: 'rgba(255, 255, 255, 0.85)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                      border: `1px solid rgba(255, 255, 255, 0.3)`,
+                      overflow: 'hidden',
+                    },
+                  }}
+                  transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
+                    {/* Left Column: Categories List */}
+                    <Box sx={{ width: '200px', borderRight: `1px solid rgba(0,0,0,0.06)`, overflowY: 'auto', bgcolor: 'rgba(0,0,0,0.02)', py: 1, flexShrink: 0 }}>
+                      {Object.keys(NAVIGATION_CATEGORIES).map((cat) => (
+                        <Box
+                          key={cat}
+                          onMouseEnter={() => setActiveCat(cat)}
+                          component={Link}
+                          to={`/products?category=${encodeURIComponent(cat)}`}
+                          onClick={() => setAllDeptsAnchor(null)}
+                          sx={{
+                            px: 2,
+                            py: 1.25,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            textDecoration: 'none',
+                            color: activeCat === cat ? C.accent : C.textPrimary,
+                            bgcolor: activeCat === cat ? C.accentHover : 'transparent',
+                            fontWeight: activeCat === cat ? 700 : 500,
+                            fontSize: '0.85rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s',
+                            '&:hover': {
+                              bgcolor: C.accentHover,
+                              color: 'secondary.main',
+                            }
+                          }}
+                        >
+                          <span>{cat}</span>
+                          <ChevronRight sx={{ fontSize: 16, opacity: 0.7 }} />
+                        </Box>
+                      ))}
+                    </Box>
+
+                    {/* Right Column: Subcategories List */}
+                    <Box sx={{ flex: 1, overflowY: 'auto', py: 1.5, px: 2, bgcolor: 'transparent' }}>
+                      {NAVIGATION_CATEGORIES[activeCat]?.map((sub) => (
+                        <Box
+                          key={sub}
+                          component={Link}
+                          to={`/products?category=${encodeURIComponent(activeCat)}&subcategory=${encodeURIComponent(sub)}`}
+                          onClick={() => setAllDeptsAnchor(null)}
+                          sx={{
+                            px: 2,
+                            py: 1,
+                            borderRadius: 1.5,
+                            display: 'block',
+                            textDecoration: 'none',
+                            color: C.textPrimary,
+                            fontSize: '0.85rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'background-color 0.15s, color 0.15s',
+                            '&:hover': {
+                              bgcolor: 'rgba(0,0,0,0.04)',
+                              color: 'secondary.main',
+                            }
+                          }}
+                        >
+                          {sub}
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                </Popover>
+              </Box>
+            )}
+
+            {/* ── SEARCH BAR — Moved near logo ── */}
             <Box
               sx={{
-                /* Mobile: normal flex item, shares row with logo + actions */
-                /* Desktop: pulled out of flex flow, centered against the Toolbar itself */
-                position: { xs: 'static', md: 'absolute' },
-                left: { md: '50%' },
-                transform: { md: 'translateX(-50%)' },
-                width: { xs: 'auto', md: 560 },
-                maxWidth: { xs: 'none', md: '42%' },
-                flex: { xs: '1 1 auto', md: 'none' },
-                mx: { xs: 1, md: 0 },
+                width: { xs: '100%', sm: 220, md: 250, lg: 350 },
+                flex: { xs: '1 1 100%', sm: 'none' },
+                mx: 0,
+                mr: { sm: 2 }, // Space before action icons
+                mt: { xs: 1, sm: 0 }, // Add margin top when wrapped on xs
                 display: 'flex',
                 alignItems: 'center',
-                bgcolor: scrolled ? C.bg : 'rgba(255, 255, 255, 0.55)',
-                borderRadius: '24px',
-                border: '1.5px solid transparent',
+                order: 4, // Comes after Logo (2) and All Categories (3)
+
+                bgcolor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                border: '1px solid transparent',
                 overflow: 'hidden',
                 transition: 'all 0.2s',
+                '&:hover': {
+                  bgcolor: 'rgba(255, 255, 255, 0.15)',
+                },
                 '&:focus-within': {
-                  border: `1.5px solid ${C.border}`,
-                  bgcolor: C.white,
-                  boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
                 },
               }}
             >
-              {/* Department mini-selector (desktop only) */}
-              {!isMobile && (
-                <>
-                  <Button
-                    id="dept-select-btn"
-                    onClick={(e) => setDeptMenuAnchor(e.currentTarget)}
-                    endIcon={<KeyboardArrowDown sx={{ fontSize: 14 }} />}
-                    sx={{
-                      color: C.textSecond,
-                      fontWeight: 500,
-                      fontSize: '0.78rem',
-                      textTransform: 'none',
-                      px: 1.5,
-                      py: 1.1,
-                      borderRadius: 0,
-                      flexShrink: 0,
-                      whiteSpace: 'nowrap',
-                      borderRight: `1px solid ${C.border}`,
-                      '&:hover': { bgcolor: '#EFEFEF', color: C.textPrimary },
-                    }}
-                  >
-                    {selectedDept}
-                  </Button>
-                  <Menu
-                    anchorEl={deptMenuAnchor}
-                    open={Boolean(deptMenuAnchor)}
-                    onClose={() => setDeptMenuAnchor(null)}
-                    PaperProps={{
-                      sx: { mt: 0.5, borderRadius: 2, minWidth: 180, boxShadow: '0 4px 20px rgba(0,0,0,0.1)', border: `1px solid ${C.border}` },
-                    }}
-                  >
-                    {DEPT_SELECT_OPTIONS.map((d) => (
-                      <MenuItem
-                        key={d}
-                        selected={selectedDept === d}
-                        onClick={() => { setSelectedDept(d); setDeptMenuAnchor(null); }}
-                        sx={{
-                          fontSize: '0.85rem',
-                          py: 0.9,
-                          fontWeight: selectedDept === d ? 600 : 400,
-                          color: selectedDept === d ? C.accent : C.textPrimary,
-                          '&.Mui-selected': { bgcolor: C.accentHover },
-                          '&:hover': { bgcolor: C.accentHover, color: C.accent },
-                        }}
-                      >
-                        {d}
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </>
-              )}
-
               <InputBase
-                placeholder="Search Here ..!"
+                placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearch}
-                sx={{ flex: 1, px: 2, fontSize: '0.9rem', color: C.textPrimary }}
+                sx={{ flex: 1, px: 2.5, py: 0.7, fontSize: '0.9rem', color: navTextColor, '& input::placeholder': { color: 'rgba(255,255,255,0.6)', opacity: 1 } }}
                 inputProps={{ id: 'navbar-search-input' }}
               />
 
               <IconButton
                 onClick={handleSearchClick}
-                sx={{ px: 1.5, borderRadius: 0, color: C.textSecond, '&:hover': { color: C.accent, bgcolor: 'transparent' } }}
+                sx={{ px: 2, borderRadius: 0, color: navTextColor, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.15)', bgcolor: 'transparent' } }}
               >
                 <Search sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
 
             {/* ── ACTION ICONS (far right) ── */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.25, md: 0.5 }, flexShrink: 0, ml: 'auto' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.25, sm: 0.5 }, flexShrink: 0, ml: 'auto', order: 5 }}>
 
               {/* Log in / Account */}
               {isLoggedIn ? (
@@ -227,12 +320,12 @@ export default function Navbar() {
                   <Button
                     id="account-btn"
                     onClick={(e) => setAccountAnchor(e.currentTarget)}
-                    startIcon={<Avatar src={user?.avatar} sx={{ width: 22, height: 22 }} />}
-                    endIcon={<KeyboardArrowDown sx={{ fontSize: 14 }} />}
+                    startIcon={<AccountCircle sx={{ fontSize: 26 }} />}
+                    endIcon={<KeyboardArrowDown sx={{ fontSize: 20 }} />}
                     sx={{
-                      color: C.textPrimary, fontWeight: 500, fontSize: '0.85rem', textTransform: 'none',
+                      color: navTextColor, fontWeight: 500, fontSize: '1rem', textTransform: 'none',
                       display: { xs: 'none', sm: 'flex' }, borderRadius: 2, px: 1.2,
-                      '&:hover': { bgcolor: C.bg },
+                      '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent' }
                     }}
                   >
                     {user?.name?.split(' ')[0]}
@@ -266,34 +359,17 @@ export default function Navbar() {
                   </Menu>
                 </>
               ) : (
-                <Button
-                  id="login-btn"
-                  onClick={() => { setAuthModalTab('login'); setAuthModalOpen(true); }}
-                  startIcon={<Person sx={{ fontSize: 20 }} />}
-                  endIcon={<KeyboardArrowDown sx={{ fontSize: 14 }} />}
-                  sx={{
-                    color: C.textPrimary, fontWeight: 500, fontSize: '0.85rem', textTransform: 'none',
-                    display: { xs: 'none', sm: 'flex' }, borderRadius: 2, px: 1.2,
-                    '&:hover': { bgcolor: C.bg },
-                  }}
-                >
-                  Log in
-                </Button>
+                <Tooltip title="Log In">
+                  <IconButton
+                    id="login-btn"
+                    onClick={() => { setAuthModalTab('login'); setAuthModalOpen(true); }}
+                    sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
+                  >
+                    <Person sx={{ fontSize: 28 }} />
+                  </IconButton>
+                </Tooltip>
               )}
 
-              {/* Notifications — requires login; opens modal if not authenticated */}
-              <Tooltip title="Notifications">
-                <IconButton
-                  id="notifications-btn"
-                  onClick={() => {
-                    if (isLoggedIn) navigate('/account?tab=notifications');
-                    else { setAuthModalTab('login'); setAuthModalOpen(true); }
-                  }}
-                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
-                >
-                  <NotificationsNone sx={{ fontSize: 22 }} />
-                </IconButton>
-              </Tooltip>
 
               {/* Wishlist — always navigable; Wishlist page handles empty state */}
               <Tooltip title="Wishlist">
@@ -301,10 +377,10 @@ export default function Navbar() {
                   id="wishlist-btn"
                   component={Link}
                   to="/wishlist"
-                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
+                  sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
                 >
-                  <Badge badgeContent={wishlist.length} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 15, height: 15 } }}>
-                    <FavoriteBorder sx={{ fontSize: 22 }} />
+                  <Badge badgeContent={wishlist.length} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18 } }}>
+                    <FavoriteBorder sx={{ fontSize: 28 }} />
                   </Badge>
                 </IconButton>
               </Tooltip>
@@ -315,10 +391,10 @@ export default function Navbar() {
                   id="cart-btn"
                   component={Link}
                   to="/cart"
-                  sx={{ color: C.textSecond, '&:hover': { bgcolor: C.bg, color: C.textPrimary } }}
+                  sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
                 >
-                  <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 15, height: 15, bgcolor: 'secondary.main' } }}>
-                    <ShoppingCartOutlined sx={{ fontSize: 22 }} />
+                  <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18, bgcolor: isSolidNavbar ? 'white' : 'secondary.main', color: isSolidNavbar ? 'secondary.main' : 'white', boxShadow: '0 0 10px rgba(255,255,255,0.3)' } }}>
+                    <ShoppingCartOutlined sx={{ fontSize: 28 }} />
                   </Badge>
                 </IconButton>
               </Tooltip>
@@ -327,151 +403,7 @@ export default function Navbar() {
           </Toolbar>
         </Container>
 
-        {/* ── CATEGORY STRIP (Desktop) ── */}
-        {!isMobile && (
-          <Box sx={{ bgcolor: 'transparent', borderTop: 'none', overflow: 'hidden' }}>
-            <Container maxWidth="xl">
-              <Box sx={{ display: 'flex', alignItems: 'center', py: 0.6, position: 'relative' }}>
-              {/* All Categories button (minimalistic design) */}
-              <Button
-                id="all-departments-btn"
-                onClick={(e) => setAllDeptsAnchor(e.currentTarget)}
-                disableRipple
-                startIcon={<MenuIcon sx={{ fontSize: 18 }} />}
-                endIcon={
-                  <KeyboardArrowDown
-                    sx={{
-                      fontSize: 18,
-                      transition: 'transform 0.2s',
-                      transform: Boolean(allDeptsAnchor) ? 'rotate(180deg)' : 'none',
-                    }}
-                  />
-                }
-                sx={{
-                  color: C.textPrimary,
-                  fontWeight: 800,
-                  fontSize: '0.85rem',
-                  textTransform: 'none',
-                  px: 1,
-                  py: 0.5,
-                  mr: 2,
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap',
-                  minWidth: 'auto',
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                    color: C.accent,
-                  },
-                  '& .MuiButton-startIcon': {
-                    marginRight: '6px',
-                  },
-                  '& .MuiButton-endIcon': {
-                    marginLeft: '4px',
-                  }
-                }}
-              >
-                All Categories
-              </Button>
 
-              {/* All Categories dropdown */}
-              <Popover
-                anchorEl={allDeptsAnchor}
-                open={Boolean(allDeptsAnchor)}
-                onClose={() => setAllDeptsAnchor(null)}
-                PaperProps={{
-                  sx: {
-                    mt: 0.5,
-                    width: 480,
-                    height: 350,
-                    borderRadius: 2,
-                    bgcolor: 'rgba(255, 255, 255, 0.85)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    border: `1px solid rgba(255, 255, 255, 0.3)`,
-                    overflow: 'hidden',
-                  },
-                }}
-                transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-              >
-                <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
-                  {/* Left Column: Categories List */}
-                  <Box sx={{ width: '200px', borderRight: `1px solid rgba(0,0,0,0.06)`, overflowY: 'auto', bgcolor: 'rgba(0,0,0,0.02)', py: 1, flexShrink: 0 }}>
-                    {Object.keys(NAVIGATION_CATEGORIES).map((cat) => (
-                      <Box
-                        key={cat}
-                        onMouseEnter={() => setActiveCat(cat)}
-                        component={Link}
-                        to={`/products?category=${encodeURIComponent(cat)}`}
-                        onClick={() => setAllDeptsAnchor(null)}
-                        sx={{
-                          px: 2,
-                          py: 1.25,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          textDecoration: 'none',
-                          color: activeCat === cat ? C.accent : C.textPrimary,
-                          bgcolor: activeCat === cat ? C.accentHover : 'transparent',
-                          fontWeight: activeCat === cat ? 700 : 500,
-                          fontSize: '0.85rem',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s',
-                          '&:hover': {
-                            bgcolor: C.accentHover,
-                            color: 'secondary.main',
-                          }
-                        }}
-                      >
-                        <span>{cat}</span>
-                        <ChevronRight sx={{ fontSize: 16, opacity: 0.7 }} />
-                      </Box>
-                    ))}
-                  </Box>
-
-                  {/* Right Column: Subcategories List */}
-                  <Box sx={{ flex: 1, overflowY: 'auto', py: 1.5, px: 2, bgcolor: 'transparent' }}>
-                    {NAVIGATION_CATEGORIES[activeCat]?.map((sub) => (
-                      <Box
-                        key={sub}
-                        component={Link}
-                        to={`/products?category=${encodeURIComponent(activeCat)}&subcategory=${encodeURIComponent(sub)}`}
-                        onClick={() => setAllDeptsAnchor(null)}
-                        sx={{
-                          px: 2,
-                          py: 1,
-                          borderRadius: 1.5,
-                          display: 'block',
-                          textDecoration: 'none',
-                          color: C.textPrimary,
-                          fontSize: '0.85rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          transition: 'background-color 0.15s, color 0.15s',
-                          '&:hover': {
-                            bgcolor: 'rgba(0,0,0,0.04)',
-                            color: 'secondary.main',
-                          }
-                        }}
-                      >
-                        {sub}
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              </Popover>
-
-              {/* Divider */}
-              <Box sx={{ width: '1px', height: 18, bgcolor: C.border, mr: 1.5, flexShrink: 0 }} />
-
-              {/* Scrollable Category Links */}
-              <CategoryStrip />
-
-            </Box>
-            </Container>
-          </Box>
-        )}
       </AppBar>
 
       {/* ══════════════ MOBILE DRAWER ══════════════ */}

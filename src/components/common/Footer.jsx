@@ -39,7 +39,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ bgcolor: '#0F172A', color: 'white', mt: 'auto' }}>
+    <Box component="footer" sx={{ bgcolor: 'secondary.main', color: 'white', mt: 'auto' }}>
 
       {/* Main Footer */}
       <Container maxWidth="xl" sx={{ py: 6 }}>

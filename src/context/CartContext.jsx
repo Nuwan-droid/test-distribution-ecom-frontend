@@ -5,27 +5,28 @@ const CartContext = createContext();
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART': {
-      const existing = state.items.find(i => i.id === action.payload.id);
+      const cartItemId = action.payload.selectedSize ? `${action.payload.id}-${action.payload.selectedSize}` : action.payload.id;
+      const existing = state.items.find(i => (i.cartItemId || i.id) === cartItemId);
       if (existing) {
         return {
           ...state,
           items: state.items.map(i =>
-            i.id === action.payload.id ? { ...i, quantity: i.quantity + 1 } : i
+            (i.cartItemId || i.id) === cartItemId ? { ...i, quantity: i.quantity + 1 } : i
           ),
         };
       }
-      return { ...state, items: [...state.items, { ...action.payload, quantity: 1 }] };
+      return { ...state, items: [...state.items, { ...action.payload, quantity: 1, cartItemId }] };
     }
     case 'REMOVE_FROM_CART':
-      return { ...state, items: state.items.filter(i => i.id !== action.payload) };
+      return { ...state, items: state.items.filter(i => (i.cartItemId || i.id) !== action.payload) };
     case 'UPDATE_QUANTITY':
       if (action.payload.quantity <= 0) {
-        return { ...state, items: state.items.filter(i => i.id !== action.payload.id) };
+        return { ...state, items: state.items.filter(i => (i.cartItemId || i.id) !== action.payload.id) };
       }
       return {
         ...state,
         items: state.items.map(i =>
-          i.id === action.payload.id ? { ...i, quantity: action.payload.quantity } : i
+          (i.cartItemId || i.id) === action.payload.id ? { ...i, quantity: action.payload.quantity } : i
         ),
       };
     case 'CLEAR_CART':

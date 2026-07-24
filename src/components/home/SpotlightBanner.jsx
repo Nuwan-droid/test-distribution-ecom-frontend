@@ -35,7 +35,7 @@ export default function SpotlightBanner() {
   ];
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: { xs: 2, md: 3, lg: 4 }, p: { xs: 2, md: 4, lg: 6 } }}>
           {banners.map((banner) => (
               <Box
                 key={banner.id}
@@ -46,12 +46,23 @@ export default function SpotlightBanner() {
                   bgcolor: banner.bgColor,
                   minHeight: { xs: 280, sm: 320, md: 380, lg: 450, xl: 500 },
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  borderRadius: '24px',
+                  boxShadow: '0 10px 40px -10px rgba(0,0,0,0.1)',
+                  transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s',
+                  '&:hover': {
+                    transform: 'translateY(-6px)',
+                    boxShadow: '0 20px 50px -10px rgba(0,0,0,0.2)',
+                  },
+                  '&:hover .spotlight-img': {
+                    transform: 'scale(1.08)'
+                  }
                 }}
               >
                 {/* Background Image */}
                 <Box
                   component="img"
+                  className="spotlight-img"
                   src={banner.image}
                   alt={banner.title}
                   loading="lazy"
@@ -63,8 +74,7 @@ export default function SpotlightBanner() {
                     objectFit: 'cover',
                     objectPosition: 'center',
                     display: 'block',
-                    transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    '&:hover': { transform: 'scale(1.05)' },
+                    transition: 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   }}
                 />
 
@@ -108,11 +118,11 @@ export default function SpotlightBanner() {
                           color: '#FFFFFF',
                           display: 'flex',
                           alignItems: 'baseline',
-                          gap: 1
+                          gap: 1,
+                          textShadow: '0 4px 12px rgba(0,0,0,0.15)'
                         }}
                       >
                         Women's Fashion
-                       
                       </Typography>
                     </Box>
                   ) : (
@@ -125,6 +135,7 @@ export default function SpotlightBanner() {
                         color: banner.titleColor,
                         mb: 2.5,
                         whiteSpace: 'pre-line',
+                        textShadow: '0 4px 12px rgba(0,0,0,0.15)'
                       }}
                     >
                       {banner.title}
@@ -140,18 +151,19 @@ export default function SpotlightBanner() {
                       color: '#FFFFFF',
                       px: { xs: 3, md: 4 },
                       py: { xs: 1, md: 1.25 },
-                      borderRadius: 1,
+                      borderRadius: '30px',
                       textTransform: 'none',
-                      fontWeight: 700,
+                      fontWeight: 800,
                       fontSize: { xs: '0.85rem', md: '0.95rem' },
                       width: 'fit-content',
-                      boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                      boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+                      backdropFilter: 'blur(10px)',
                       '&:hover': {
-                        bgcolor: '#111111',
-                        boxShadow: '0 6px 18px rgba(0,0,0,0.25)',
-                        transform: 'translateY(-2px)',
+                        bgcolor: 'primary.main',
+                        boxShadow: '0 12px 28px rgba(0,0,0,0.3)',
+                        transform: 'translateY(-3px) scale(1.02)',
                       },
-                      transition: 'all 0.2s ease',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   >
                     {banner.btnLabel}

@@ -42,247 +42,236 @@ export default function ProductCard({ product, hideOriginalPrice = false }) {
         bgcolor: '#ffffff',
         position: 'relative',
         width: '100%',
-        height: '100%', // Changed from fixed 410px to stretch within Grid
+        height: '100%',
         minHeight: { xs: '380px', sm: '410px' },
         boxSizing: 'border-box',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        borderRadius: '16px',
+        border: '1px solid rgba(0,0,0,0.05)',
+        overflow: 'hidden',
+        transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         '&:hover': {
-          boxShadow: '0 6px 20px rgba(0,0,0,0.06)',
-          transform: 'translateY(-2px)',
+          boxShadow: '0 15px 35px rgba(0,0,0,0.06)',
+          transform: 'translateY(-6px)',
+          border: '1px solid rgba(0,0,0,0.08)',
+        },
+        '&:hover .product-img': {
+          transform: 'scale(1.06)'
+        },
+        '&:hover .add-btn': {
+          opacity: 1,
+          transform: 'translateY(0)',
         }
       }}
     >
-      {/* Top Box with Blue Border */}
+      {/* ===== Image Section ===== */}
       <Box sx={{
-        border: '1px solid',
-        borderColor: 'secondary.main',
-        p: 1.5,
         position: 'relative',
-        bgcolor: '#ffffff'
+        width: '100%',
+        height: '240px',
+        bgcolor: '#fafafa',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
       }}>
-        {/* ===== Wishlist Icon (Top Right) ===== */}
+        {/* Badges */}
+        <Box sx={{ position: 'absolute', top: 14, left: 14, zIndex: 4, display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start' }}>
+          {product.isNew && (
+            <Box
+              sx={{
+                bgcolor: 'secondary.main',
+                color: 'white',
+                px: 1.5,
+                py: 0.5,
+                fontSize: '0.65rem',
+                fontWeight: 800,
+                borderRadius: '20px',
+                letterSpacing: '0.05em',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+              }}
+            >
+              NEW
+            </Box>
+          )}
+          {product.stock === 0 && (
+            <Box
+              sx={{
+                bgcolor: 'secondary.main',
+                color: 'white',
+                px: 1.2,
+                py: 0.4,
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                borderRadius: '20px',
+                boxShadow: '0 2px 10px rgba(255, 77, 79, 0.2)'
+              }}
+            >
+              Out of Stock
+            </Box>
+          )}
+        </Box>
+
+        {/* Wishlist Icon */}
         <Tooltip title={inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'} placement="left">
           <Box
             onClick={handleToggleWishlist}
             sx={{
               position: 'absolute',
-              top: 16,
-              right: 16,
-              zIndex: 3,
+              top: 14,
+              right: 14,
+              zIndex: 4,
               cursor: 'pointer',
-              color: inWishlist ? 'secondary.main' : '#000000',
-              width: '32px',
-              height: '32px',
+              color: inWishlist ? '#ff4d4f' : '#333333',
+              width: '36px',
+              height: '36px',
               borderRadius: '50%',
-              bgcolor: '#ffffff',
+              bgcolor: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(8px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
               transition: 'all 0.2s',
               '&:hover': {
-                bgcolor: '#f5f5f5',
-                transform: 'scale(1.08)'
+                bgcolor: '#ffffff',
+                transform: 'scale(1.12)'
               }
             }}
           >
             {inWishlist ? (
-              <Favorite sx={{ fontSize: 18, color: 'secondary.main' }} />
+              <Favorite sx={{ fontSize: 18, color: '#ff4d4f' }} />
             ) : (
-              <FavoriteBorder sx={{ fontSize: 18, color: '#000000' }} />
+              <FavoriteBorder sx={{ fontSize: 18 }} />
             )}
           </Box>
         </Tooltip>
 
-        {/* ===== Image Section ===== */}
+        {/* Product Image */}
         <Box
+          component="img"
+          className="product-img"
+          src={product.image}
+          alt={product.name}
           sx={{
             width: '100%',
-            height: '200px', // Adjusted slightly to fit the double padding
+            height: '100%',
+            objectFit: 'contain',
+            mixBlendMode: 'multiply',
+            transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            p: 1.5,
+          }}
+        />
+
+        {/* Floating Add to Cart Button */}
+        <Box
+          className="add-btn"
+          sx={{
+            position: 'absolute',
+            bottom: 16,
+            left: 0,
+            right: 0,
             display: 'flex',
-            alignItems: 'center',
             justifyContent: 'center',
-            bgcolor: '#ffffff',
-            overflow: 'hidden',
-            position: 'relative'
+            opacity: { xs: 1, md: 0 },
+            transform: { xs: 'none', md: 'translateY(15px)' },
+            transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            zIndex: 4,
           }}
         >
-          <Box sx={{ position: 'absolute', top: 12, left: 12, zIndex: 4, display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start' }}>
-            {product.isNew && (
-              <Box
-                sx={{
-                  bgcolor: '#000000',
-                  color: 'white',
-                  px: 1.5,
-                  py: 0.25,
-                  fontSize: '0.7rem',
-                  fontWeight: 800,
-                  fontFamily: '"Inter", sans-serif',
-                  borderRadius: 10,
-                  letterSpacing: '0.05em'
-                }}
-              >
-                NEW
-              </Box>
-            )}
-            {product.stock === 0 && (
-              <Box
-                sx={{
-                  bgcolor: 'secondary.main',
-                  color: 'white',
-                  px: 1,
-                  py: 0.25,
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  fontFamily: '"Inter", sans-serif',
-                  borderRadius: 1,
-                }}
-              >
-                Out of Stock
-              </Box>
-            )}
-          </Box>
-          <Box
-            component="img"
-            src={product.image}
-            alt={product.name}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              mixBlendMode: 'multiply' // support blending transparent pngs nicely
-            }}
-          />
-        </Box>
-      </Box>
-
-      {/* Bottom Box with Grey Border */}
-      <Box sx={{
-        border: '1px solid',
-        borderColor: 'divider',
-        borderTop: 'none',
-        p: 1.5,
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        {/* ===== Button Section (Directly under image) ===== */}
-        <Box sx={{ mb: 1 }}>
           <Button
             onClick={handleAddToCart}
-            variant="outlined"
+            variant="contained"
             sx={{
-              textTransform: 'none',
-              borderRadius: '20px',
-              borderColor: '#222222',
-              color: '#222222',
+              bgcolor: 'rgba(255, 255, 255, 0.95)',
+              color: '#111111',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '30px',
               fontWeight: 700,
-              fontSize: '0.85rem',
-              py: '3px',
-              px: '14px',
-              height: '30px',
-              width: 'fit-content',
+              fontSize: '0.8rem',
+              py: 0.8,
+              px: 3.5,
+              textTransform: 'none',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
               '&:hover': {
-                borderColor: '#000000',
-                bgcolor: '#f5f5f5',
+                bgcolor: '#111111',
+                color: '#ffffff',
               }
             }}
           >
-            + Add
+            Add to Cart
           </Button>
         </Box>
+      </Box>
 
-        {/* ===== Content Section ===== */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          
-          {/* Sponsored / Brand Label */}
-          <Typography
-            variant="caption"
-            sx={{
-              color: '#757575',
-              fontSize: '0.75rem',
-              fontFamily: '"Inter", sans-serif',
-              mb: 0.25,
-              height: '16px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {product.brand ? product.brand : 'Sponsored'}
-          </Typography>
+      {/* ===== Content Section ===== */}
+      <Box sx={{
+        p: 1.5,
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: '#ffffff'
+      }}>
+        <Typography
+          variant="caption"
+          sx={{
+            color: '#888888',
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            mb: 0.5,
+            height: '16px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {product.brand ? product.brand : 'Sponsored'}
+        </Typography>
 
-          {/* Pricing Layout */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', mb: 0.5, height: '40px', justifyContent: 'center' }}>
-            {isOnSale ? (
-              <Box sx={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', gap: 0.5 }}>
-                <Typography
-                  component="span"
-                  sx={{
-                    color: '#2e7d32',
-                    fontWeight: 800,
-                    fontSize: '1.25rem',
-                    lineHeight: 1
-                  }}
-                >
-                  ${dollars}
-                  <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
-                    {cents}
-                  </Box>
-                </Typography>
-                {!hideOriginalPrice && product.originalPrice && (
-                  <Typography
-                    component="span"
-                    sx={{
-                      color: '#757575',
-                      textDecoration: 'line-through',
-                      fontSize: '0.85rem',
-                      ml: 1
-                    }}
-                  >
-                    ${product.originalPrice.toFixed(2)}
-                  </Typography>
-                )}
-              </Box>
-            ) : (
-              <Typography
-                sx={{
-                  color: '#000000',
-                  fontWeight: 800,
-                  fontSize: '1.25rem',
-                  lineHeight: 1
-                }}
-              >
+        <Typography
+          sx={{
+            fontSize: '0.95rem',
+            fontWeight: 500,
+            lineHeight: 1.4,
+            color: '#111111',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            wordBreak: 'break-word',
+            mb: 1,
+            width: '100%',
+          }}
+        >
+          {product.name}
+        </Typography>
+
+        {/* Pricing Layout */}
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+          {isOnSale ? (
+            <>
+              <Typography sx={{ color: 'green', fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
                 ${dollars}
                 <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
                   {cents}
                 </Box>
               </Typography>
-            )}
-          </Box>
-
-
-          {/* Product Title (At the very bottom) */}
-          <Typography
-            sx={{
-              fontSize: '0.875rem',
-              fontWeight: 400,
-              lineHeight: 1.35,
-              color: '#222222',
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 2,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              wordBreak: 'break-word',
-              height: '38px',
-              mt: 0.5,
-              mb: 0.5
-            }}
-          >
-            {product.name}
-          </Typography>
-
+              {!hideOriginalPrice && product.originalPrice && (
+                <Typography sx={{ color: '#999999', textDecoration: 'line-through', fontSize: '0.85rem', fontWeight: 500 }}>
+                  ${product.originalPrice.toFixed(2)}
+                </Typography>
+              )}
+            </>
+          ) : (
+            <Typography sx={{ color: '#111111', fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
+              ${dollars}
+              <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
+                {cents}
+              </Box>
+            </Typography>
+          )}
         </Box>
       </Box>
     </Box>

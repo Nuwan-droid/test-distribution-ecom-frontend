@@ -25,7 +25,7 @@ export default function HotSellingProducts({ products }) {
           <Typography variant="h5" fontWeight={800} sx={{ color: '#333333', fontSize: { xs: '1.2rem', md: '1.5rem' }, letterSpacing: -0.2 }}>
             Hot selling product
           </Typography>
-          <ViewAllButton to="/products" label="View all" />
+          <ViewAllButton to="/products?filter=bestseller" label="View all" />
         </Box>
 
         <Box sx={{ position: 'relative', display: 'flex' }}>

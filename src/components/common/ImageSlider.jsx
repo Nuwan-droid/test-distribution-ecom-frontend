@@ -21,7 +21,7 @@ export default function HomeImageSlider({ customBanners }) {
   /* Autoplay — restarts cleanly on every manual change */
   useEffect(() => {
     if (banners.length <= 1) return;
-    const timer = setInterval(goNext, 4500);
+    const timer = setInterval(goNext, 10000);
     return () => clearInterval(timer);
   }, [currentBanner, banners.length]);
 
@@ -32,34 +32,31 @@ export default function HomeImageSlider({ customBanners }) {
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        height: { xs: '35vh', sm: '40vh', md: '50vh', lg: '60vh', xl: '65vh' },
-        minHeight: { xs: 280, md: 320 }, // Ensure it never gets too small on tiny screens
-        pt: { xs: 9, md: 12 }, // Padding to cover the smaller nav bar area
+        height: { xs: '40vh', sm: '50vh', md: '55vh', lg: '60vh', xl: '65vh' },
+        minHeight: { xs: 300, md: 400 }, // Ensure it never gets too small on tiny screens
+        pt: 0, // Padding to cover the smaller nav bar area
         bgcolor: '#f5f5f5', // Grey background to emphasize the navbar's glass effect
         boxSizing: 'content-box',
       }}
     >
-      {/* ── Sliding Track ── */}
+      {/* ── Fade Track ── */}
       <Box
         sx={{
-          display: 'flex',
+          position: 'relative',
           height: '100%',
-
-          width: `${banners.length * 100}%`,
-
-          transform: `translateX(-${(currentBanner / banners.length) * 100}%)`,
-          transition: 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-          willChange: 'transform',
+          width: '100%',
         }}
       >
         {banners.map((banner, i) => (
           <Box
             key={i}
             sx={{
-
-              width: `${100 / banners.length}%`,
-              flexShrink: 0,
-              position: 'relative',
+              position: 'absolute',
+              inset: 0,
+              opacity: i === currentBanner ? 1 : 0,
+              transition: 'opacity 0.8s ease-in-out',
+              zIndex: i === currentBanner ? 1 : 0,
+              pointerEvents: i === currentBanner ? 'auto' : 'none',
               overflow: 'hidden',
             }}
           >

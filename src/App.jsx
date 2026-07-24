@@ -86,8 +86,17 @@ const theme = createTheme({
     },
     divider: "#E5E7EB",
   },
+  breakpoints: {
+    values: {
+      xs: 0,       // Mobile devices
+      sm: 576,     // Larger mobile / small tablets
+      md: 768,     // Tablets
+      lg: 1024,    // Laptops / Desktops
+      xl: 1280,    // Large screens
+    },
+  },
   typography: {
-    fontFamily: '"ClearAmpersand", "Playfair Display", serif',
+    fontFamily: '"Montserrat", "Inter", sans-serif',
     subtitle1: { letterSpacing: '0.05em' },
   },
   components: {

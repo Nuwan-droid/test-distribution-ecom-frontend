@@ -29,9 +29,6 @@ export default function Home() {
     <Box>
       <HomeImageSlider customBanners={banners} />
 
-      {/* ===== Trust Badges ===== */}
-      <TrustBadges />
-
       {/* ===== Spotlight Feature Banner ===== */}
       <SpotlightBanner />
 
@@ -50,6 +47,8 @@ export default function Home() {
       {/* ===== Shop By Category ===== */}
       <ShopByCategory />
 
+      {/* ===== Trust Badges ===== */}
+      <TrustBadges />
 
     </Box>
   );

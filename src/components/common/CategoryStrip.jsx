@@ -2,18 +2,32 @@ import React, { useRef } from 'react';
 import { Box, IconButton, Button } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
-import { CATEGORY_STRIP, NAVIGATION_CATEGORIES, NAV_COLORS as C } from '../../context/NavbarContext';
+import { CATEGORY_STRIP, NAVIGATION_CATEGORIES, NAV_COLORS as C, useNavbar } from '../../context/NavbarContext';
 
-export default function CategoryStrip({ items, parentCategory }) {
+export default function CategoryStrip({ items, parentCategory, navbarMode = false }) {
   const categoryScrollRef = useRef(null);
   const location = useLocation();
+  const { scrolled } = useNavbar();
+  
+  const hasImageSlider = location.pathname === '/' || location.pathname === '/womens-workwear';
+  const isSolidNavbar = !hasImageSlider || scrolled;
+  
+  const navTextColor = (navbarMode && isSolidNavbar) ? '#ffffff' : C.textPrimary;
 
   let displayItems = items || CATEGORY_STRIP;
   let currentParentCategory = parentCategory;
   
-  if (!items && location.pathname === '/womens-workwear') {
-    displayItems = NAVIGATION_CATEGORIES['Women fashion'] || [];
-    currentParentCategory = 'Women fashion';
+  const searchParams = new URLSearchParams(location.search);
+  const urlCategory = searchParams.get('category');
+  
+  if (!items) {
+    if (location.pathname === '/womens-workwear') {
+      displayItems = NAVIGATION_CATEGORIES['Women fashion'] || [];
+      currentParentCategory = 'Women fashion';
+    } else if (location.pathname === '/products' && urlCategory && NAVIGATION_CATEGORIES[urlCategory]) {
+      displayItems = NAVIGATION_CATEGORIES[urlCategory];
+      currentParentCategory = urlCategory;
+    }
   }
   
   const formattedItems = displayItems.map(item => {
@@ -42,11 +56,11 @@ export default function CategoryStrip({ items, parentCategory }) {
           bgcolor: 'rgba(255,255,255,0.4)',
           backdropFilter: 'blur(8px)',
           boxShadow: '2px 0 8px rgba(0,0,0,0.05)',
-          width: 28, height: 28,
+          width: 28, height: 28, color: (navbarMode && isSolidNavbar) ? 'white' : 'inherit',
           '&:hover': { bgcolor: 'rgba(255,255,255,0.7)' }
         }}
       >
-        <ChevronLeft sx={{ fontSize: 18 }} />
+        <ChevronLeft sx={{ fontSize: 18, color: (navbarMode && isSolidNavbar) ? 'secondary.main' : 'inherit' }} />
       </IconButton>
 
       <Box
@@ -63,10 +77,24 @@ export default function CategoryStrip({ items, parentCategory }) {
             component={Link}
             to={cat.path}
             sx={{
-              color: C.textPrimary, fontWeight: 700, fontSize: '0.85rem', textTransform: 'none',
+              position: 'relative',
+              color: navTextColor, fontWeight: 700, fontSize: '0.85rem', textTransform: 'none',
               whiteSpace: 'nowrap', py: 0.5, px: 1.5, minWidth: 'unset', flexShrink: 0,
               borderRadius: '20px', display: 'flex', alignItems: 'center', gap: 0.5,
-              '&:hover': { color:'secondary.main'},
+              '&:hover': { bgcolor: 'transparent' },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: '2px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: 0,
+                height: '2px',
+                bgcolor: 'currentColor',
+                transition: 'width 0.3s ease',
+                borderRadius: '2px',
+              },
+              '&:hover::after': { width: '60%' },
             }}
           >
             {cat.icon && <cat.icon sx={{ fontSize: 15, opacity: 0.8 }} />}
@@ -82,11 +110,11 @@ export default function CategoryStrip({ items, parentCategory }) {
           bgcolor: 'rgba(255,255,255,0.4)',
           backdropFilter: 'blur(8px)',
           boxShadow: '-2px 0 8px rgba(0,0,0,0.05)',
-          width: 28, height: 28,
+          width: 28, height: 28, color: (navbarMode && isSolidNavbar) ? 'white' : 'inherit',
           '&:hover': { bgcolor: 'rgba(255,255,255,0.7)' }
         }}
       >
-        <ChevronRight sx={{ fontSize: 18 }} />
+        <ChevronRight sx={{ fontSize: 18, color: (navbarMode && isSolidNavbar) ? 'secondary.main' : 'inherit' }} />
       </IconButton>
     </Box>
   );
