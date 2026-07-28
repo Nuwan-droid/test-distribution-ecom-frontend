@@ -12,7 +12,16 @@ function LayoutContent() {
   const { setAuthModalOpen, setAuthModalTab } = useNavbar();
 
   // Determine if the current page has a hero banner that should consume the navbar space
-  const isHeroPage = location.pathname === '/' || location.pathname === '/womens-workwear';
+  const HERO_ROUTES = [
+    '/',
+    '/womens-workwear',
+    '/bags-luggage-store',
+    '/footwear-store',
+    '/birthday-gifts',
+    '/pet-supplies-store',
+    '/school-supplies-store',
+  ];
+  const isHeroPage = HERO_ROUTES.includes(location.pathname);
 
   /* Auto-open modal when redirected from /login or /register */
   useEffect(() => {

@@ -59,9 +59,18 @@ export default function Navbar() {
 
   // Auto-sync category state with URL when navigating to a specific shop
   useEffect(() => {
+    const shopCategoryMap = {
+      '/womens-workwear': 'Women fashion',
+      '/bags-luggage-store': 'Bags & Luggage',
+      '/footwear-store': 'Footwear',
+      '/birthday-gifts': 'Birthday Gifts',
+      '/pet-supplies-store': 'Pet Supplies',
+      '/school-supplies-store': 'School Supplies',
+    };
+
     let cat = null;
-    if (location.pathname === '/womens-workwear') {
-      cat = 'Women fashion';
+    if (shopCategoryMap[location.pathname]) {
+      cat = shopCategoryMap[location.pathname];
     } else if (location.pathname === '/products') {
       const params = new URLSearchParams(location.search);
       cat = params.get('category');
@@ -80,7 +89,16 @@ export default function Navbar() {
     setAccountAnchor(null);
   };
 
-  const hasImageSlider = location.pathname === '/' || location.pathname === '/womens-workwear';
+  const HERO_ROUTES = [
+    '/',
+    '/womens-workwear',
+    '/bags-luggage-store',
+    '/footwear-store',
+    '/birthday-gifts',
+    '/pet-supplies-store',
+    '/school-supplies-store',
+  ];
+  const hasImageSlider = HERO_ROUTES.includes(location.pathname);
   const isSolidNavbar = !hasImageSlider || scrolled;
 
   const navTextColor = '#ffffff';

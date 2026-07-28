@@ -6,18 +6,29 @@ export default function ProductImageGallery({ images, productName }) {
   const [selectedImage, setSelectedImage] = useState(0);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1.5, md: 2 }, position: { sm: 'sticky' }, top: { sm: 100 } }}>
-      {/* Thumbnails */}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',          // Always row: thumbnails left, main image right
+        gap: { xs: 1, sm: 1.5 },
+        position: { sm: 'sticky' },
+        top: { sm: 72 },
+        alignSelf: { sm: 'flex-start' },
+        width: '100%',
+      }}
+    >
+      {/* Thumbnail Strip — vertical, left side */}
       {images.length > 1 && (
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            flexDirection: { xs: 'row', sm: 'column' }, 
-            gap: 1.5, 
-            width: { xs: '100%', sm: 60, md: 80 },
-            overflowX: { xs: 'auto', sm: 'visible' },
-            pb: { xs: 1, sm: 0 },
-            order: { xs: 2, sm: 1 } // On mobile, thumbnails below the main image
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            width: { xs: 46, sm: 54, md: 60, lg: 66, xl: 70 },
+            flexShrink: 0,
+            overflowY: 'auto',
+            maxHeight: { xs: 260, sm: 320, md: 360, lg: 400, xl: 430 },
+            '&::-webkit-scrollbar': { display: 'none' },
           }}
         >
           {images.map((img, i) => (
@@ -25,34 +36,37 @@ export default function ProductImageGallery({ images, productName }) {
               key={i}
               component="img"
               src={img}
-              alt={`Thumb ${i + 1}`}
+              alt={`View ${i + 1}`}
               onClick={() => setSelectedImage(i)}
               sx={{
-                width: { xs: 70, sm: '100%' },
-                height: { xs: 70, sm: 90, md: 120 },
+                width: '100%',
+                height: { xs: 46, sm: 58, md: 66, lg: 74, xl: 78 },
                 flexShrink: 0,
                 objectFit: 'cover',
                 bgcolor: '#f5f5f5',
                 cursor: 'pointer',
-                border: i === selectedImage ? '2px solid #333' : '1px solid #e0e0e0',
-                transition: 'all 0.2s',
-                opacity: i === selectedImage ? 1 : 0.6,
-                '&:hover': { opacity: 1 },
+                borderRadius: 1,
+                border: i === selectedImage
+                  ? '2px solid #222'
+                  : '1.5px solid #e0e0e0',
+                transition: 'all 0.18s',
+                opacity: i === selectedImage ? 1 : 0.5,
+                '&:hover': { opacity: 1, borderColor: '#999' },
               }}
             />
           ))}
         </Box>
       )}
-      
-      {/* Main Image */}
-      <Box sx={{ flex: 1, position: 'relative', order: { xs: 1, sm: 2 } }}>
+
+      {/* Main Image — fills remaining width */}
+      <Box sx={{ flex: 1, overflow: 'hidden', borderRadius: 1.5 }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedImage}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.22 }}
           >
             <Box
               component="img"
@@ -60,11 +74,14 @@ export default function ProductImageGallery({ images, productName }) {
               alt={productName}
               sx={{
                 width: '100%',
-                height: { xs: 300, sm: 250, md: 400, lg: 450 },
+                /* Responsive natural sizing across all breakpoints xs, sm, md, lg, xl */
+                height: { xs: 260, sm: 320, md: 360, lg: 400, xl: 430 },
+                maxHeight: { xs: 280, sm: 340, md: 380, lg: 420, xl: 450 },
                 objectFit: 'cover',
                 bgcolor: '#f5f5f5',
-                borderRadius: 1,
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+                display: 'block',
+                borderRadius: 1.5,
+                boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
               }}
             />
           </motion.div>

@@ -5,7 +5,7 @@ import {
   Step, StepLabel, StepContent, Chip, Grid, Divider, Alert,
 } from '@mui/material';
 import {
-  Search, CheckCircle, LocalShipping, Inventory, ShoppingBag, DoneAll,
+  Search, CheckCircle, LocalShipping, Inventory, ShoppingBag, DoneAll, AttachMoney,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
@@ -116,13 +116,16 @@ export default function OrderTracking() {
               {order.items.map((item, i) => (
                 <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}>
                   <Typography variant="body2">{item.name} × {item.qty}</Typography>
-                  <Typography variant="body2" fontWeight={700}>{item.price.toLocaleString()}$</Typography>
+                  <Typography variant="body2" fontWeight={700}>${item.price.toLocaleString()}</Typography>
                 </Box>
               ))}
               <Divider sx={{ my: 1.5 }} />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography fontWeight={700}>Total</Typography>
-                <Typography fontWeight={800} color="primary.main">{order.total.toLocaleString()}$</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+                  <AttachMoney sx={{ fontSize: '1.4rem', mr: -0.3 }} />
+                  <Typography fontWeight={800}>{order.total.toLocaleString()}</Typography>
+                </Box>
               </Box>
             </Paper>
 

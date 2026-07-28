@@ -16,7 +16,12 @@ export const ALL_DEPARTMENTS = [
   'Beauty & Care',
   'Food & Beverages',
   'Toys & Kids',
-  'Automotive'
+  'Automotive',
+  'Bags & Luggage',
+  'Footwear',
+  'Birthday Gifts',
+  'Pet Supplies',
+  'School Supplies'
 ];
 
 export const DEPT_SELECT_OPTIONS = [
@@ -30,7 +35,12 @@ export const DEPT_SELECT_OPTIONS = [
   'Beauty & Care',
   'Food & Beverages',
   'Toys & Kids',
-  'Automotive'
+  'Automotive',
+  'Bags & Luggage',
+  'Footwear',
+  'Birthday Gifts',
+  'Pet Supplies',
+  'School Supplies'
 ];
 
 export const NAVIGATION_CATEGORIES = {
@@ -43,7 +53,12 @@ export const NAVIGATION_CATEGORIES = {
   'Beauty & Care': ['Skincare', 'Haircare', 'Makeup', 'Fragrances', 'Personal Care'],
   'Food & Beverages': ['Snacks', 'Beverages', 'Pantry Staples', 'Organic', 'Sweets'],
   'Toys & Kids': ['Educational Toys', 'Action Figures', 'Board Games', 'Baby Care', 'Kids Clothing'],
-  'Automotive': ['Car Accessories', 'Motorcycle Gear', 'Tools', 'Car Care', 'Tires']
+  'Automotive': ['Car Accessories', 'Motorcycle Gear', 'Tools', 'Car Care', 'Tires'],
+  'Bags & Luggage': ['Backpacks', 'Travel Luggage', 'Handbags', 'Duffel Bags', 'Messenger Bags', 'Accessories'],
+  'Footwear': ['Sneakers', 'Running Shoes', 'Boots', 'Casual Loafers', 'Sandals & Sliders', 'Formal Shoes'],
+  'Birthday Gifts': ['Gift Hampers', 'Watches', 'Jewelry', 'Perfumes', 'Smart Gadgets', 'Accessories'],
+  'Pet Supplies': ['Pet Food', 'Dog Toys', 'Cat Care', 'Pet Beds', 'Grooming', 'Pet Collars'],
+  'School Supplies': ['School Backpacks', 'Notebooks', 'Stationery & Pens', 'Organizers', 'Art Supplies', 'Study Gadgets']
 };
 
 export const CATEGORY_STRIP = [
@@ -51,12 +66,12 @@ export const CATEGORY_STRIP = [
   { label: 'Home & Kitchen', path: '/products?category=Home+%26+Kitchen' },
   { label: 'Fashion',        path: '/products?category=Fashion' },
   { label: 'Women fashion',  path: '/products?category=Women+fashion' },
+  { label: 'Bags & Luggage', path: '/bags-luggage-store' },
+  { label: 'Footwear',       path: '/footwear-store' },
+  { label: 'Birthday Gifts', path: '/birthday-gifts' },
+  { label: 'Pet Supplies',   path: '/pet-supplies-store' },
+  { label: 'School Supplies', path: '/school-supplies-store' },
   { label: 'Sports & Fitness', path: '/products?category=Sports+%26+Fitness' },
-  { label: 'Stationery',     path: '/products?category=Books+%26+Stationery' },
-  { label: 'Beauty & Care',  path: '/products?category=Beauty+%26+Care' },
-  { label: 'Food & Beverages', path: '/products?category=Food+%26+Beverages' },
-  { label: 'Toys & Kids',    path: '/products?category=Toys+%26+Kids' },
-  { label: 'Automotive',     path: '/products?category=Automotive' },
 ];
 
 /* -------------------------------------------------------------

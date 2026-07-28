@@ -127,7 +127,7 @@ export default function Account() {
                     <Box>
                       <Typography variant="body2" fontWeight={700}>Total Spent</Typography>
                       <Typography variant="h5" fontWeight={800} color="primary.main">
-                        {(user.orders?.reduce((s, o) => s + o.total, 0) ?? 0).toLocaleString()}$
+                        ${(user.orders?.reduce((s, o) => s + o.total, 0) ?? 0).toLocaleString()}
                       </Typography>
                     </Box>
                     <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
@@ -157,7 +157,7 @@ export default function Account() {
                       </Box>
                       <Chip label={order.status} color={statusColor[order.status] || 'default'} size="small" sx={{ fontWeight: 600 }} />
                       <Box sx={{ textAlign: 'right' }}>
-                        <Typography variant="body1" fontWeight={800}>{order.total.toLocaleString()}$</Typography>
+                        <Typography variant="body1" fontWeight={800}>${order.total.toLocaleString()}</Typography>
                       </Box>
                       <Button
                         size="small"

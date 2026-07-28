@@ -9,7 +9,16 @@ export default function CategoryStrip({ items, parentCategory, navbarMode = fals
   const location = useLocation();
   const { scrolled } = useNavbar();
   
-  const hasImageSlider = location.pathname === '/' || location.pathname === '/womens-workwear';
+  const HERO_ROUTES = [
+    '/',
+    '/womens-workwear',
+    '/bags-luggage-store',
+    '/footwear-store',
+    '/birthday-gifts',
+    '/pet-supplies-store',
+    '/school-supplies-store',
+  ];
+  const hasImageSlider = HERO_ROUTES.includes(location.pathname);
   const isSolidNavbar = !hasImageSlider || scrolled;
   
   const navTextColor = (navbarMode && isSolidNavbar) ? '#ffffff' : C.textPrimary;
@@ -20,10 +29,20 @@ export default function CategoryStrip({ items, parentCategory, navbarMode = fals
   const searchParams = new URLSearchParams(location.search);
   const urlCategory = searchParams.get('category');
   
+  const shopCategoryMap = {
+    '/womens-workwear': 'Women fashion',
+    '/bags-luggage-store': 'Bags & Luggage',
+    '/footwear-store': 'Footwear',
+    '/birthday-gifts': 'Birthday Gifts',
+    '/pet-supplies-store': 'Pet Supplies',
+    '/school-supplies-store': 'School Supplies',
+  };
+
   if (!items) {
-    if (location.pathname === '/womens-workwear') {
-      displayItems = NAVIGATION_CATEGORIES['Women fashion'] || [];
-      currentParentCategory = 'Women fashion';
+    if (shopCategoryMap[location.pathname]) {
+      const shopCat = shopCategoryMap[location.pathname];
+      displayItems = NAVIGATION_CATEGORIES[shopCat] || [];
+      currentParentCategory = shopCat;
     } else if (location.pathname === '/products' && urlCategory && NAVIGATION_CATEGORIES[urlCategory]) {
       displayItems = NAVIGATION_CATEGORIES[urlCategory];
       currentParentCategory = urlCategory;

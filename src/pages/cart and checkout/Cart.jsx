@@ -44,7 +44,7 @@ export default function Cart() {
 
         {totalPrice < 999 && (
           <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-            Add {(999 - totalPrice).toLocaleString()}$ more for <strong>FREE delivery!</strong>
+            Add ${(999 - totalPrice).toLocaleString()} more for <strong>FREE delivery!</strong>
           </Alert>
         )}
 

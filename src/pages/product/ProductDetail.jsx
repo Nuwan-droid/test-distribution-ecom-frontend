@@ -32,16 +32,27 @@ export default function ProductDetail() {
 
   return (
     <Box sx={{ bgcolor: '#FFFFFF', minHeight: '100vh', pt: 0 }}>
-      <Container maxWidth="lg" sx={{ pt: 0, pb: { xs: 2, md: 4 } }}>
-
-        <Grid container spacing={{ xs: 2, sm: 4, md: 5 }} alignItems="flex-start">
-          {/* Left Column: Image Gallery */}
-          <Grid item xs={12} sm={6}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          pt: { xs: 2, sm: 2.5, md: 3, lg: 4, xl: 5 },
+          pb: { xs: 4, sm: 5, md: 6, lg: 7, xl: 8 },
+          px: { xs: 2, sm: 3, md: 4, lg: 6, xl: 8 },
+        }}
+      >
+        <Grid
+          container
+          columnSpacing={{ xs: 2, sm: 3, md: 4, lg: 6, xl: 8 }}
+          rowSpacing={{ xs: 3, sm: 4, md: 4 }}
+          alignItems="flex-start"
+        >
+          {/* LEFT — Gallery: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductImageGallery images={images} productName={product.name} />
           </Grid>
 
-          {/* Right Column: Product Info */}
-          <Grid item xs={12} sm={6}>
+          {/* RIGHT — Product Info: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductInfo product={product} />
           </Grid>
         </Grid>
@@ -49,13 +60,38 @@ export default function ProductDetail() {
         {/* Tabs Section */}
         <ProductTabs />
 
-        <Divider sx={{ my: 4 }} />
+        <Divider sx={{ my: 2 }} />
 
-        {/* Related Products */}
+        {/* Related Products — 3rd bottom component centered in middle of viewport */}
         {related.length > 0 && (
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 3, letterSpacing: 1 }}>RELATED PRODUCTS</Typography>
-            <ProductGrid products={related} loading={false} />
+          <Box
+            sx={{
+              mt: 4,
+              mb: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              textAlign: 'center',
+            }}
+          >
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              sx={{ mb: 3, letterSpacing: 1, textAlign: 'center' }}
+            >
+              RELATED PRODUCTS
+            </Typography>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <ProductGrid products={related} loading={false} />
+            </Box>
           </Box>
         )}
       </Container>

@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Paper, IconButton, Chip } from '@mui/material';
-import { Add, Remove, Delete } from '@mui/icons-material';
+import { Add, Remove, Delete, AttachMoney } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -46,12 +46,18 @@ export default function CartItems({ items, totalItems, updateQuantity, removeFro
                 )}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
                   <Box>
-                    <Typography variant="h6" fontWeight={800} color="text.primary">
-                      {(item.price * item.quantity).toLocaleString()}$
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {item.price.toLocaleString()}$ × {item.quantity}
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.primary' }}>
+                      <AttachMoney sx={{ fontSize: '1.3rem', mr: -0.35 }} />
+                      <Typography variant="h6" fontWeight={800} color="text.primary">
+                        {(item.price * item.quantity).toLocaleString()}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
+                      <AttachMoney sx={{ fontSize: '0.85rem', mr: -0.2 }} />
+                      <Typography variant="caption" color="text.secondary">
+                        {item.price.toLocaleString()} × {item.quantity}
+                      </Typography>
+                    </Box>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Paper sx={{ display: 'flex', alignItems: 'center', border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>

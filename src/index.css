@@ -30,6 +30,18 @@ body {
      Horizontal bleed from MUI Grid negative margins is contained at #root. */
 }
 
+/* Universal typography consistency — enforce Montserrat (the navbar font) across all text and UI controls */
+*:not(.material-icons):not([class*="MuiIcon-"]),
+*::before,
+*::after,
+input,
+textarea,
+select,
+button,
+[role="button"] {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 /* Prevent MUI Grid v1 negative margins from creating a phantom
    horizontal scrollbar that skews the perceived centre of the page.
    IMPORTANT: overflow:clip (not hidden) is used here — 'overflow-x: hidden'

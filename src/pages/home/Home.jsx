@@ -29,11 +29,14 @@ export default function Home() {
     <Box>
       <HomeImageSlider customBanners={banners} />
 
-      {/* ===== Spotlight Feature Banner ===== */}
-      <SpotlightBanner />
+      {/* ===== Spotlight Feature Banner (Top) ===== */}
+      <SpotlightBanner layout="left-large" />
 
-      {/* ===== Fashion Row ===== */}
+      {/* ===== Trending Fashion Finds ===== */}
       <FashionRow />
+
+      {/* ===== New Spotlight Feature Banner (Bags & Luggage, School Supplies, Pet Supplies) ===== */}
+      <SpotlightBanner layout="right-large" />
 
       {/* ===== Hot Selling Products ===== */}
       <HotSellingProducts products={hotSellingProducts} />

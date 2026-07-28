@@ -5,7 +5,7 @@ import {
   FormControlLabel, Radio, RadioGroup, Stepper, Step, StepLabel,
   Breadcrumbs, Alert,
 } from '@mui/material';
-import { ArrowBack, ArrowForward, CreditCard, LocalShipping, Lock, NavigateNext } from '@mui/icons-material';
+import { ArrowBack, ArrowForward, CreditCard, LocalShipping, Lock, NavigateNext, AttachMoney } from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 
 const steps = ['Shipping Address', 'Payment Method', 'Review Order'];
@@ -174,7 +174,7 @@ export default function Checkout() {
                         <Typography variant="body2" fontWeight={600}>{item.name}</Typography>
                         <Typography variant="caption" color="text.secondary">Qty: {item.quantity}</Typography>
                       </Box>
-                      <Typography variant="body2" fontWeight={700}>{(item.price * item.quantity).toLocaleString()}$</Typography>
+                      <Typography variant="body2" fontWeight={700}>${(item.price * item.quantity).toLocaleString()}</Typography>
                     </Box>
                   ))}
 
@@ -225,7 +225,7 @@ export default function Checkout() {
                       </Typography>
                       <Typography variant="caption" color="text.secondary">×{item.quantity}</Typography>
                     </Box>
-                    <Typography variant="caption" fontWeight={700}>{(item.price * item.quantity).toLocaleString()}$</Typography>
+                    <Typography variant="caption" fontWeight={700}>${(item.price * item.quantity).toLocaleString()}</Typography>
                   </Box>
                 ))}
                 {items.length > 3 && (
@@ -233,9 +233,9 @@ export default function Checkout() {
                 )}
                 <Divider sx={{ my: 2 }} />
                 {[
-                  { label: 'Subtotal', value: `${totalPrice.toLocaleString()}$` },
-                  { label: 'Discount (5%)', value: `-${discount.toLocaleString()}$`, color: 'success.main' },
-                  { label: 'Shipping', value: shipping === 0 ? 'FREE' : `${shipping}$`, color: shipping === 0 ? 'success.main' : undefined },
+                  { label: 'Subtotal', value: `$${totalPrice.toLocaleString()}` },
+                  { label: 'Discount (5%)', value: `-$${discount.toLocaleString()}`, color: 'success.main' },
+                  { label: 'Shipping', value: shipping === 0 ? 'FREE' : `$${shipping}`, color: shipping === 0 ? 'success.main' : undefined },
                 ].map((row, i) => (
                   <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                     <Typography variant="body2" color="text.secondary">{row.label}</Typography>
@@ -245,7 +245,10 @@ export default function Checkout() {
                 <Divider sx={{ my: 2 }} />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="h6" fontWeight={700}>Total</Typography>
-                  <Typography variant="h6" fontWeight={800} color="secondary.main">{finalTotal.toLocaleString()}$</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'secondary.main' }}>
+                    <AttachMoney sx={{ fontSize: '1.4rem', mr: -0.3 }} />
+                    <Typography variant="h6" fontWeight={800}>{finalTotal.toLocaleString()}</Typography>
+                  </Box>
                 </Box>
               </Box>
             </Paper>

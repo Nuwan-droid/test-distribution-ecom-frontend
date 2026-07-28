@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Paper, TextField, Divider } from '@mui/material';
-import { ArrowForward, LocalShipping } from '@mui/icons-material';
+import { ArrowForward, LocalShipping, AttachMoney } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function OrderSummary({ totalPrice, shipping, discount, finalTotal }) {
@@ -24,9 +24,9 @@ export default function OrderSummary({ totalPrice, shipping, discount, finalTota
         <Divider sx={{ mb: 2 }} />
 
         {[
-          { label: 'Subtotal', value: `${totalPrice.toLocaleString()}$` },
-          { label: `Discount (5%)`, value: `-${discount.toLocaleString()}$`, color: 'success.main' },
-          { label: 'Shipping', value: shipping === 0 ? 'FREE' : `${shipping}$`, color: shipping === 0 ? 'success.main' : undefined },
+          { label: 'Subtotal', value: `$${totalPrice.toLocaleString()}` },
+          { label: `Discount (5%)`, value: `-$${discount.toLocaleString()}`, color: 'success.main' },
+          { label: 'Shipping', value: shipping === 0 ? 'FREE' : `$${shipping}`, color: shipping === 0 ? 'success.main' : undefined },
         ].map((row, i) => (
           <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.2 }}>
             <Typography variant="body2" color="text.secondary">{row.label}</Typography>
@@ -37,7 +37,10 @@ export default function OrderSummary({ totalPrice, shipping, discount, finalTota
         <Divider sx={{ my: 2 }} />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2.5 }}>
           <Typography variant="h6" fontWeight={700}>Total</Typography>
-          <Typography variant="h6" fontWeight={800} color="primary.main">{finalTotal.toLocaleString()}$</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+            <AttachMoney sx={{ fontSize: '1.4rem', mr: -0.3 }} />
+            <Typography variant="h6" fontWeight={800}>{finalTotal.toLocaleString()}</Typography>
+          </Box>
         </Box>
 
         <Box sx={{ textAlign: 'center', mb: 1.5 }}>
@@ -71,7 +74,7 @@ export default function OrderSummary({ totalPrice, shipping, discount, finalTota
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, p: 1.5, bgcolor: '#F0FDF4', borderRadius: 2 }}>
           <LocalShipping sx={{ color: 'success.main', fontSize: 18 }} />
           <Typography variant="caption" color="success.main" fontWeight={600}>
-            {shipping === 0 ? 'You get FREE delivery!' : `Add ${(999 - totalPrice).toLocaleString()}$ more for FREE delivery`}
+            {shipping === 0 ? 'You get FREE delivery!' : `Add $${(999 - totalPrice).toLocaleString()} more for FREE delivery`}
           </Typography>
         </Box>
       </Box>

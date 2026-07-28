@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Box, Typography, Button, Tooltip, Skeleton } from '@mui/material';
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { FavoriteBorder, Favorite, AttachMoney } from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 
@@ -249,28 +249,37 @@ export default function ProductCard({ product, hideOriginalPrice = false }) {
         </Typography>
 
         {/* Pricing Layout */}
-        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {isOnSale ? (
             <>
-              <Typography sx={{ color: 'green', fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
-                ${dollars}
+              <Box sx={{ display: 'flex', alignItems: 'center', color: 'green' }}>
+                <AttachMoney sx={{ fontSize: '1.25rem', mr: -0.4 }} />
+                <Typography sx={{ fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
+                  {dollars}
+                  <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
+                    {cents}
+                  </Box>
+                </Typography>
+              </Box>
+              {!hideOriginalPrice && product.originalPrice && (
+                <Box sx={{ display: 'flex', alignItems: 'center', color: '#999999' }}>
+                  <AttachMoney sx={{ fontSize: '0.9rem', mr: -0.3 }} />
+                  <Typography sx={{ textDecoration: 'line-through', fontSize: '0.85rem', fontWeight: 500 }}>
+                    {product.originalPrice.toFixed(2)}
+                  </Typography>
+                </Box>
+              )}
+            </>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', color: '#111111' }}>
+              <AttachMoney sx={{ fontSize: '1.25rem', mr: -0.4 }} />
+              <Typography sx={{ fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
+                {dollars}
                 <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
                   {cents}
                 </Box>
               </Typography>
-              {!hideOriginalPrice && product.originalPrice && (
-                <Typography sx={{ color: '#999999', textDecoration: 'line-through', fontSize: '0.85rem', fontWeight: 500 }}>
-                  ${product.originalPrice.toFixed(2)}
-                </Typography>
-              )}
-            </>
-          ) : (
-            <Typography sx={{ color: '#111111', fontWeight: 800, fontSize: '1.25rem', lineHeight: 1 }}>
-              ${dollars}
-              <Box component="sup" sx={{ fontSize: '0.75rem', fontWeight: 700, verticalAlign: 'super', ml: '1px' }}>
-                {cents}
-              </Box>
-            </Typography>
+            </Box>
           )}
         </Box>
       </Box>

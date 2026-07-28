@@ -195,7 +195,7 @@ export default function VerifyOtp() {
                     fontSize: "1.6rem",
                     fontWeight: 700,
                     color: "#1E293B",
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "Montserrat, sans-serif",
                     bgcolor: digit ? "#ffffff" : "#F8FAFC",
                     border: digit ? "2px solid #0B1F5B" : "1.5px solid #E5E7EB",
                     borderRadius: "12px",

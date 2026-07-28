@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 export default function CategoryCard({ title, image, count }) {
   const navigate = useNavigate();
 
+  const len = title ? title.length : 0;
+  const isSuperLong = len > 13;
+  const isLong = len > 9;
+  const isMedium = len > 7;
+
   return (
     <Box
       onClick={() => navigate(`/products?category=Women fashion&subcategory=${title}`)}
@@ -34,10 +39,30 @@ export default function CategoryCard({ title, image, count }) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          px: { xs: 1, md: 1.5 },
           transition: 'background-color 0.3s ease'
         }}
       >
-        <Typography variant="h6" sx={{ color: 'white', fontWeight: 700, letterSpacing: 2, textAlign: 'center' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: 'white',
+            fontWeight: 800,
+            letterSpacing: isSuperLong ? '0.3px' : isLong ? '0.5px' : isMedium ? '0.75px' : '1px',
+            textAlign: 'center',
+            lineHeight: 1.15,
+            wordBreak: 'normal',
+            overflowWrap: 'normal',
+            fontSize: isSuperLong
+              ? { xs: '0.72rem', sm: '0.78rem', md: '0.82rem' }
+              : isLong
+              ? { xs: '0.78rem', sm: '0.85rem', md: '0.9rem' }
+              : isMedium
+              ? { xs: '0.85rem', sm: '0.92rem', md: '0.98rem' }
+              : { xs: '0.95rem', sm: '1.05rem', md: '1.15rem' },
+            textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+          }}
+        >
           {title.toUpperCase()}
         </Typography>
         
