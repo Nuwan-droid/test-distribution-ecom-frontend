@@ -30,7 +30,7 @@ export default function PetSuppliesStore() {
       id: 1,
       title: 'Pet Supplies & Accessories',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=pet',
       cta: 'Shop Pet Care',
     },
@@ -38,7 +38,7 @@ export default function PetSuppliesStore() {
       id: 2,
       title: 'EVERYTHING FOR YOUR BEST FRIENDS',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=dog',
       cta: 'Explore All',
     },
@@ -59,6 +59,7 @@ export default function PetSuppliesStore() {
       newArrivals={newArrivals}
       featuredProducts={featured}
       categories={categories}
+      mainCategory="Pet Supplies"
       storeName="PET CARE & LUXURY SUPPLIES"
       tagline="NUTRITION, COMFORT & PLAYTIME"
     />

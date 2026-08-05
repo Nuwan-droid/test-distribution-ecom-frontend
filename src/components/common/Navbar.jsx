@@ -101,8 +101,10 @@ export default function Navbar() {
   const hasImageSlider = HERO_ROUTES.includes(location.pathname);
   const isSolidNavbar = !hasImageSlider || scrolled;
 
-  const navTextColor = '#ffffff';
+  const navTextColor  = '#ffffff';
   const navTextSecond = 'rgba(255,255,255,0.85)';
+  // Icon colour: secondary.main over the hero slider, white once scrolled
+  const iconColor = isSolidNavbar ? navTextSecond : 'secondary.main';
 
   /* ── render ── */
   return (
@@ -381,7 +383,7 @@ export default function Navbar() {
                   <IconButton
                     id="login-btn"
                     onClick={() => { setAuthModalTab('login'); setAuthModalOpen(true); }}
-                    sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
+                    sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
                   >
                     <Person sx={{ fontSize: 28 }} />
                   </IconButton>
@@ -395,7 +397,7 @@ export default function Navbar() {
                   id="wishlist-btn"
                   component={Link}
                   to="/wishlist"
-                  sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
+                  sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
                 >
                   <Badge badgeContent={wishlist.length} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18 } }}>
                     <FavoriteBorder sx={{ fontSize: 28 }} />
@@ -409,7 +411,7 @@ export default function Navbar() {
                   id="cart-btn"
                   component={Link}
                   to="/cart"
-                  sx={{ color: navTextSecond, transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
+                  sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
                 >
                   <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18, bgcolor: isSolidNavbar ? 'white' : 'secondary.main', color: isSolidNavbar ? 'secondary.main' : 'white', boxShadow: '0 0 10px rgba(255,255,255,0.3)' } }}>
                     <ShoppingCartOutlined sx={{ fontSize: 28 }} />

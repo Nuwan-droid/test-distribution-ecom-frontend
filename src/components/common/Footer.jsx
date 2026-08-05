@@ -14,6 +14,7 @@ const footerLinks = {
     { label: 'Careers', path: '/careers' },
     { label: 'Press', path: '/press' },
     { label: 'Blog', path: '/blog' },
+    { label: 'Upload Demo (AI)', path: '/admin/upload-demo' },
   ],
   support: [
     { label: 'Help Center', path: '/help' },

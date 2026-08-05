@@ -29,6 +29,7 @@ import OrderSuccess from "./pages/orders/OrderSuccess";
 import Account from "./pages/auth/Account";
 import OrderTracking from "./pages/orders/OrderTracking";
 import Wishlist from "./pages/product/Wishlist";
+import ProductUploadDemo from "./pages/admin/ProductUploadDemo";
 
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -39,32 +40,33 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout />,
     children: [
-      { index: true,                  element: <Home /> },
-      { path: "products",             element: <Products /> },
-      { path: "products/:id",         element: <ProductDetail /> },
-      { path: "cart",                 element: <Cart /> },
-      { path: "checkout",             element: <Checkout /> },
-      { path: "order-success",        element: <OrderSuccess /> },
-      { path: "account",              element: <Account /> },
-      { path: "track",                element: <OrderTracking /> },
-      { path: "birthday-gifts",        element: <BirthdayStore /> },
-      { path: "womens-workwear",       element: <WomensStore /> },
-      { path: "footwear-store",        element: <FootwearStore /> },
-      { path: "bags-luggage-store",    element: <BagsLuggageStore /> },
-      { path: "pet-supplies-store",    element: <PetSuppliesStore /> },
+      { index: true, element: <Home /> },
+      { path: "products", element: <Products /> },
+      { path: "products/:id", element: <ProductDetail /> },
+      { path: "cart", element: <Cart /> },
+      { path: "checkout", element: <Checkout /> },
+      { path: "order-success", element: <OrderSuccess /> },
+      { path: "account", element: <Account /> },
+      { path: "track", element: <OrderTracking /> },
+      { path: "birthday-gifts", element: <BirthdayStore /> },
+      { path: "womens-workwear", element: <WomensStore /> },
+      { path: "footwear-store", element: <FootwearStore /> },
+      { path: "bags-luggage-store", element: <BagsLuggageStore /> },
+      { path: "pet-supplies-store", element: <PetSuppliesStore /> },
       { path: "school-supplies-store", element: <SchoolSuppliesStore /> },
-      { path: "wishlist",              element: <Wishlist /> },
+      { path: "wishlist", element: <Wishlist /> },
+      { path: "admin/upload-demo", element: <ProductUploadDemo /> },
       /* Auth flow pages — inside MainLayout so they share Navbar,
          Footer, NavbarProvider, and AuthModal */
-      { path: "forgot-password",      element: <ForgotPassword /> },
-      { path: "verify-otp",           element: <VerifyOtp /> },
-      { path: "reset-password",       element: <ResetPassword /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "verify-otp", element: <VerifyOtp /> },
+      { path: "reset-password", element: <ResetPassword /> },
     ],
   },
   /* These immediately redirect back to "/" with state that auto-opens the modal */
-  { path: "/login",    element: <Navigate to="/" replace state={{ openAuth: 'login' }}    /> },
+  { path: "/login", element: <Navigate to="/" replace state={{ openAuth: 'login' }} /> },
   { path: "/register", element: <Navigate to="/" replace state={{ openAuth: 'register' }} /> },
-  { path: "*",         element: <Navigate to="/" replace /> },
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);
 
 const theme = createTheme({

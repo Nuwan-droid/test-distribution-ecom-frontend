@@ -31,7 +31,7 @@ export default function BirthdayStore() {
       id: 1,
       title: 'Make Birthdays Extra Special',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=gift',
       cta: 'Explore Gifts',
     },
@@ -39,7 +39,7 @@ export default function BirthdayStore() {
       id: 2,
       title: 'THOUGHTFUL & UNIQUE GIFTS',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1530103862676-de8892b12fa4?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=gift',
       cta: 'Shop Gifts Now',
     },
@@ -60,6 +60,7 @@ export default function BirthdayStore() {
       newArrivals={newArrivals}
       featuredProducts={featured}
       categories={categories}
+      mainCategory="Birthday Gifts"
       storeName="BIRTHDAY GIFTS BOUTIQUE"
       tagline="CELEBRATE IN LUXURY & STYLE"
     />

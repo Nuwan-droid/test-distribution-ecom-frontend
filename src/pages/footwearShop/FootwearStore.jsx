@@ -31,17 +31,9 @@ export default function FootwearStore() {
       id: 1,
       title: 'Trending Footwear & Sneakers',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=sneaker',
       cta: 'Explore Footwear',
-    },
-    {
-      id: 2,
-      title: 'PERFORMANCE & STREET STYLE',
-      subtitle: '',
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1600&h=600&fit=crop',
-      link: '/products?search=shoe',
-      cta: 'Shop Now',
     },
   ];
 
@@ -60,6 +52,7 @@ export default function FootwearStore() {
       newArrivals={newArrivals}
       featuredProducts={featured}
       categories={categories}
+      mainCategory="Footwear"
       storeName="FOOTWEAR & SNEAKERS"
       tagline="PREMIUM ATHLETIC & CASUAL SHOES"
     />

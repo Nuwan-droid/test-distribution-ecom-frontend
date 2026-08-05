@@ -31,7 +31,7 @@ export default function SchoolSuppliesStore() {
       id: 1,
       title: 'School Supplies Essentials',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=school',
       cta: 'Shop Back to School',
     },
@@ -39,7 +39,7 @@ export default function SchoolSuppliesStore() {
       id: 2,
       title: 'STATIONERY, BACKPACKS & ACCESSORIES',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=stationery',
       cta: 'Explore All',
     },
@@ -60,8 +60,9 @@ export default function SchoolSuppliesStore() {
       newArrivals={newArrivals}
       featuredProducts={featured}
       categories={categories}
-      storeName="ACADEMIC & SCHOOL ESSENTIALS"
-      tagline="PREMIUM STATIONERY & STUDY TECH"
+      mainCategory="School Supplies"
+      storeName="SCHOOL SUPPLIES"
+      tagline="ESSENTIALS FOR EVERY STUDENT"
     />
   );
 }

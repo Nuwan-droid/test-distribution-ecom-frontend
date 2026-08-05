@@ -7,7 +7,7 @@ import FeaturedProducts from '../home/FeaturedProducts';
 import products from '../../data/products';
 import StoreEntranceAnimation from './StoreEntranceAnimation';
 
-function StoreCategoryCard({ title, image, filterVal }) {
+function StoreCategoryCard({ title, image, filterVal, mainCategory }) {
   const navigate = useNavigate();
 
   const len = title ? title.length : 0;
@@ -28,7 +28,11 @@ function StoreCategoryCard({ title, image, filterVal }) {
   const displayCount = count > 0 ? count : Math.floor(Math.random() * 15) + 12;
 
   const handleClick = () => {
-    navigate(`/products?search=${encodeURIComponent(filterVal || title)}`);
+    if (mainCategory) {
+      navigate(`/products?category=${encodeURIComponent(mainCategory)}&subcategory=${encodeURIComponent(title)}`);
+    } else {
+      navigate(`/products?search=${encodeURIComponent(filterVal || title)}`);
+    }
   };
 
   return (
@@ -107,7 +111,7 @@ function StoreCategoryCard({ title, image, filterVal }) {
   );
 }
 
-export default function StorePageLayout({ banners, newArrivals, featuredProducts, categories, storeName, tagline }) {
+export default function StorePageLayout({ banners, newArrivals, featuredProducts, categories, mainCategory, storeName, tagline }) {
   return (
     <StoreEntranceAnimation storeName={storeName || "FLAGSHIP STORE"} tagline={tagline || "CURATED LUXURY & ESSENTIALS"}>
       <Box sx={{ width: '100%', minHeight: '100vh', pb: 8 }}>
@@ -130,7 +134,7 @@ export default function StorePageLayout({ banners, newArrivals, featuredProducts
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, px: 2, width: '100%', boxSizing: 'border-box' }}>
             {categories.map((cat, index) => (
               <Box key={index} sx={{ flexGrow: 1, flexBasis: { xs: '45%', sm: '30%', md: '15%' }, minWidth: 0 }}>
-                <StoreCategoryCard title={cat.title} image={cat.image} filterVal={cat.filterVal} />
+                <StoreCategoryCard title={cat.title} image={cat.image} filterVal={cat.filterVal} mainCategory={mainCategory} />
               </Box>
             ))}
           </Box>

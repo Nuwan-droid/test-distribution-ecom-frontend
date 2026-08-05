@@ -28,7 +28,7 @@ export default function CartItems({ items, totalItems, updateQuantity, removeFro
                 <Box component="img" src={item.image} alt={item.name} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary" fontWeight={600}>{item.brand}</Typography>
+                <Typography variant="caption" color="text.secondary" fontWeight={600}>{item.subcategory ? item.subcategory : item.category}</Typography>
                 <Typography
                   variant="body1"
                   fontWeight={600}

@@ -48,7 +48,11 @@ export default function ProductDetail() {
         >
           {/* LEFT — Gallery: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
-            <ProductImageGallery images={images} productName={product.name} />
+            <ProductImageGallery
+              images={images}
+              productName={product.name}
+              modelUrl={product.modelUrl}
+            />
           </Grid>
 
           {/* RIGHT — Product Info: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}

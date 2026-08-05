@@ -30,7 +30,7 @@ export default function BagsLuggageStore() {
       id: 1,
       title: 'Bags & Luggage Collections',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=bag',
       cta: 'Explore Bags',
     },
@@ -38,7 +38,7 @@ export default function BagsLuggageStore() {
       id: 2,
       title: 'TRAVEL & UTILITY ESSENTIALS',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1600&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1600&h=600&fit=crop&q=90',
       link: '/products?search=luggage',
       cta: 'Shop Now',
     },
@@ -59,6 +59,7 @@ export default function BagsLuggageStore() {
       newArrivals={newArrivals}
       featuredProducts={featured}
       categories={categories}
+      mainCategory="Bags & Luggage"
       storeName="BAGS & LUGGAGE STORE"
       tagline="LUXURY TRAVEL & EVERYDAY CARRY"
     />

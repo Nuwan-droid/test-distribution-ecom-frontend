@@ -6,8 +6,8 @@ import products from '../../data/products';
 import TopVisited from '../../components/womenStore/TopVisited/TopVisited';
 import StoreEntranceAnimation from '../../components/common/StoreEntranceAnimation';
 
-const HERO_IMG = "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&h=600&fit=crop";
-const MIDDLE_BANNER_IMG = "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=1600&h=400&fit=crop";
+const HERO_IMG = "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&h=600&fit=crop&q=90";
+const MIDDLE_BANNER_IMG = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=1600&h=600&fit=crop&q=90";
 
 export default function WomensStore() {
   const fashionProducts = products.filter(p => p.category === 'Women fashion' && p.isNew).slice(0, 5);
@@ -26,14 +26,14 @@ export default function WomensStore() {
       id: 2,
       title: 'NEW ARRIVALS',
       subtitle: '',
-      image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=1600&h=600&fit=crop',
+      image: MIDDLE_BANNER_IMG,
       link: '#',
       cta: 'Shop Now'
     }
   ];
 
   return (
-    <StoreEntranceAnimation storeName="WOMEN'S WORKWEAR" tagline="CURATED BOUTIQUE & LUXURY APPAREL">
+    <StoreEntranceAnimation storeName="WOMEN'S COLLECTIONS" tagline="CURATED BOUTIQUE & LUXURY APPAREL">
       <Box sx={{ width: '100%', minHeight: '100vh', pb: 8 }}>
         {/* Top Hero Banner */}
         <HomeImageSlider customBanners={womensBanners} />

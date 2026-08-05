@@ -14,7 +14,7 @@ import NewArrivals from '../../components/home/NewArrivals';
 import HotSellingProducts from '../../components/home/HotSellingProducts';
 import HomeImageSlider from '../../components/common/ImageSlider';
 import ShopByCategory from '../../components/home/ShopByCategory';
-import TrustBadges from '../../components/home/TrustBadges';
+
 import products, { banners } from '../../data/products';
 
 
@@ -50,8 +50,7 @@ export default function Home() {
       {/* ===== Shop By Category ===== */}
       <ShopByCategory />
 
-      {/* ===== Trust Badges ===== */}
-      <TrustBadges />
+
 
     </Box>
   );

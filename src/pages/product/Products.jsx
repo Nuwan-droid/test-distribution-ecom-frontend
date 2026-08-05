@@ -517,7 +517,7 @@ export default function Products() {
                       count={totalPages}
                       page={page}
                       onChange={(_, v) => { setPage(v); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                      color="primary"
+                      color="secondary"
                       size={isMobile ? 'small' : 'medium'}
                       showFirstButton
                       showLastButton

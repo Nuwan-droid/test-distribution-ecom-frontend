@@ -85,7 +85,7 @@ export default function HomeImageSlider({ customBanners }) {
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(to right, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.30) 55%, rgba(0,0,0,0.05) 100%)',
+                  'linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.02) 100%)',
               }}
             />
 
