@@ -27,6 +27,9 @@ function BundleFallback() {
         height: 420,
         gap: 2,
         background: 'radial-gradient(ellipse at 60% 30%, #e8edf5 0%, #f5f7fa 100%)',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <CircularProgress size={40} thickness={3} sx={{ color: '#111' }} />
       <Typography variant="body2" sx={{ color: '#666', fontWeight: 600 }}>
