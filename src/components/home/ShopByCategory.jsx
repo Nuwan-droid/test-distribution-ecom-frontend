@@ -78,27 +78,28 @@ export default function ShopByCategory() {
           </Button>
         </Box>
 
-        {/* Flex row horizontal layout with hidden scrollbars */}
+        {/* Grid layout – show only 5 categories, rest via "See All" */}
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            overflowX: 'auto',
-            gap: { xs: 3, md: 5 },
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(3, 1fr)',   // mobile: 3 per row
+              sm: 'repeat(5, 1fr)',   // tablet+: all 5 in one row
+              md: 'repeat(5, 1fr)',   // laptop: all 5 in one row
+              lg: 'repeat(5, 1fr)',   // large desktop: all 5 in one row
+            },
+            gap: { xs: 2, sm: 3, md: 4 },
             pb: 1,
-            justifyContent: { xs: 'flex-start', md: 'center' },
-            '&::-webkit-scrollbar': { display: 'none' },
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
+            justifyItems: 'center',
           }}
         >
-          {topCategories.map((cat) => (
+          {topCategories.slice(0, 5).map((cat) => (
             <motion.div
               key={cat.id}
               whileHover={{ y: -6 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.18 }}
-              style={{ flex: '0 0 auto' }}
+              style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
               <Box
                 component={Link}
@@ -113,11 +114,12 @@ export default function ShopByCategory() {
                   cursor: 'pointer',
                 }}
               >
-                {/* Increased Circular image container */}
+                {/* Circular image container */}
                 <Box
                   sx={{
-                    width: { xs: 100, sm: 120, md: 140, lg: 160 },
-                    height: { xs: 100, sm: 120, md: 140, lg: 160 },
+                    width: '80%',
+                    maxWidth: { xs: 120, sm: 140, md: 160, lg: 180 },
+                    aspectRatio: '1 / 1',
                     borderRadius: '50%',
                     bgcolor: '#f4f6f8',
                     display: 'flex',
@@ -151,8 +153,9 @@ export default function ShopByCategory() {
                   sx={{
                     color: '#222222',
                     textAlign: 'center',
-                    fontSize: { xs: '0.78rem', sm: '0.85rem', md: '0.9rem' },
+                    fontSize: { xs: '0.75rem', sm: '0.85rem', md: '0.9rem' },
                     lineHeight: 1.25,
+                    maxWidth: '90%',
                   }}
                 >
                   {cat.name}

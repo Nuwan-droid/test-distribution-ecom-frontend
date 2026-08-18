@@ -4,9 +4,9 @@ import products from '../../data/products';
 
 export default function SchoolSuppliesStore() {
   const getProducts = (predicate, count = 5) => {
-    const filtered = products.filter(predicate);
+    const filtered = products.filter(p => p.stock !== 0 && predicate(p));
     if (filtered.length >= count) return filtered.slice(0, count);
-    const others = products.filter(p => !filtered.includes(p));
+    const others = products.filter(p => p.stock !== 0 && !filtered.includes(p));
     return [...filtered, ...others].slice(0, count);
   };
 

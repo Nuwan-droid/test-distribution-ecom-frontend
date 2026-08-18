@@ -68,7 +68,7 @@ export default function HotSellingProducts({ products }) {
             }}
           >
             {products.map(product => (
-              <Box key={product.id} sx={{ flex: '0 0 auto', width: { xs: 'calc(50% - 8px)', sm: 'calc(33.333% - 10.66px)', md: 'calc(25% - 12px)', lg: 'calc(20% - 12.8px)', xl: 'calc(16.666% - 13.33px)' } }}>
+              <Box key={product.id} sx={{ flex: '0 0 auto', width: { xs: 'calc(50% - 8px)', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 10.66px)', lg: 'calc(25% - 12px)', xl: 'calc(25% - 12px)' } }}>
                 <ProductCard product={product} />
               </Box>
             ))}

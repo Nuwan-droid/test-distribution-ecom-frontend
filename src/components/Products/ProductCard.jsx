@@ -4,6 +4,7 @@ import { Box, Typography, Button, Tooltip, Skeleton } from '@mui/material';
 import { FavoriteBorder, Favorite, AttachMoney, ViewInAr } from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import useProcessedImage from '../../hooks/useProcessedImage';
 import { lazy, Suspense } from 'react';
 
 // Lazy-load View3DDialog so Three.js is never included in the main bundle
@@ -14,6 +15,7 @@ export default function ProductCard({ product, hideOriginalPrice = false }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
   const [open3D, setOpen3D] = useState(false);
+  const { processedSrc, isProcessed } = useProcessedImage(product.image);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -74,7 +76,7 @@ export default function ProductCard({ product, hideOriginalPrice = false }) {
       <Box sx={{
         position: 'relative',
         width: '100%',
-        height: '240px',
+        height: { xs: '220px', sm: '260px', md: '280px', lg: '300px' },
         background: 'linear-gradient(135deg, #faf9f7 0%, #f5f3f0 50%, #faf9f7 100%)',
         display: 'flex',
         alignItems: 'center',
@@ -153,78 +155,27 @@ export default function ProductCard({ product, hideOriginalPrice = false }) {
           </Box>
         </Tooltip>
 
-        {/* Product Image */}
+        {/* Product Image — uses AI-processed transparent PNG when available,
+            falls back to CSS mix-blend-mode trick for unprocessed images */}
         <Box
           component="img"
           className="product-img"
-          src={product.image}
+          src={processedSrc}
           alt={product.name}
           sx={{
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            // Multiply blends the image with the container background (white becomes transparent)
-            mixBlendMode: 'multiply',
-            // This filter trick boosts light-grey/off-white studio backgrounds to pure white, 
-            // ensuring they are completely removed by the multiply blend mode
-            filter: 'contrast(1.08) brightness(1.05)',
+            // Only apply the CSS blend trick while the AI hasn't processed the image yet
+            ...(!isProcessed && {
+              mixBlendMode: 'multiply',
+              filter: 'contrast(1.08) brightness(1.05)',
+            }),
             transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease',
             p: 1.5,
           }}
         />
 
-        {/* 3D badge — only shown when modelUrl exists */}
-        {product.modelUrl && (
-          <Tooltip title="View in 3D" placement="right">
-            <Box
-              component="button"
-              type="button"
-              aria-label={`View ${product.name} in 3D`}
-              style={{ border: 'none' }}
-              id={`product-3d-badge-${product.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setOpen3D(true);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setOpen3D(true);
-                }
-              }}
-              sx={{
-                position: 'absolute',
-                bottom: 14,
-                left: 14,
-                zIndex: 5,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.55,
-                bgcolor: 'rgba(17,17,17,0.82)',
-                backdropFilter: 'blur(8px)',
-                color: '#fff',
-                px: 1.2,
-                py: 0.55,
-                borderRadius: '20px',
-                fontSize: '0.65rem',
-                fontWeight: 800,
-                letterSpacing: '0.06em',
-                cursor: 'pointer',
-                boxShadow: '0 3px 12px rgba(0,0,0,0.22)',
-                transition: 'all 0.2s',
-                '&:hover': {
-                  bgcolor: 'rgba(17,17,17,0.95)',
-                  transform: 'scale(1.06)',
-                },
-              }}
-            >
-              <ViewInAr sx={{ fontSize: 13 }} />
-              3D
-            </Box>
-          </Tooltip>
-        )}
 
         {/* Floating Add to Cart Button */}
         <Box
