@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardGiftcard } from '@mui/icons-material';
 
@@ -122,50 +122,62 @@ export function NavbarProvider({ children }) {
   const [authModalTab,   setAuthModalTab]   = useState('login'); // 'login' | 'register'
 
   useEffect(() => {
-    // 450px roughly matches the slider's minHeight
-    const onScroll = () => setScrolled(window.scrollY > 450);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 450);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = useCallback((e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
       const catParam = selectedDept !== 'All' ? `&category=${encodeURIComponent(selectedDept)}` : '';
       navigate(`/products?search=${encodeURIComponent(searchQuery)}${catParam}`);
       setSearchQuery('');
     }
-  };
+  }, [searchQuery, selectedDept, navigate]);
 
-  const handleSearchClick = () => {
+  const handleSearchClick = useCallback(() => {
     if (searchQuery.trim()) {
       const catParam = selectedDept !== 'All' ? `&category=${encodeURIComponent(selectedDept)}` : '';
       navigate(`/products?search=${encodeURIComponent(searchQuery)}${catParam}`);
       setSearchQuery('');
     }
-  };
+  }, [searchQuery, selectedDept, navigate]);
 
-  const handleDeptNavigate = (dept, idx) => {
+  const handleDeptNavigate = useCallback((dept, idx) => {
     setAllDeptsAnchor(null);
     navigate(idx === 0 ? '/products' : `/products?category=${encodeURIComponent(dept)}`);
-  };
+  }, [navigate]);
+
+  const contextValue = useMemo(() => ({
+    drawerOpen,     setDrawerOpen,
+    searchQuery,    setSearchQuery,
+    selectedDept,   setSelectedDept,
+    deptMenuAnchor, setDeptMenuAnchor,
+    allDeptsAnchor, setAllDeptsAnchor,
+    accountAnchor,  setAccountAnchor,
+    scrolled,
+    authModalOpen,  setAuthModalOpen,
+    authModalTab,   setAuthModalTab,
+    handleSearch,
+    handleSearchClick,
+    handleDeptNavigate,
+  }), [
+    drawerOpen, searchQuery, selectedDept, deptMenuAnchor, allDeptsAnchor,
+    accountAnchor, scrolled, authModalOpen, authModalTab,
+    handleSearch, handleSearchClick, handleDeptNavigate
+  ]);
 
   return (
-    <NavbarContext.Provider
-      value={{
-        drawerOpen,     setDrawerOpen,
-        searchQuery,    setSearchQuery,
-        selectedDept,   setSelectedDept,
-        deptMenuAnchor, setDeptMenuAnchor,
-        allDeptsAnchor, setAllDeptsAnchor,
-        accountAnchor,  setAccountAnchor,
-        scrolled,
-        authModalOpen,  setAuthModalOpen,
-        authModalTab,   setAuthModalTab,
-        handleSearch,
-        handleSearchClick,
-        handleDeptNavigate,
-      }}
-    >
+    <NavbarContext.Provider value={contextValue}>
       {children}
     </NavbarContext.Provider>
   );

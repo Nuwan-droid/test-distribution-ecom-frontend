@@ -1,51 +1,63 @@
-import { useRef } from 'react';
-import { Box, Typography, Button, Grid, IconButton } from '@mui/material';
-import { ArrowForward, ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
+import React, { useRef } from 'react';
+import { Box, Typography, Button, Container, IconButton } from '@mui/material';
+import { NewReleases, ArrowForward, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import ProductCard from '../Products/ProductCard';
-import ViewAllButton from '../Products/ViewAllButton';
 
 export default function NewArrivals({ products }) {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = scrollRef.current.clientWidth + 16;
+      const scrollAmount = 350;
       scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
 
   return (
-    <Box sx={{ py: { xs: 2, sm: 2.5, md: 3, lg: 3 }, my: { xs: 1, sm: 1.5, md: 2, lg: 2 }, bgcolor: 'white' }}>
-      <Box sx={{ position: 'relative', px: { xs: 2, sm: 3, md: 4, lg: 5 } }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Box>
-            <Typography variant="h5" fontWeight={800} sx={{ color: '#111111', fontSize: { xs: '1.2rem', md: '1.5rem' }, letterSpacing: -0.2 }}>New Arrivals</Typography>
+    <Box sx={{ bgcolor: '#ffffff', py: { xs: 1, md: 2 }, my: 0 }}>
+      <Container maxWidth="xl">
+        {/* Header section */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: { xs: 3, md: 5 }, flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <NewReleases sx={{ color: '#f57c00', fontSize: 32 }} />
+            <Typography variant="h5" fontWeight={800} sx={{ color: '#f57c00', letterSpacing: '-0.5px' }}>
+              New Arrivals
+            </Typography>
           </Box>
-          <ViewAllButton to="/products?filter=new" label="View All" />
+          <Button
+            component={Link}
+            to="/products?filter=new"
+            endIcon={<ArrowForward sx={{ fontSize: 16 }} />}
+            sx={{
+              textTransform: 'none',
+              color: '#f57c00',
+              fontWeight: 700,
+              fontSize: { xs: '0.85rem', sm: '0.95rem' },
+              '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' }
+            }}
+          >
+            View all deals
+          </Button>
         </Box>
-        <Box sx={{ position: 'relative', display: 'flex' }}>
-          
-          {/* Scroll Left Button */}
+
+        {/* Scroll Container Wrapper */}
+        <Box sx={{ position: 'relative' }}>
           <IconButton
             onClick={() => scroll('left')}
             sx={{
               position: 'absolute',
-              left: -20,
-              top: 88,
-              zIndex: 10,
+              left: { md: -20, lg: -24 },
+              top: '50%',
+              transform: 'translateY(-50%)',
               bgcolor: 'white',
-              border: '1px solid',
-              borderColor: 'secondary.main',
-              color: 'text.secondary',
-              width: 40,
-              height: 40,
-              display: { xs: 'none', md: 'flex' }, // Hide on mobile
-              '&:hover': { bgcolor: 'white', transform: 'scale(1.05)' },
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              zIndex: 2,
+              display: { xs: 'none', md: 'flex' },
+              '&:hover': { bgcolor: '#f8f8f8' }
             }}
           >
-            <ArrowBackIos sx={{ fontSize: 16, ml: '4px' }} />
+            <ChevronLeft />
           </IconButton>
 
           <Box
@@ -55,43 +67,38 @@ export default function NewArrivals({ products }) {
               gap: 2,
               overflowX: 'auto',
               scrollBehavior: 'smooth',
+              scrollSnapType: 'x mandatory',
               '&::-webkit-scrollbar': { display: 'none' },
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
-              px: 0.5,
-              py: 1,
+              pb: 2,
             }}
           >
             {products.map(product => (
-              <Box key={product.id} sx={{ flex: '0 0 auto', width: { xs: 'calc(50% - 8px)', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 10.66px)', lg: 'calc(25% - 12px)', xl: 'calc(25% - 12px)' } }}>
+              <Box key={product.id} sx={{ flex: '0 0 auto', width: { xs: 'calc(50% - 8px)', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 10.66px)', lg: 'calc(25% - 12px)', xl: 'calc(25% - 12px)' }, scrollSnapAlign: 'start' }}>
                 <ProductCard product={product} hideOriginalPrice={true} />
               </Box>
             ))}
           </Box>
 
-          {/* Scroll Right Button */}
           <IconButton
             onClick={() => scroll('right')}
             sx={{
               position: 'absolute',
-              right: -20,
-              top: 88,
-              zIndex: 10,
+              right: { md: -20, lg: -24 },
+              top: '50%',
+              transform: 'translateY(-50%)',
               bgcolor: 'white',
-              border: '1px solid',
-              borderColor: 'secondary.main',
-              color: 'text.secondary',
-              width: 40,
-              height: 40,
-              display: { xs: 'none', md: 'flex' }, // Hide on mobile
-              '&:hover': { bgcolor: 'white', transform: 'scale(1.05)' },
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              zIndex: 2,
+              display: { xs: 'none', md: 'flex' },
+              '&:hover': { bgcolor: '#f8f8f8' }
             }}
           >
-            <ArrowForwardIos sx={{ fontSize: 16 }} />
+            <ChevronRight />
           </IconButton>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 }

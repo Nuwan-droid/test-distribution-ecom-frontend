@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Container, Typography, Button, IconButton } from '@mui/material';
-import { ArrowForwardIos, ArrowBackIos, ArrowForward } from '@mui/icons-material';
+import { ArrowForwardIos, ArrowBackIos, ArrowForward, LocalMall } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -97,7 +97,8 @@ export default function HomeImageSlider({ customBanners }) {
                 zIndex: 2,
                 height: '100%',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-end',
+                pb: { xs: 6, sm: 8, md: 10 },
               }}
             >
               {i === currentBanner && (
@@ -125,37 +126,53 @@ export default function HomeImageSlider({ customBanners }) {
                     >
                       {banner.title}
                     </Typography>
-
-                    {banner.subtitle && (
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem', lg: '1.35rem' },
-                          color: 'rgba(255,255,255,0.85)',
-                          mb: 2.5,
-                          fontWeight: 400,
-                        }}
-                      >
-                        {banner.subtitle}
-                      </Typography>
-                    )}
-
+                    
                     {banner.cta && (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        component={Link}
-                        to={banner.link || "/products"}
-                        id={`hero-cta-${i}`}
-                        sx={{
-                          borderRadius: 2,
-                          fontSize: { xs: '0.875rem', md: '1rem', lg: '1.125rem' },
-                          px: { xs: 2, md: 3, lg: 4 },
-                          py: { xs: 1, md: 1.25 }
-                        }}
-                      >
-                        {banner.cta}
-                      </Button>
+                      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                        <Button
+                          variant="contained"
+                          component={Link}
+                          to={banner.link || "/products"}
+                          id={`hero-cta-${i}`}
+                          startIcon={<LocalMall sx={{ fontSize: '1.2rem !important', mb: '2px' }} />}
+                          endIcon={<ArrowForward sx={{ fontSize: '1.2rem !important' }} />}
+                          sx={{
+                            borderRadius: '12px',
+                            bgcolor: 'secondary.main',
+                            color: '#fff',
+                            textTransform: 'none',
+                            fontWeight: 700,
+                            fontSize: { xs: '0.9rem', md: '1.05rem' },
+                            px: { xs: 2.5, md: 3.5 },
+                            py: { xs: 1.2, md: 1.5 },
+                            boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                            '&:hover': { bgcolor: 'secondary.dark', boxShadow: '0 10px 25px rgba(0,0,0,0.25)' },
+                          }}
+                        >
+                          {banner.cta}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          component={Link}
+                          to="/products"
+                          endIcon={<ArrowForward sx={{ fontSize: '1.2rem !important' }} />}
+                          sx={{
+                            borderRadius: '12px',
+                            color: '#fff',
+                            borderColor: 'rgba(255,255,255,0.4)',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            fontSize: { xs: '0.9rem', md: '1.05rem' },
+                            px: { xs: 2.5, md: 3.5 },
+                            py: { xs: 1.2, md: 1.5 },
+                            bgcolor: 'rgba(255,255,255,0.05)',
+                            backdropFilter: 'blur(10px)',
+                            '&:hover': { borderColor: 'rgba(255,255,255,0.8)', bgcolor: 'rgba(255,255,255,0.1)' },
+                          }}
+                        >
+                          Explore Deals
+                        </Button>
+                      </Box>
                     )}
                   </Box>
                 </motion.div>

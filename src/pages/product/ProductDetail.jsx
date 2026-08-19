@@ -51,7 +51,6 @@ export default function ProductDetail() {
             <ProductImageGallery
               images={images}
               productName={product.name}
-              modelUrl={product.modelUrl}
             />
           </Grid>
 

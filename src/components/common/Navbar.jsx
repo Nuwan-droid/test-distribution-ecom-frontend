@@ -146,51 +146,57 @@ export default function Navbar() {
 
             {/* Logo */}
             <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, mr: { sm: 2 }, order: 2 }}>
-              <Box component="img" src={logoImg} alt="OneRoutes" sx={{ height: { xs: 40, sm: 50 }, width: 'auto', objectFit: 'contain' }} />
+              <Box component="img" src={logoImg} alt="OneRoutes Logo" sx={{ height: { xs: 26, sm: 34 }, width: 'auto', objectFit: 'contain', mr: 1 }} />
+              <Typography sx={{ color: navTextColor, fontWeight: 800, fontSize: { xs: '1.3rem', sm: '1.6rem' }, letterSpacing: '-0.5px' }}>
+                OneRoutes
+              </Typography>
             </Box>
 
-            {/* All Categories (Desktop Top Row) */}
+            {/* ── UNIFIED SEARCH BAR (Middle aligned) ── */}
             {!isMobile && (
-              <Box sx={{ zIndex: 10, order: 3, mr: { sm: 2 } }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flex: 1,
+                  maxWidth: 700,
+                  mx: { sm: 2, md: 4, lg: 6 },
+                  bgcolor: '#ffffff',
+                  borderRadius: 1.5,
+                  overflow: 'hidden',
+                  order: 3,
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                }}
+              >
+                {/* 1. All Categories Button */}
                 <Button
                   id="all-departments-btn"
                   onClick={(e) => setAllDeptsAnchor(e.currentTarget)}
                   disableRipple
-                  startIcon={<MenuIcon sx={{ fontSize: 22 }} />}
+                  startIcon={<MenuIcon sx={{ fontSize: 20, color: '#555' }} />}
                   endIcon={
                     <KeyboardArrowDown
                       sx={{
-                        fontSize: 22,
+                        fontSize: 20,
+                        color: '#555',
                         transition: 'transform 0.2s',
                         transform: Boolean(allDeptsAnchor) ? 'rotate(180deg)' : 'none',
                       }}
                     />
                   }
                   sx={{
-                    position: 'relative',
-                    color: navTextColor,
-                    fontWeight: 800,
-                    fontSize: '1rem',
+                    color: '#333',
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
                     textTransform: 'none',
-                    px: 1,
-                    py: 0.5,
-                    flexShrink: 0,
+                    px: { sm: 1.5, md: 2.5 },
+                    py: 1.2,
+                    height: '100%',
+                    bgcolor: '#f5f5f5',
+                    borderRadius: 0,
                     whiteSpace: 'nowrap',
-                    minWidth: 'auto',
-                    '&:hover': { bgcolor: 'transparent' },
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      bottom: '2px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: 0,
-                      height: '2px',
-                      bgcolor: 'currentColor',
-                      transition: 'width 0.3s ease',
-                      borderRadius: '2px',
-                    },
-                    '&:hover::after': { width: '80%' },
+                    borderRight: '1px solid #e0e0e0',
+                    '&:hover': { bgcolor: '#ebebeb' },
                     '& .MuiButton-startIcon': { marginRight: '6px' },
                     '& .MuiButton-endIcon': { marginLeft: '4px' }
                   }}
@@ -285,71 +291,103 @@ export default function Navbar() {
                     </Box>
                   </Box>
                 </Popover>
+
+                {/* 2. Search Input and Button */}
+                <InputBase
+                  placeholder="Search for products"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
+                  sx={{
+                    flex: 1,
+                    px: 2,
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    '& input::placeholder': { color: '#888', opacity: 1 },
+                  }}
+                  inputProps={{ id: 'navbar-search-input' }}
+                />
+
+                <Button
+                  onClick={handleSearchClick}
+                  variant="contained"
+                  sx={{
+                    minWidth: 'unset',
+                    px: 3,
+                    py: 1.3,
+                    borderRadius: 0,
+                    bgcolor: 'secondary.main',
+                    color:   '#fff',
+                    boxShadow: 'none',
+                    '&:hover': { bgcolor: scrolled ? 'rgba(0,0,0,0.04)' : 'secondary.dark', boxShadow: 'none' },
+                  }}
+                >
+                  <Search sx={{ fontSize: 24 }} />
+                </Button>
               </Box>
             )}
 
-            {/* ── SEARCH BAR — Moved near logo ── */}
-            <Box
-              sx={{
-                width: { xs: '100%', sm: 220, md: 250, lg: 350 },
-                flex: { xs: '1 1 100%', sm: 'none' },
-                mx: 0,
-                mr: { sm: 2 }, // Space before action icons
-                mt: { xs: 1, sm: 0 }, // Add margin top when wrapped on xs
-                display: 'flex',
-                alignItems: 'center',
-                order: 4, // Comes after Logo (2) and All Categories (3)
-
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                border: '1px solid transparent',
-                overflow: 'hidden',
-                transition: 'all 0.2s',
-                '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.15)',
-                },
-                '&:focus-within': {
-                  bgcolor: 'rgba(255, 255, 255, 0.2)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                },
-              }}
-            >
-              <InputBase
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={handleSearch}
-                sx={{ flex: 1, px: 2.5, py: 0.7, fontSize: '0.9rem', color: navTextColor, '& input::placeholder': { color: 'rgba(255,255,255,0.6)', opacity: 1 } }}
-                inputProps={{ id: 'navbar-search-input' }}
-              />
-
-              <IconButton
-                onClick={handleSearchClick}
-                sx={{ px: 2, borderRadius: 0, color: navTextColor, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.15)', bgcolor: 'transparent' } }}
+            {/* Mobile Search Bar */}
+            {isMobile && (
+              <Box
+                sx={{
+                  width: '100%',
+                  flex: '1 1 100%',
+                  mx: 0,
+                  mt: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  order: 4,
+                  bgcolor: '#ffffff',
+                  borderRadius: 1.5,
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}
               >
-                <Search sx={{ fontSize: 20 }} />
-              </IconButton>
-            </Box>
+                <InputBase
+                  placeholder=""
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
+                  sx={{ flex: 1, px: 2, py: 0.7, fontSize: '0.9rem', color: '#333', '& input::placeholder': { color: '#888', opacity: 1 } }}
+                  inputProps={{ id: 'navbar-search-input-mobile' }}
+                />
+                <Button
+                  onClick={handleSearchClick}
+                  variant="contained"
+                  sx={{
+                    minWidth: 'unset',
+                    px: 2,
+                    py: 1,
+                    borderRadius: 0,
+                    bgcolor: scrolled ? 'transparent' : 'secondary.main',
+                    color: scrolled ? 'secondary.main' : '#fff',
+                    boxShadow: 'none',
+                    '&:hover': { bgcolor: scrolled ? 'rgba(0,0,0,0.04)' : 'secondary.dark', boxShadow: 'none' },
+                  }}
+                >
+                  <Search sx={{ fontSize: 20 }} />
+                </Button>
+              </Box>
+            )}
 
             {/* ── ACTION ICONS (far right) ── */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.25, sm: 0.5 }, flexShrink: 0, ml: 'auto', order: 5 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 3.5 }, flexShrink: 0, ml: 'auto', order: 5 }}>
 
               {/* Log in / Account */}
               {isLoggedIn ? (
                 <>
-                  <Button
+                  <Box
                     id="account-btn"
                     onClick={(e) => setAccountAnchor(e.currentTarget)}
-                    startIcon={<AccountCircle sx={{ fontSize: 26 }} />}
-                    endIcon={<KeyboardArrowDown sx={{ fontSize: 20 }} />}
                     sx={{
-                      color: navTextColor, fontWeight: 500, fontSize: '1rem', textTransform: 'none',
-                      display: { xs: 'none', sm: 'flex' }, borderRadius: 2, px: 1.2,
-                      '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent' }
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer',
+                      color: navTextColor, transition: 'all 0.2s', '&:hover': { transform: 'scale(1.05)' }
                     }}
                   >
-                    {user?.name?.split(' ')[0]}
-                  </Button>
+                    <Person sx={{ fontSize: { xs: 24, sm: 28 } }} />
+                    <Typography sx={{ fontSize: '0.7rem', fontWeight: 500, mt: 0.5, display: { xs: 'none', sm: 'block' } }}>Account</Typography>
+                  </Box>
                   <Menu
                     anchorEl={accountAnchor}
                     open={Boolean(accountAnchor)}
@@ -379,45 +417,50 @@ export default function Navbar() {
                   </Menu>
                 </>
               ) : (
-                <Tooltip title="Log In">
-                  <IconButton
-                    id="login-btn"
-                    onClick={() => { setAuthModalTab('login'); setAuthModalOpen(true); }}
-                    sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
-                  >
-                    <Person sx={{ fontSize: 28 }} />
-                  </IconButton>
-                </Tooltip>
+                <Box
+                  id="login-btn"
+                  onClick={() => { setAuthModalTab('login'); setAuthModalOpen(true); }}
+                  sx={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer',
+                    color: iconColor, transition: 'all 0.2s', '&:hover': { color: navTextColor, transform: 'scale(1.05)' }
+                  }}
+                >
+                  <Person sx={{ fontSize: { xs: 24, sm: 28 } }} />
+                  <Typography sx={{ fontSize: '0.7rem', fontWeight: 500, mt: 0.5, display: { xs: 'none', sm: 'block' } }}>Account</Typography>
+                </Box>
               )}
 
+              {/* Wishlist */}
+              <Box
+                component={Link}
+                to="/wishlist"
+                id="wishlist-btn"
+                sx={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none',
+                  color: iconColor, transition: 'all 0.2s', '&:hover': { color: navTextColor, transform: 'scale(1.05)' }
+                }}
+              >
+                <Badge badgeContent={wishlist.length} color="error" sx={{ '& .MuiBadge-badge': { fontSize: '0.65rem', minWidth: 16, height: 16, bgcolor: '#e74c3c' } }}>
+                  <FavoriteBorder sx={{ fontSize: { xs: 24, sm: 28 } }} />
+                </Badge>
+                <Typography sx={{ fontSize: '0.7rem', fontWeight: 500, mt: 0.5, display: { xs: 'none', sm: 'block' } }}>Wishlist</Typography>
+              </Box>
 
-              {/* Wishlist — always navigable; Wishlist page handles empty state */}
-              <Tooltip title="Wishlist">
-                <IconButton
-                  id="wishlist-btn"
-                  component={Link}
-                  to="/wishlist"
-                  sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
-                >
-                  <Badge badgeContent={wishlist.length} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18 } }}>
-                    <FavoriteBorder sx={{ fontSize: 28 }} />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
-
-              {/* Cart — always navigable; cart is accessible without login */}
-              <Tooltip title="Cart">
-                <IconButton
-                  id="cart-btn"
-                  component={Link}
-                  to="/cart"
-                  sx={{ color: iconColor, transition: 'color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)', '&:hover': { bgcolor: isSolidNavbar ? 'rgba(255,255,255,0.15)' : 'transparent', color: navTextColor, transform: 'scale(1.1)' } }}
-                >
-                  <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontSize: '0.7rem', minWidth: 18, height: 18, bgcolor: isSolidNavbar ? 'white' : 'secondary.main', color: isSolidNavbar ? 'secondary.main' : 'white', boxShadow: '0 0 10px rgba(255,255,255,0.3)' } }}>
-                    <ShoppingCartOutlined sx={{ fontSize: 28 }} />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
+              {/* Cart */}
+              <Box
+                component={Link}
+                to="/cart"
+                id="cart-btn"
+                sx={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none',
+                  color: iconColor, transition: 'all 0.2s', '&:hover': { color: navTextColor, transform: 'scale(1.05)' }
+                }}
+              >
+                <Badge badgeContent={totalItems} color="error" sx={{ '& .MuiBadge-badge': { fontSize: '0.65rem', minWidth: 16, height: 16, bgcolor: '#e74c3c' } }}>
+                  <ShoppingCartOutlined sx={{ fontSize: { xs: 24, sm: 28 } }} />
+                </Badge>
+                <Typography sx={{ fontSize: '0.7rem', fontWeight: 500, mt: 0.5, display: { xs: 'none', sm: 'block' } }}>Cart</Typography>
+              </Box>
 
             </Box>
           </Toolbar>

@@ -10,11 +10,11 @@ import { motion } from 'framer-motion';
 import SpotlightBanner from '../../components/home/SpotlightBanner';
 
 
-import FeaturedProducts from '../../components/home/FeaturedProducts';
 import NewArrivals from '../../components/home/NewArrivals';
 import HotSellingProducts from '../../components/home/HotSellingProducts';
 import HomeImageSlider from '../../components/common/ImageSlider';
 import ShopByCategory from '../../components/home/ShopByCategory';
+import FlashDeals from '../../components/home/FlashDeals';
 
 import products, { banners } from '../../data/products';
 
@@ -33,33 +33,25 @@ export default function Home() {
 
   // Hot Selling & Featured — mixed variety from all in-stock products
   const hotSellingProducts = shuffled.slice(0, 8);
-  const featuredProducts = shuffled.slice(8, 16);
 
   return (
     <Box>
       <HomeImageSlider customBanners={banners} />
 
-      {/* ===== Spotlight Feature Banner (Top) ===== */}
-      <SpotlightBanner layout="left-large" />
-
-       {/* ===== Hot Selling Products ===== */}
-      <HotSellingProducts products={hotSellingProducts} />
-
-      {/* ===== New Spotlight Feature Banner (Bags & Luggage, School Supplies, Pet Supplies) ===== */}
-      <SpotlightBanner layout="right-large" />
-
-    
-
-      {/* ===== Featured Products ===== */}
-      <FeaturedProducts products={featuredProducts} />
-
-      {/* ===== New Arrivals ===== */}
-      <NewArrivals products={newArrivals} />
-
       {/* ===== Shop By Category ===== */}
       <ShopByCategory />
 
+      {/* ===== Flash Deals ===== */}
+      <FlashDeals />
 
+      {/* ===== Hot Selling Products ===== */}
+      <HotSellingProducts products={hotSellingProducts} />
+
+      {/* ===== Category Spotlight Banners ===== */}
+      <SpotlightBanner layout="three-columns" />
+
+      {/* ===== New Arrivals ===== */}
+      <NewArrivals products={newArrivals} />
 
     </Box>
   );

@@ -29,7 +29,6 @@ import OrderSuccess from "./pages/orders/OrderSuccess";
 import Account from "./pages/auth/Account";
 import OrderTracking from "./pages/orders/OrderTracking";
 import Wishlist from "./pages/product/Wishlist";
-import ProductUploadDemo from "./pages/admin/ProductUploadDemo";
 
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -55,7 +54,6 @@ const router = createBrowserRouter([
       { path: "pet-supplies-store", element: <PetSuppliesStore /> },
       { path: "school-supplies-store", element: <SchoolSuppliesStore /> },
       { path: "wishlist", element: <Wishlist /> },
-      { path: "admin/upload-demo", element: <ProductUploadDemo /> },
       /* Auth flow pages — inside MainLayout so they share Navbar,
          Footer, NavbarProvider, and AuthModal */
       { path: "forgot-password", element: <ForgotPassword /> },
@@ -107,9 +105,9 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Montserrat", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
     allVariants: {
-      fontFamily: '"Montserrat", sans-serif',
+      fontFamily: '"Poppins", sans-serif',
     },
     subtitle1: { letterSpacing: '0.05em' },
   },

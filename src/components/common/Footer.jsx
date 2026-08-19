@@ -1,86 +1,83 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Box, Container, Grid, Typography, TextField, Button, Divider,
-  IconButton, List, ListItem, InputAdornment,
+  Box, Container, Grid, Typography, Divider, IconButton, List, ListItem,
 } from '@mui/material';
 import {
-  Facebook, Twitter, Instagram, YouTube, LinkedIn,
-  Email, Phone, LocationOn, Send, ArrowForward, CardGiftcard,
+  Facebook, Twitter, Instagram, YouTube, LocalMall,
 } from '@mui/icons-material';
 
 const footerLinks = {
-  company: [
-    { label: 'About Us', path: '/about' },
-    { label: 'Careers', path: '/careers' },
-    { label: 'Press', path: '/press' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Upload Demo (AI)', path: '/admin/upload-demo' },
+  shop: [
+    { label: 'All Categories', path: '/products' },
+    { label: 'New Arrivals', path: '/products?filter=new' },
+    { label: 'Best Sellers', path: '/products?filter=bestsellers' },
+    { label: 'Special Offers', path: '/products?filter=deals' },
+    { label: 'Gift Cards', path: '/gift-cards' },
   ],
-  support: [
-    { label: 'Help Center', path: '/help' },
+  service: [
     { label: 'Contact Us', path: '/contact' },
+    { label: 'FAQ', path: '/faq' },
+    { label: 'Shipping & Delivery', path: '/shipping' },
     { label: 'Returns & Refunds', path: '/returns' },
     { label: 'Track Order', path: '/track' },
   ],
-  policies: [
+  about: [
+    { label: 'About Us', path: '/about' },
+    { label: 'Careers', path: '/careers' },
+    { label: 'Blog', path: '/blog' },
+    { label: 'Press', path: '/press' },
+    { label: 'Sustainability', path: '/sustainability' },
+  ],
+  help: [
+    { label: 'Terms & Conditions', path: '/terms' },
     { label: 'Privacy Policy', path: '/privacy' },
-    { label: 'Terms of Service', path: '/terms' },
+    { label: 'Payment Methods', path: '/payment-methods' },
     { label: 'Cookie Policy', path: '/cookies' },
-    { label: 'Shipping Policy', path: '/shipping' },
   ],
 };
 
 const socialLinks = [
-  { icon: <Facebook />, label: 'Facebook', href: '#' },
-  { icon: <Instagram />, label: 'Instagram', href: '#' },
-  { icon: <Twitter />, label: 'Twitter', href: '#' },
-  { icon: <YouTube />, label: 'YouTube', href: '#' },
-  { icon: <LinkedIn />, label: 'LinkedIn', href: '#' },
+  { icon: <Facebook fontSize="small" />, label: 'Facebook', href: '#' },
+  { icon: <Instagram fontSize="small" />, label: 'Instagram', href: '#' },
+  { icon: <Twitter fontSize="small" />, label: 'Twitter', href: '#' },
+  { icon: <YouTube fontSize="small" />, label: 'YouTube', href: '#' },
+];
+
+const paymentMethods = [
+  { label: 'VISA', color: '#1a1f71' },
+  { label: 'MC', color: '#eb001b' },
+  { label: 'PayPal', color: '#003087' },
+  { label: 'AMEX', color: '#2e77bc' },
 ];
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ bgcolor: 'secondary.main', color: 'white', mt: 'auto' }}>
-
-      {/* Main Footer */}
-      <Container maxWidth="xl" sx={{ py: 6 }}>
-        <Grid container spacing={4} alignItems="flex-start">
-          {/* Brand + Contact */}
-          <Grid item xs={12} md={4}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              <Typography variant="h5" fontWeight={800}>
-                One<Box component="span" sx={{ color: 'primary.main' }}>Routes</Box>
+    <Box component="footer" sx={{ bgcolor: '#ffffff', color: '#111111', mt: 'auto', borderTop: '1px solid #eeeeee' }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 6, md: 8 }, px: { xs: 2, sm: 4, md: 6, lg: 8, xl: 10 } }}>
+        <Grid container spacing={4} justifyContent="space-between">
+          
+          {/* Column 1: Brand & Description */}
+          <Grid item xs={12} md={4} lg={3}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+              <LocalMall sx={{ color: '#1a1a4b', fontSize: 28 }} />
+              <Typography variant="h6" fontWeight={800} sx={{ color: '#1a1a4b', fontSize: '1.4rem', letterSpacing: '-0.5px' }}>
+                OneRoutes
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ color: 'grey.400', mb: 3, lineHeight: 1.8 }}>
-              Quality products, great prices, and fast delivery.
+            <Typography variant="body2" sx={{ color: '#666666', mb: 4, lineHeight: 1.8, fontSize: '0.9rem', maxWidth: 280 }}>
+              Your one-stop shop for everything you need. Quality products, best prices and a great shopping experience.
             </Typography>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'grey.400' }}>
-                <Phone sx={{ fontSize: 18, color: 'primary.main' }} />
-                <Typography variant="body2">+94 71 5366314</Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'grey.400' }}>
-                <Email sx={{ fontSize: 18, color: 'primary.main' }} />
-                <Typography variant="body2">support@oneroutes.com</Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, color: 'grey.400' }}>
-                <LocationOn sx={{ fontSize: 18, color: 'primary.main', mt: 0.2 }} />
-                <Typography variant="body2">No. 45, Galle Road Colombo 03</Typography>
-              </Box>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 1, mt: 3 }}>
+            <Box sx={{ display: 'flex', gap: 1.5 }}>
               {socialLinks.map(s => (
                 <IconButton
                   key={s.label}
                   href={s.href}
                   size="small"
                   sx={{
-                    bgcolor: 'rgba(255,255,255,0.08)',
-                    color: 'grey.400',
-                    '&:hover': { bgcolor: 'primary.main', color: 'white' },
+                    border: '1px solid #e0e0e0',
+                    color: '#666666',
+                    '&:hover': { borderColor: '#1a1a4b', color: '#1a1a4b', bgcolor: 'transparent' },
                     transition: 'all 0.2s',
                   }}
                   aria-label={s.label}
@@ -91,104 +88,153 @@ export default function Footer() {
             </Box>
           </Grid>
 
-          {/* Company + Support grouped together, pushed to the right */}
-          <Grid
-            item
-            xs={12}
-            md="auto"
-            sx={{
-              ml: { md: 'auto' },
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              gap: { xs: 4, sm: 6, md: 8, lg: 12 },
-            }}
-          >
-            <Box sx={{ minWidth: 120 }}>
-              <Typography
-                variant="subtitle2"
-                fontWeight={700}
-                sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}
-              >
-                Company
-              </Typography>
-              <List dense disablePadding>
-                {footerLinks.company.map(link => (
-                  <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
-                    <Box
-                      component={Link}
-                      to={link.path}
-                      sx={{
-                        color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
-                        display: 'flex', alignItems: 'center', gap: 0.5,
-                        '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
-                      }}
-                    >
-                      <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
-                    </Box>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+          {/* Column 2: Shop */}
+          <Grid item xs={6} sm={3} md={2} lg={2}>
+            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3, color: '#111111' }}>
+              Shop
+            </Typography>
+            <List dense disablePadding>
+              {footerLinks.shop.map(link => (
+                <ListItem key={link.label} disablePadding sx={{ mb: 1.5 }}>
+                  <Box
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      color: '#666666', textDecoration: 'none', fontSize: '0.9rem',
+                      '&:hover': { color: '#1a1a4b', textDecoration: 'underline' }, transition: 'color 0.2s',
+                    }}
+                  >
+                    {link.label}
+                  </Box>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
 
-            <Box sx={{ minWidth: 120 }}>
-              <Typography
-                variant="subtitle2"
-                fontWeight={700}
-                sx={{ mb: 2, color: 'white', letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.75rem' }}
-              >
-                Support
-              </Typography>
-              <List dense disablePadding>
-                {footerLinks.support.map(link => (
-                  <ListItem key={link.label} disablePadding sx={{ mb: 0.5 }}>
-                    <Box
-                      component={Link}
-                      to={link.path}
-                      sx={{
-                        color: 'grey.400', textDecoration: 'none', fontSize: '0.875rem',
-                        display: 'flex', alignItems: 'center', gap: 0.5,
-                        '&:hover': { color: 'primary.main' }, transition: 'color 0.2s',
-                      }}
-                    >
-                      <ArrowForward sx={{ fontSize: 12 }} /> {link.label}
-                    </Box>
-                  </ListItem>
-                ))}
-              </List>
+          {/* Column 3: Customer Service */}
+          <Grid item xs={6} sm={3} md={3} lg={3}>
+            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3, color: '#111111' }}>
+              Customer Service
+            </Typography>
+            <List dense disablePadding>
+              {footerLinks.service.map(link => (
+                <ListItem key={link.label} disablePadding sx={{ mb: 1.5 }}>
+                  <Box
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      color: '#666666', textDecoration: 'none', fontSize: '0.9rem',
+                      '&:hover': { color: '#1a1a4b', textDecoration: 'underline' }, transition: 'color 0.2s',
+                    }}
+                  >
+                    {link.label}
+                  </Box>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+
+          {/* Column 4: About Us */}
+          <Grid item xs={6} sm={3} md={2} lg={2}>
+            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3, color: '#111111' }}>
+              About Us
+            </Typography>
+            <List dense disablePadding>
+              {footerLinks.about.map(link => (
+                <ListItem key={link.label} disablePadding sx={{ mb: 1.5 }}>
+                  <Box
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      color: '#666666', textDecoration: 'none', fontSize: '0.9rem',
+                      '&:hover': { color: '#1a1a4b', textDecoration: 'underline' }, transition: 'color 0.2s',
+                    }}
+                  >
+                    {link.label}
+                  </Box>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+
+          {/* Column 5: Help & Payments */}
+          <Grid item xs={6} sm={3} md={2} lg={2}>
+            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3, color: '#111111' }}>
+              Help
+            </Typography>
+            <List dense disablePadding>
+              {footerLinks.help.map(link => (
+                <ListItem key={link.label} disablePadding sx={{ mb: 1.5 }}>
+                  <Box
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      color: '#666666', textDecoration: 'none', fontSize: '0.9rem',
+                      '&:hover': { color: '#1a1a4b', textDecoration: 'underline' }, transition: 'color 0.2s',
+                    }}
+                  >
+                    {link.label}
+                  </Box>
+                </ListItem>
+              ))}
+            </List>
+
+            <Typography variant="subtitle2" fontWeight="bold" sx={{ mt: 4, mb: 2, color: '#111111' }}>
+              We Accept
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {paymentMethods.map(pm => (
+                <Box
+                  key={pm.label}
+                  sx={{
+                    px: 1.5,
+                    py: 0.5,
+                    bgcolor: '#f8f8f8',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '4px',
+                    color: pm.color,
+                    fontSize: '0.65rem',
+                    fontWeight: 800,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {pm.label}
+                </Box>
+              ))}
             </Box>
           </Grid>
+
         </Grid>
       </Container>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)' }} />
-
-      {/* Bottom Bar */}
-      <Container maxWidth="xl">
+      {/* Bottom Bar & Divider */}
+      <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8, xl: 10 } }}>
+        <Divider sx={{ borderColor: '#eeeeee' }} />
         <Box
           sx={{
-            py: 2.5,
+            py: 3,
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: 1,
+            gap: 2,
           }}
         >
-          <Typography variant="body2" sx={{ color: 'grey.500', textAlign: 'center' }}>
-            © {new Date().getFullYear()} OneRoutes. All rights reserved.
+          <Typography variant="body2" sx={{ color: '#888888', fontWeight: 500 }}>
+            © {new Date().getFullYear()} OneRoutes. All Rights Reserved.
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {footerLinks.policies.map(link => (
-              <Box
-                key={link.label}
-                component={Link}
-                to={link.path}
-                sx={{ color: 'grey.500', textDecoration: 'none', fontSize: '0.8rem', '&:hover': { color: 'primary.main' } }}
-              >
-                {link.label}
-              </Box>
-            ))}
+          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <Box component={Link} to="/terms" sx={{ color: '#888888', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, '&:hover': { color: '#1a1a4b' } }}>
+              Terms of Use
+            </Box>
+            <Box component={Link} to="/privacy" sx={{ color: '#888888', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, '&:hover': { color: '#1a1a4b' } }}>
+              Privacy Policy
+            </Box>
+            <Box component={Link} to="/sitemap" sx={{ color: '#888888', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, '&:hover': { color: '#1a1a4b' } }}>
+              Sitemap
+            </Box>
           </Box>
         </Box>
       </Container>
