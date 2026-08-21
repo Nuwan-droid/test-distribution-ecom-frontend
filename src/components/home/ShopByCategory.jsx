@@ -42,7 +42,7 @@ export default function ShopByCategory() {
     <Box sx={{ 
       bgcolor: '#ffffff',
       py: { xs: 1, md: 2 }, 
-      my: 0,
+      mt: { xs: 3, md: 4 },
     }}>
       <Container maxWidth="xl">
         <Box sx={{ mb: { xs: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

@@ -46,16 +46,16 @@ export default function ProductDetail() {
           rowSpacing={{ xs: 3, sm: 4, md: 4 }}
           alignItems="flex-start"
         >
-          {/* LEFT — Gallery: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}
-          <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
+          {/* LEFT — Gallery: 100% on mobile (xs), 41% on sm/md/lg, 50% on xl */}
+          <Grid item xs={12} sm={5} md={5} lg={5} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductImageGallery
               images={images}
               productName={product.name}
             />
           </Grid>
 
-          {/* RIGHT — Product Info: 100% on mobile/tablet (xs, sm), 50% on desktop/PC (md, lg, xl) */}
-          <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
+          {/* RIGHT — Product Info: 100% on mobile (xs), 58% on sm/md/lg, 50% on xl */}
+          <Grid item xs={12} sm={7} md={7} lg={7} xl={6} sx={{ display: 'flex', flexDirection: 'column' }}>
             <ProductInfo product={product} />
           </Grid>
         </Grid>

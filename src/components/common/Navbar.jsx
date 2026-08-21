@@ -125,7 +125,7 @@ export default function Navbar() {
         }}
       >
         {/* ── TOP ROW ── */}
-        <Container maxWidth="xl">
+        <Container maxWidth={false} sx={{ maxWidth: 2400, mx: 'auto', px: { xs: 2, sm: 4, md: 6, lg: 8, xl: 10 } }}>
           <Toolbar
             sx={{
               py: { xs: 1.5, sm: 0.5 },

@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─── Shared height across photo ───────────────────────────────────────────── */
-const VIEW_HEIGHT = { xs: 260, sm: 320, md: 360, lg: 400, xl: 430 };
+const VIEW_HEIGHT = { xs: 260, sm: 320, md: 340, lg: 380, xl: 430 };
 const THUMB_HEIGHT = { xs: 46, sm: 58, md: 66, lg: 74, xl: 78 };
 const THUMB_WIDTH  = { xs: 46, sm: 54, md: 60, lg: 66, xl: 70 };
 
@@ -83,7 +83,7 @@ export default function ProductImageGallery({ images, productName }) {
               sx={{
                 width: '100%',
                 height: VIEW_HEIGHT,
-                maxHeight: { xs: 280, sm: 340, md: 380, lg: 420, xl: 450 },
+                maxHeight: { xs: 280, sm: 340, md: 360, lg: 400, xl: 450 },
                 objectFit: 'cover',
                 bgcolor: '#f5f5f5',
                 display: 'block',

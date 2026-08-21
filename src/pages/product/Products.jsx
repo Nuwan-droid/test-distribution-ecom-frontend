@@ -359,7 +359,7 @@ export default function Products() {
 
   return (
     <Box sx={{ bgcolor: '#F8FAFC', minHeight: '100vh', pt: 0 }}>
-      <Container maxWidth="xl" sx={{ pt: 0, pb: { xs: 1.5, md: 2 } }}>
+      <Container maxWidth={false} sx={{ maxWidth: 2400, mx: 'auto', px: { xs: 2, xl: 4 }, pt: 0, pb: { xs: 1.5, md: 2 } }}>
 
         {/* Page Header */}
         <Box sx={{
@@ -434,7 +434,7 @@ export default function Products() {
           {!isMobile && (
             <Box
               sx={{
-                width: 210,
+                width: 190, // Reduced from 210
                 flexShrink: 0,
                 /* alignSelf:flex-start is REQUIRED for sticky to work in a flex container */
                 alignSelf: 'flex-start',
@@ -471,7 +471,7 @@ export default function Products() {
           )}
 
           {/* Product Section */}
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box sx={{ flex: 1, minWidth: 0, pr: { md: 2, lg: 3 } }}>
 
             {/* Mobile top bar */}
             {isMobile && (

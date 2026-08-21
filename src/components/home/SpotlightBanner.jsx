@@ -19,12 +19,12 @@ const colorfulBanners = [
     id: 2,
     title: 'Home Supplies',
     subTitle: 'Everything You Need',
-    image: 'https://images.unsplash.com/photo-1584164104033-91db405625fb?w=1200&q=90', // modern kitchen setup
+    image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=90', // beautiful modern living room
     link: '/products?category=Home%20%26%20Kitchen',
     btnLabel: 'Shop Now',
     textColor: '#111111',
-    btnBgColor: '#1fa453', // green from image
-    bgColor: '#e2f2e5', // light green from image
+    btnBgColor: '#1fa453', // green
+    bgColor: '#e2f2e5', // light green
   },
   {
     id: 3,

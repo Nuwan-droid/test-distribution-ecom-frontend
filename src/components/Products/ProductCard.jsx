@@ -152,7 +152,7 @@ export default function ProductCard({ product, hideOriginalPrice = false, isFlas
       </Box>
 
       {/* Bottom row: Stars and Actions */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto', pt: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, mt: 'auto', pt: 1 }}>
         {/* Rating */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {[...Array(5)].map((_, index) => (
