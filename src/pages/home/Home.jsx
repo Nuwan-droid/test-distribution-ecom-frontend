@@ -13,6 +13,7 @@ import SpotlightBanner from '../../components/home/SpotlightBanner';
 import NewArrivals from '../../components/home/NewArrivals';
 import HotSellingProducts from '../../components/home/HotSellingProducts';
 import HomeImageSlider from '../../components/common/ImageSlider';
+import PromoBanners from '../../components/common/PromoBanners';
 import ShopByCategory from '../../components/home/ShopByCategory';
 import FlashDeals from '../../components/home/FlashDeals';
 
@@ -37,6 +38,9 @@ export default function Home() {
   return (
     <Box>
       <HomeImageSlider customBanners={banners} />
+
+      {/* ===== Promo Banners ===== */}
+      <PromoBanners />
 
       {/* ===== Shop By Category ===== */}
       <ShopByCategory />
