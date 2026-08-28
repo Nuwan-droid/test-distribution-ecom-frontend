@@ -184,11 +184,11 @@ const FooterLinks = () => (
 export default function Footer() {
   return (
     <Box component="footer" sx={{ bgcolor: '#ffffff', color: '#111111', mt: 'auto', borderTop: '1px solid #eeeeee' }}>
-      <Container maxWidth="xl" sx={{ py: { xs: 6, md: 8 }, px: { xs: 2, sm: 4, md: 6, lg: 8, xl: 10 } }}>
-        <Grid container spacing={4} justifyContent="space-between">
+      <Container maxWidth={false} sx={{ py: { xs: 6, md: 8 }, px: 0 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', gap: 4 }}>
           
           {/* Left Column: Brand & Description */}
-          <Grid item xs={12} sm={4} lg={4}>
+          <Box sx={{ flex: '0 0 auto', maxWidth: { xs: '100%', md: '350px', xl: '400px' }, pl: { xs: 2, sm: 3, md: 4, lg: 6 } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: { xs: 3, sm: 1.5, lg: 2, xl: 3 } }}>
               <LocalMall sx={{ color: '#1a1a4b', fontSize: { xs: 28, sm: 22, lg: 24, xl: 28 } }} />
               <Typography variant="h6" fontWeight={800} sx={{ color: '#1a1a4b', fontSize: { xs: '1.4rem', sm: '1.1rem', lg: '1.25rem', xl: '1.4rem' }, letterSpacing: '-0.5px' }}>
@@ -216,18 +216,18 @@ export default function Footer() {
                 </IconButton>
               ))}
             </Box>
-          </Grid>
+          </Box>
 
           {/* Right Column: Combined Links */}
-          <Grid item xs={12} sm={8} lg={8} sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+          <Box sx={{ flex: '1 1 auto', display: 'flex', justifyContent: { xs: 'flex-start', md: 'flex-end' }, pr: { xs: 2, sm: 3, md: 4, lg: 6 } }}>
             <FooterLinks />
-          </Grid>
+          </Box>
 
-        </Grid>
+        </Box>
       </Container>
 
       {/* Bottom Bar & Divider */}
-      <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8, xl: 10 } }}>
+      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4, lg: 5 } }}>
         <Divider sx={{ borderColor: '#eeeeee' }} />
         <Box
           sx={{

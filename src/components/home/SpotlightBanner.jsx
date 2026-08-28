@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import { Box, IconButton } from '@mui/material';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import React from 'react';
+import { Box, keyframes } from '@mui/material';
 import SpotlightCard from '../common/SpotlightCard';
 
 const colorfulBanners = [
@@ -83,16 +82,13 @@ const colorfulBanners = [
   },
 ];
 
+const marqueeAnimation = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1.75rem)); } /* -50% of content plus half the gap to loop seamlessly */
+`;
+
 export default function SpotlightBanner({ banners }) {
   const activeBanners = banners || colorfulBanners;
-  const scrollRef = useRef(null);
-
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = 500;
-      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
-    }
-  };
 
   const heightStyle = { 
     height: '100%', 
@@ -104,51 +100,33 @@ export default function SpotlightBanner({ banners }) {
     <Box
       sx={{
         width: '100%',
-        px: { xs: 2, sm: 3, md: 4, lg: 6, xl: 8 },
         pt: { xs: 1.5, sm: 2, md: 2.5, lg: 3 },
         pb: { xs: 1.5, sm: 2, md: 2.5, lg: 3 },
+        overflow: 'hidden', // Hide overflow for the marquee
         position: 'relative',
       }}
     >
-      <IconButton
-        onClick={() => scroll('left')}
-        sx={{
-          position: 'absolute',
-          left: { xs: 10, md: 20 },
-          top: '50%',
-          transform: 'translateY(-50%)',
-          bgcolor: 'white',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-          zIndex: 2,
-          display: { xs: 'none', md: 'flex' },
-          '&:hover': { bgcolor: '#f8f8f8' }
-        }}
-      >
-        <ChevronLeft />
-      </IconButton>
-
       <Box
-        ref={scrollRef}
         sx={{
           display: 'flex',
           flexDirection: 'row',
           gap: { xs: 2, sm: 2.5, md: 3, lg: 3.5 },
-          overflowX: 'auto',
-          scrollBehavior: 'smooth',
-          scrollSnapType: 'x mandatory',
-          '&::-webkit-scrollbar': { display: 'none' },
-          msOverflowStyle: 'none',
-          scrollbarWidth: 'none',
-          py: 1, // slight padding so box-shadows aren't clipped
+          width: 'max-content',
+          animation: `${marqueeAnimation} 40s linear infinite`,
+          '&:hover': {
+            animationPlayState: 'paused', // Pause animation on hover
+          },
+          py: 1, 
+          px: { xs: 2, sm: 3, md: 4, lg: 6, xl: 8 }, // Apply padding to the track instead of the wrapper
         }}
       >
-        {activeBanners.map((banner) => (
+        {/* Duplicate the banners array to create an infinite loop effect */}
+        {[...activeBanners, ...activeBanners].map((banner, index) => (
           <Box
-            key={banner.id}
+            key={`${banner.id}-${index}`}
             sx={{
               flex: '0 0 auto',
-              width: { xs: '85%', sm: '45%', md: '33.33%', lg: '33.33%', xl: '33.33%' },
-              scrollSnapAlign: 'start',
+              width: { xs: '280px', sm: '320px', md: '360px', lg: '400px', xl: '420px' },
               display: 'flex',
             }}
           >
@@ -156,23 +134,6 @@ export default function SpotlightBanner({ banners }) {
           </Box>
         ))}
       </Box>
-
-      <IconButton
-        onClick={() => scroll('right')}
-        sx={{
-          position: 'absolute',
-          right: { xs: 10, md: 20 },
-          top: '50%',
-          transform: 'translateY(-50%)',
-          bgcolor: 'white',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-          zIndex: 2,
-          display: { xs: 'none', md: 'flex' },
-          '&:hover': { bgcolor: '#f8f8f8' }
-        }}
-      >
-        <ChevronRight />
-      </IconButton>
     </Box>
   );
 }

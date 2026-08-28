@@ -41,9 +41,10 @@ export default function ProductCard({ product, hideOriginalPrice = false, isFlas
         p: 2.5,
         position: 'relative',
         bgcolor: '#fff',
+        boxShadow: '0 10px 20px rgba(0,0,0,0.08)', // Added default border shadow
         transition: 'box-shadow 0.3s ease, transform 0.3s ease',
         height: '100%',
-        minHeight: { xs: '380px', sm: '410px' },
+        minHeight: { xs: '320px', sm: '350px' },
         '&:hover': {
           boxShadow: '0 12px 24px rgba(0,0,0,0.08)',
           transform: 'translateY(-4px)'
@@ -201,10 +202,11 @@ export function ProductCardSkeleton() {
         flexDirection: 'column',
         borderRadius: 3,
         border: '1px solid rgba(0,0,0,0.08)',
+        boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
         p: 2.5,
         bgcolor: '#ffffff',
         height: '100%',
-        minHeight: { xs: '380px', sm: '410px' },
+        minHeight: { xs: '320px', sm: '350px' },
       }}
     >
       <Box sx={{ width: '100%', aspectRatio: '1/1', mb: 2.5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

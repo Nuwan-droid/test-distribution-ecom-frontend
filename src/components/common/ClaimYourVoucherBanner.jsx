@@ -9,7 +9,7 @@ const ClaimYourVoucherBanner = () => {
       sx={{
         backgroundColor: '#f5eaff',
         borderRadius: '24px',
-        p: { xs: 2, sm: 3, lg: 4 },
+        p: { xs: 2, sm: 2, lg: 3 },
         height: '100%',
         width: '100%',
         minWidth: '100%',
@@ -23,9 +23,9 @@ const ClaimYourVoucherBanner = () => {
       }}
     >
       {/* Top Section */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column-reverse', sm: 'row' }, justifyContent: 'space-between', mb: { xs: 2, sm: 3 }, position: 'relative' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column-reverse', sm: 'row' }, justifyContent: 'space-between', mb: { xs: 1.5, sm: 2 }, position: 'relative' }}>
         <Box sx={{ maxWidth: { xs: '100%', sm: '55%' }, zIndex: 2 }}>
-          <Typography variant="h4" fontWeight={800} sx={{ color: '#6d28d9', mb: 1, fontSize: { xs: '1.5rem', sm: '1.75rem', lg: '2.125rem' } }}>
+          <Typography variant="h4" fontWeight={800} sx={{ color: '#6d28d9', mb: 0.5, fontSize: { xs: '1.25rem', sm: '1.5rem', lg: '1.75rem' } }}>
             Claim Your Voucher
           </Typography>
           <Typography variant="body2" sx={{ color: '#6b7280', mb: 2, fontSize: { xs: '0.75rem', sm: '0.85rem' } }}>
@@ -48,18 +48,17 @@ const ClaimYourVoucherBanner = () => {
           </Button>
         </Box>
         
-        {/* Gift Box image */}
+        {/* Gift Box Vector image */}
         <Box sx={{ 
           position: { xs: 'relative', sm: 'absolute' }, 
-          top: { xs: 0, sm: -10, lg: -20 }, 
-          right: { xs: 0, sm: -10, lg: -20 }, 
+          top: { xs: 0, sm: -10, lg: -15 }, 
+          right: { xs: 0, sm: -10, lg: -15 }, 
           width: { xs: '100%', sm: '45%' }, 
-          height: { xs: '150px', sm: '160px', lg: '200px' },
-          backgroundImage: 'url("https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=300&fit=crop")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          maskImage: 'radial-gradient(ellipse at center, white 30%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, white 30%, transparent 70%)',
+          height: { xs: '120px', sm: '130px', lg: '160px' },
+          backgroundImage: 'url("https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f381.svg")',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center right',
           zIndex: 1,
           mb: { xs: 2, sm: 0 }
         }} />

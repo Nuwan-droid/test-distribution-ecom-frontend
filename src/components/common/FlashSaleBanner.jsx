@@ -29,7 +29,7 @@ const FlashSaleBanner = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          p: { xs: 2, sm: 3, lg: 4 },
+          p: { xs: 2, sm: 2, lg: 3 },
           boxSizing: 'border-box',
           zIndex: 2,
         }}
@@ -64,10 +64,10 @@ const FlashSaleBanner = () => {
           fontStyle="italic"
           sx={{
             color: '#ef4444',
-            mb: 1.5,
+            mb: 1,
             letterSpacing: '-1px',
             lineHeight: 1,
-            fontSize: { xs: '2rem', sm: '2.25rem', lg: '3rem' }
+            fontSize: { xs: '1.75rem', sm: '2rem', lg: '2.5rem' }
           }}
         >
           SALE
@@ -97,7 +97,7 @@ const FlashSaleBanner = () => {
           sx={{
             display: 'flex',
             gap: 1,
-            mb: { xs: 3, sm: 4 },
+            mb: { xs: 2, sm: 2.5 },
             flexWrap: 'wrap',
           }}
         >
@@ -144,8 +144,8 @@ const FlashSaleBanner = () => {
       >
         <Box
           component="img"
-          // Clean white background image from unsplash
-          src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&h=600&fit=crop"
+          // Clean white background image from unsplash (Apple Watch)
+          src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&h=600&fit=crop"
           alt="Flash Sale Products"
           sx={{
             position: 'absolute',
@@ -154,8 +154,8 @@ const FlashSaleBanner = () => {
             height: '100%',
             objectFit: 'contain',
             objectPosition: { xs: 'center', sm: 'right center' },
-            // mixBlendMode multiply makes the white background disappear
-            mixBlendMode: 'multiply',
+            // mixBlendMode darken makes the pure white background completely transparent
+            mixBlendMode: 'darken',
             p: 2
           }}
         />

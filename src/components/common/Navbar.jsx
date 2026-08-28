@@ -159,7 +159,6 @@ export default function Navbar() {
                   display: 'flex',
                   alignItems: 'center',
                   flex: 1,
-                  maxWidth: 700,
                   mx: { sm: 2, md: 4, lg: 6 },
                   bgcolor: '#ffffff',
                   borderRadius: 1.5,

@@ -105,9 +105,9 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: '"Inter", sans-serif',
     allVariants: {
-      fontFamily: '"Poppins", sans-serif',
+      fontFamily: '"Inter", sans-serif',
     },
     subtitle1: { letterSpacing: '0.05em' },
   },

@@ -8,8 +8,8 @@ export default function ShopByCategory() {
   const topCategories = [
     {
       id: 1, name: 'Electronics', slug: 'Electronics',
-      image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=300&h=300&fit=crop&q=80',
-      bgColor: '#edf5fd'
+      image: '/images/electronics3.png',
+      bgColor: '#ffffff'
     },
     {
       id: 2, name: "Women's Collections", slug: 'Fashion',
@@ -44,14 +44,21 @@ export default function ShopByCategory() {
       py: { xs: 1, md: 2 }, 
       mt: { xs: 3, md: 4 },
     }}>
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Box sx={{ mb: { xs: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box 
+            component={motion.div}
+            initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}
+          >
             <LocalMall sx={{ color: '#111', fontSize: 24 }} />
             <Typography
               variant="h5"
-              fontWeight={800}
-              sx={{ color: '#111111', lineHeight: 1.2, fontSize: { xs: '1.3rem', md: '1.6rem' }, letterSpacing: '-0.5px' }}
+              fontWeight={900}
+              sx={{ color: '#000000', textTransform: 'uppercase', lineHeight: 1.2, fontSize: { xs: '1.3rem', md: '1.6rem' }, letterSpacing: '0.5px', WebkitTextStroke: '1px black' }}
             >
               Shop by Category
             </Typography>
@@ -84,12 +91,15 @@ export default function ShopByCategory() {
             justifyItems: 'center',
           }}
         >
-          {topCategories.map((cat) => (
+          {topCategories.map((cat, index) => (
             <motion.div
               key={cat.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
               whileHover={{ y: -6 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
               style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
               <Box
